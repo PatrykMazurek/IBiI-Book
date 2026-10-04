@@ -1,25 +1,31 @@
 # Programowanie sieciowe
 
-#### Ramy czasowe
+## Ramy czasowe
 
-Studia stacjonarne - laboratoria 30 h
+Studia stacjonarne: laboratoria 30 h
 
 Studia niestacjonarne: laboratoria 20 h
 
-#### Agenda
+## Środowisko
 
-1. wielowątkowość
-2. Tworzenie gniazd TCP / UDP
-3. Protokoły IMAP i POP3 - połączenie z wybraną pocztą&#x20;
-4. Bazy danych - wprowadzenie do SQLAlchemy
-5. REST API - tworzenie i obsługa żądań REST
-6. Mikro usługi - MQTT, RabbitMQ, Kafka, gRPC
+Przykłady i zadania są przygotowane dla języka Python 3.10. Omówienie działania GIL w rozdziale o wątkach dotyczy implementacji CPython.
 
-#### Opis kursu
+## Agenda
 
-Kurs poświęcony tworzeniu aplikacji działających w sieci. W pierwszej części kursu student pozna zagadnienia dotyczące wielowątkowości, tworzenia aplikacji typu klient - serwer (TCP/UDP), obsługi protokołów IMAP i POP3 oraz wykonania odpowiedniej autoryzacji (OAuth).  Druga część kursu poświęcona jest implementacji aplikacji, które pracują w sieci i wymagana jest komunikacja między nimi. Student pozna zagadnienia implementacji REST API/SOAP do komunikacji między aplikacjami, zapisywania danych w pliku lub w wybranej bazie danych oraz implementacje gotowych systemów mikro usług tj. MQTT, RabbitMQ, Kafka, itp.&#x20;
+1. Wielowątkowość.
+2. Tworzenie gniazd TCP/UDP i aplikacji typu klient–serwer.
+3. Protokoły IMAP i POP3 — dostęp do skrzynki pocztowej oraz autoryzacja z użyciem OAuth.
+4. Zapisywanie danych w plikach i bazach danych — wprowadzenie do SQLAlchemy.
+5. REST API i SOAP — komunikacja między aplikacjami.
+6. Komunikacja między usługami w architekturze mikrousług: MQTT, RabbitMQ, Kafka i gRPC.
 
-#### Zaliczenie kursu&#x20;
+## Opis kursu
+
+Kurs jest poświęcony tworzeniu aplikacji sieciowych w języku Python. W pierwszej części student pozna podstawy wielowątkowości, tworzenia aplikacji typu klient–serwer z wykorzystaniem TCP/UDP oraz dostępu do poczty przez protokoły IMAP i POP3, z uwzględnieniem autoryzacji z użyciem OAuth.
+
+Druga część kursu obejmuje komunikację między aplikacjami z wykorzystaniem REST API i SOAP, zapisywanie danych w plikach i bazach danych oraz wprowadzenie do SQLAlchemy. Student pozna również zastosowania MQTT, RabbitMQ, Kafki i gRPC w komunikacji między usługami. Technologie te pełnią różne role: MQTT jest protokołem komunikacyjnym, RabbitMQ brokerem wiadomości, Kafka platformą strumieniowania zdarzeń, a gRPC frameworkiem zdalnego wywoływania procedur.
+
+## Zaliczenie kursu
 
 Warunkiem zaliczenia ćwiczeń laboratoryjnych jest:
 
@@ -28,4 +34,4 @@ Warunkiem zaliczenia ćwiczeń laboratoryjnych jest:
 
 Uzyskanie oceny dostatecznej (3.0) lub dobrej (4.0) wymaga spełnienia powyższych warunków, przy czym wysokość oceny zależy od wyniku kolokwium oraz jakości wykonywanych zadań laboratoryjnych.
 
-Uzyskanie oceny bardzo dobrej (5.0) wymaga dodatkowo wykonania projektu indywidualnego lub grupowego.&#x20;
+Uzyskanie oceny bardzo dobrej (5.0) wymaga dodatkowo wykonania projektu indywidualnego lub grupowego.

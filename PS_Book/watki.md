@@ -1,176 +1,244 @@
 # Wątki
 
-#### Wprowadzenie do programowania współbieżnego&#x20;
+## Wprowadzenie do programowania współbieżnego
 
-Wielowątkowość jest odpowiedzią na wyzwania związane z efektywną obsługą wielu żądań jednocześnie. Wątki jako model współbieżności, pozwalają programiście projektować programy, które mogą wykonywać kilka operacji jednocześnie, zwiększając ogólną wydajność aplikacji.
+Wielowątkowość pozwala obsługiwać kilka zadań współbieżnie w ramach jednego procesu. Jest przydatna w aplikacjach sieciowych, które podczas obsługi jednego połączenia mogą oczekiwać na dane, a w tym czasie obsługiwać inne połączenia.
 
-#### Podstawy
+**Współbieżność** oznacza, że wykonanie kilku zadań postępuje w tym samym okresie. **Równoległość** oznacza rzeczywiste wykonywanie zadań w tej samej chwili, na przykład na różnych rdzeniach procesora. Współbieżność nie gwarantuje równoległości ani skrócenia czasu działania programu.
 
-Zrozumienie zasad działania wątków i procesów jest kluczowe w programowaniu większych aplikacji.
+Przykłady w tym rozdziale są przeznaczone dla **Pythona 3.10**. W standardowej implementacji CPython mechanizm **GIL** ogranicza równoległe wykonywanie kodu Pythona przez wątki. Wątki sprawdzają się przede wszystkim w zadaniach wymagających oczekiwania na operacje wejścia/wyjścia (I/O), takich jak komunikacja sieciowa. Obliczenia w czystym Pythonie, na przykład wyszukiwanie liczb pierwszych, zwykle nie przyspieszają po zwiększeniu liczby wątków. Narzut ich obsługi może nawet wydłużyć czas wykonania. Niektóre biblioteki wykonujące obliczenia poza kodem Pythona zwalniają GIL; ich zachowanie może być inne.
 
-* &#x20;**Wątek** - najmniejsza jednostka wykonawcza w ramach procesu. Wątki dzielą wspólną przestrzeń  pamięci co zwiększa efektywność komunikacji między nimi.&#x20;
-* **Procesy** -  Każdy z procesów posiada swoją przestrzeń pamięci, co powoduje większe zużycie zasobów i trudniejsze wykonywanie komunikacji między nimi. Wykorzystanie w zadaniach wymagających większego stopnia izolacji.
+## Podstawy
 
-#### Cykl życia Wątku
+* **Wątek** — jednostka wykonania w ramach procesu. Wątki współdzielą przestrzeń pamięci procesu, co ułatwia wymianę danych, ale wymaga koordynowania dostępu do wspólnych zasobów.
+* **Proces** — uruchomiony program z własną przestrzenią pamięci wirtualnej. Procesy zapewniają większą izolację; komunikacja między nimi wymaga odpowiednich mechanizmów, takich jak kolejki lub pamięć współdzielona. Zwykle ich tworzenie wymaga więcej zasobów niż tworzenie wątków.
 
-Typowy cykl życia wątku obejmuje następujące etapy:
+## Cykl życia wątku
 
-* **Stworzenie wątku** - deklaracja co wątek ma wykonywać&#x20;
-* **Uruchomienie** - wywołanie odpowiednich metod pozwalających na start zadeklowanych zadań
-* **Praca wątku** - wątek wykonuje zaplaowane metody, funkcje
-* **Blokowani** - wątek może być czasowo wstrzymany w oczekiwaniu na I/O lub synchronizację&#x20;
-* **Zakończenie** - wątek po wykonaniu odpowiednich zadań jest niszczony i czyszczona jest pamięć, którą wykorzystywał.
+Uproszczony opis cyklu życia wątku obejmuje:
 
-#### Tworzenie wątku
+1. **Utworzenie obiektu wątku** — wskazanie zadania, które ma zostać wykonane.
+2. **Uruchomienie** — wywołanie metody `start()`.
+3. **Wykonywanie zadania** — realizację kodu funkcji docelowej.
+4. **Oczekiwanie** — czasowe wstrzymanie, na przykład podczas I/O lub oczekiwania na blokadę. Wątek może wielokrotnie przechodzić między wykonywaniem kodu a oczekiwaniem.
+5. **Zakończenie** — po zakończeniu funkcji docelowej albo wskutek nieobsłużonego wyjątku.
 
-Tworzenie wątku będzie przedstawione dla język Python:
+Zakończenie pracy wątku nie oznacza usunięcia wszystkich obiektów, z których korzystał. Obiekty współdzielone mogą być nadal używane przez pozostałe wątki. Zasoby, takie jak otwarte pliki, należy zwalniać w sposób kontrolowany, na przykład przy użyciu `with`.
 
-```py
-import threading, time
+## Tworzenie wątku
 
-# Funkcja, która będzi wykonywana w wątku
-def print_numbers():
-    for i in range(5):
-        time.sleep(1)  # Symulacja dłuższej pracy
+```python
+import threading
+import time
+
+
+def print_numbers(count, delay=1):
+    for i in range(count):
+        time.sleep(delay)  # Symulacja oczekiwania, np. na dane z sieci.
         print(f"Thread: {threading.current_thread().name}, Number: {i}")
-# Tworzenie wątku
-my_thread = threading.Thread(target=print_numbers)
-# uruchomienie wątku
+
+
+my_thread = threading.Thread(
+    target=print_numbers,
+    args=(5,),
+    kwargs={"delay": 1},
+    name="NumberWorker",
+)
 my_thread.start()
-# Wątek główny 
+
 for i in range(5):
     time.sleep(1)
     print(f"Main Thread, Number: {i}")
+
+# Dalszy kod wykona się po zakończeniu pracy dodatkowego wątku.
+my_thread.join()
+print("Oba zadania zostały zakończone.")
 ```
 
-W powyższym przykładzie przygotowano funkcję, której zadaniem jest wyświetlanie nazwy wątku co jedną sekundę. Kolejnym krokiem jest tworzenie wątku przez wywołanie konstruktora z klasy  `Threading.Thread()`. Jako parametr została przekazana nazwa funkcji, która ma być wykonana w wątku. Następnie wykonywana jest metodę `start()`, która uruchamiany jest wątek, kolejnym krokiem jest wyświetlanie informacji o wątku głównym. W powyższym przykładnie może zaistnieć sytuacji gdzie wątek główny zakończy pracę a wątek dodatkowy nadal będzie pracował.
+Funkcja `print_numbers` wyświetla nazwę wątku i kolejne liczby, rozdzielając wypisania przerwą. `time.sleep()` służy tutaj do symulacji oczekiwania. Kolejność komunikatów z obu wątków nie jest gwarantowana.
 
-Konstruktor z klasy `threading` przyjmuje może przyjąć następujące argumenty:
+Do konstruktora `threading.Thread` przekazujemy obiekt funkcji: `target=print_numbers`. Zapis `target=print_numbers()` wywołałby funkcję od razu w wątku tworzącym obiekt i przekazał jej wynik zamiast funkcji.
 
-* **target** - nazwa funkcji, która ma być uruchomiona przez wątek
-* **args** - parametry, które mają być przekazane do watka&#x20;
-* **name** - nazwa watka, wartość domyślna `None` wtedy wątek otrzymuje nazwę Thread-N gdzie n jest liczbą
+Wybrane argumenty konstruktora:
 
-#### Synchronizacja wątków
+| Argument | Znaczenie |
+| --- | --- |
+| `target` | Funkcja lub inny obiekt wywoływalny, który ma wykonać wątek. |
+| `args` | Krotka argumentów pozycyjnych funkcji. Dla jednego argumentu: `(5,)`. |
+| `kwargs` | Słownik argumentów nazwanych funkcji, np. `{"delay": 1}`. |
+| `name` | Nazwa wątku. Bez jawnej nazwy Python 3.10 tworzy nazwę automatycznie, np. `Thread-1 (print_numbers)`. |
+| `daemon` | Określa, czy wątek jest demoniczny. Domyślnie dziedziczy tę właściwość po wątku, który go tworzy. |
 
-Środowisko, w którym wykorzystuje się wielowątkowość może być narażone na konflikt w postaci dostępu do tych samych zasobów przez więcej niż jeden wątek. Taka sytuacja może prowadzić do niepoprawnego działania programu lub uszkodzenie danych. Aby zapobiec takim sytuacją stosuje się mechanizmy synchronizacji lub specjalnie do tego przygotowane kolekcje, co pozwala na zachowanie bezpiecznego dostępu do danych.
+Metoda `start()` uruchamia zadanie w osobnym wątku; jeden obiekt `Thread` można uruchomić tylko raz. Bezpośrednie wywołanie `run()` nie tworzy osobnego wątku.
 
-Poniższy przykład wykorzystuje mechanizm `Lock` do zabezpieczenia wątka przy zapisie  do wspólnej zmiennej.
+Metoda `join()` wstrzymuje wątek wywołujący do zakończenia wskazanego wątku. Nie uruchamia go ani nie przerywa jego działania. Po `join(timeout=...)` należy sprawdzić `is_alive()`, aby ustalić, czy wątek nadal pracuje.
+
+W przykładzie dodatkowy wątek jest niedemoniczny. Nawet bez `join()` interpreter czekałby na jego zakończenie przed wyjściem z programu. Jawne `join()` określa jednak, w którym miejscu program ma zaczekać. Wątki demoniczne mogą zostać przerwane podczas kończenia programu, dlatego nie należy polegać na nich przy zapisie ważnych danych.
+
+## Synchronizacja wątków
+
+Gdy kilka wątków korzysta ze wspólnych danych, wynik może zależeć od kolejności ich operacji. Taki problem nazywamy **wyścigiem danych**. **Sekcja krytyczna** to fragment kodu, którego wykonanie wymaga kontrolowanego dostępu do współdzielonego zasobu.
+
+Poniższy przykład wykorzystuje `Lock` do ochrony aktualizacji wspólnego licznika:
 
 ```python
 import threading
 
-# wspólna zmienna
+
 shared_resource = 0
-# tworzenie mechanizmu blokady
 lock = threading.Lock()
-# funkcja zwiększaąca wartość wspólnej zmiennej
+
+
 def increment_shared_resource():
     global shared_resource
-    for _ in range(100000):
+    for _ in range(100_000):
         with lock:
             shared_resource += 1
-# tworzenie wątków
+
+
 thread1 = threading.Thread(target=increment_shared_resource)
 thread2 = threading.Thread(target=increment_shared_resource)
-# uruchomienie wątków
+
 thread1.start()
 thread2.start()
-# oczekiwanie aż wątki zakończą prace
 thread1.join()
 thread2.join()
+
 print(f"Final value of shared resource: {shared_resource}")
 ```
 
-W powyższym przykładzie tworzony jest obiekt Lock z biblioteki threading za pomocą, którego można blokować dostęp do wspólnego zasobu wykorzystywanego przez wątki. Mechanizm blokady najlepiej stosować na operacja atomowych czyli np. przypisywaniu nowej wartości. Blokad ni zaleca się stosować na całych metodach ponieważ zmniejsza wydajność.&#x20;
+Po prawidłowym zakończeniu obu wątków licznik wynosi `200000`. `with lock:` pobiera blokadę przed wejściem do sekcji krytycznej i zwalnia ją przy wyjściu, również w przypadku wyjątku. Wszystkie wątki wykonujące konfliktujące operacje na chronionych danych muszą korzystać z tej samej blokady.
 
-Blokowanie wątków niesie ze sobą pewne zagrożenie w postaci zablokowania wątku i problemów z jego odblokowaniem.&#x20;
+Aktualizacja `shared_resource += 1` obejmuje odczyt, obliczenie i zapis. Nie należy traktować jej jako gwarantowanej operacji atomowej ani polegać na GIL jako zamienniku synchronizacji. Usunięcie blokady nie musi ujawnić problemu w każdym uruchomieniu — poprawny wynik pojedynczej próby nie dowodzi poprawności programu.
 
-Unikanie zablokowani wątków wymaga starannego programowania i&#x20;
+Blokada powinna obejmować całą operację potrzebną do zachowania spójności danych. Sekcję krytyczną warto utrzymywać możliwie krótką, ale nie wolno skracać jej kosztem poprawności. Ochrona całej metody może być uzasadniona, jeśli wszystkie jej operacje tworzą jedną sekcję krytyczną.
 
-#### Komunikacja między wątkami
+### Zakleszczenia
 
-W aplikacjach wielowątkowych wątki często muszą się ze sobą komunikować i wymieniać dane. Skuteczna komunikacja jest kluczowym aspektem do poprawnego działania nowoczesnych aplikacji.&#x20;
+**Zakleszczenie (deadlock)** może wystąpić, gdy wątek A posiada blokadę pierwszą i czeka na drugą, a wątek B posiada drugą i czeka na pierwszą. Żaden z nich nie może kontynuować pracy.
 
-W języku Python jest kilka możliwości przekazania informacji między wątkami, takimi sposobami mogą być przekazane zmienne, obiekty między wątkami, odpowiednie kolekcje, lub zdarzenia, które mogą być wywołane przez wątki.
+Aby ograniczyć ryzyko zakleszczeń:
 
-Kolejki (queue) stanowią wygodny sposób komunikacji między wątkami, Poniższy przykład przedstawia wykorzystanie kolejek w języku Python
+* pobieraj wiele blokad zawsze w tej samej, ustalonej kolejności;
+* używaj `with`, aby blokada została zwolniona po opuszczeniu sekcji krytycznej;
+* unikaj oczekiwania na zakończenie innego wątku, gdy trzymasz blokadę potrzebną temu wątkowi;
+* w uzasadnionych przypadkach stosuj limity czasu i obsługuj sytuację, w której nie udało się uzyskać zasobu.
+
+Samo użycie `with` nie zapobiega zakleszczeniom wynikającym z niewłaściwej kolejności pobierania blokad.
+
+## Komunikacja między wątkami
+
+Wątki mogą wymieniać dane przez współdzielone obiekty, kolejki i mechanizmy sygnalizacji. Samo przekazanie obiektu do kilku wątków nie zapewnia bezpiecznego dostępu do jego danych.
+
+### Kolejka `queue.Queue`
+
+`queue.Queue` zapewnia synchronizację operacji dodawania i pobierania elementów. Poniższy przykład przedstawia jednego producenta i jednego konsumenta:
 
 ```python
-import threading, queue, time
+import queue
+import threading
+import time
 
-# Tworzenie kolejki dla wątków
+
 message_queue = queue.Queue()
-# Funkcja produkująca wiadomości
+STOP = object()  # Osobny znacznik, który nie koliduje z treścią wiadomości.
+
+
 def produce_messages():
-    for i in range(5):
-        time.sleep(1)
-        message_queue.put(f"Message {i}")
-# Funkcja pobierająca wiadomości
+    try:
+        for i in range(5):
+            time.sleep(1)
+            message_queue.put(f"Message {i}")
+    finally:
+        message_queue.put(STOP)
+
+
 def consume_messages():
     while True:
         message = message_queue.get()
-        if message == "STOP":
+        if message is STOP:
             break
         print(f"Consumed: {message}")
-# tworzenie wątkuów
+
+
 producer_thread = threading.Thread(target=produce_messages)
 consumer_thread = threading.Thread(target=consume_messages)
-# Uruchamienie wątku
+
 producer_thread.start()
 consumer_thread.start()
-# oczekiwanie na zakończenie pracy wątka produkującego wiadomości
 producer_thread.join()
-# dodanie informacji do kolejki o zakończenie pracy wątku
-message_queue.put("STOP")
-# oczekiwanie na zakończenie pracy metody pobierającego wiadomości
 consumer_thread.join()
 ```
 
-Powyższy przykład przedstawia użycie kolejki do komunikacja między wątkami. Każdy z wątków dostaje konkretne zadanie, jeden produkuje wiadomości, a drugi pobiera wiadomości. Wątek produkujący wiadomości ma założoną liczbę kroków do wykonania a drugi wątek oczekuje na wiadomości i czeka na odpowiedni sygnał aby zakończyć pracę.&#x20;
+Producent umieszcza pięć wiadomości w kolejce, a następnie znacznik końca. Konsument oczekuje w `get()` na kolejne elementy i kończy pracę po pobraniu znacznika. Blok `finally` zapewnia wysłanie znacznika także wtedy, gdy producent zakończy pracę wskutek wyjątku. W tym przykładzie jeden znacznik wystarcza dla jednego konsumenta; przy wielu konsumentach trzeba zaplanować zakończenie pracy każdego z nich.
 
-Innym sposobem na zarządzanie wątkami jest stosowanie odpowiednich wyzwalaczy.
+Kolejka chroni swoje operacje, ale nie zapewnia automatycznej ochrony późniejszych modyfikacji obiektu pobranego z kolejki, jeśli nadal współdzielą go inne wątki.
+
+W przykładzie użyto `Thread.join()`, czyli oczekiwania na zakończenie wątku. Osobnym mechanizmem jest `Queue.join()`, które czeka na potwierdzenie przetworzenia wszystkich dodanych elementów. Przy jego użyciu po każdym `get()` należy wywołać `task_done()` po zakończeniu obsługi elementu, również znacznika końca. W powyższym przykładzie nie używamy `Queue.join()`, więc takie potwierdzenia nie są potrzebne.
+
+### Zdarzenie `threading.Event`
+
+`Event` jest współdzieloną flagą służącą do sygnalizacji. Może na przykład informować, że dane są gotowe albo że wątek powinien zakończyć pracę.
 
 ```python
-import threading, time
+import threading
+import time
 
-# Tworzenie obiektu Event
+
 event = threading.Event()
-# Funkcja oczekująca na wydarzenie
+
+
 def wait_for_event():
     print("Waiting for the event...")
-    event.wait()  # oczekiwanie na zwolnienie wątka
+    event.wait()
     print("Event has been set!")
-# Funkcja wysyłająca obiekt wydarzenia
+
+
 def set_event():
     time.sleep(2)
-    print("Event is set!")
-    event.set()  # ustawienie wydarzenia, umożliwiając czekującemu wątkowi na kontynłacje działania
-# Tworzenie wątków
+    print("Setting the event...")
+    event.set()
+
+
 thread1 = threading.Thread(target=wait_for_event)
 thread2 = threading.Thread(target=set_event)
-# Uruchamianie wątkuów
+
 thread1.start()
 thread2.start()
-# Oczekiwanie na zakończenie pracy wątków
 thread1.join()
 thread2.join()
 ```
 
-Powyższy przykład przedstawia mechanizm blokowania wątku lub inaczej usypiania wątku. Metoda `wait()` powoduje że wątek zostaje zablokowany i czeka do momentu kiedy inny wątek wywoła metodę `set()`. Probelmem tego rozwiązania jest fakt że w programie przynajmniej jeden wątek musi wywłać mteodę `set()` aby nie doszło do całkowitego zablokowania progamu.
+Początkowo flaga jest wyzerowana. `set()` ustawia ją i pozwala oczekującym wątkom kontynuować pracę. Jeśli flaga była już ustawiona, `wait()` wraca od razu. Wywołanie `clear()` ponownie zeruje flagę; samo `wait()` jej nie zeruje.
 
-#### Zadania
+Bez ustawienia flagi `wait()` bez limitu czasu może czekać bez końca. Wariant `event.wait(timeout=5)` zwraca `False`, gdy czas upłynie bez ustawienia flagi, a `True`, gdy oczekiwanie zakończy się jej ustawieniem. Program powinien odpowiednio obsłużyć oba wyniki.
 
-1. Stwórz wątek który, będzie co trzy sekundy skanował wybrany folder w poszukiwaniu plików. Wątek powinien informować o zmianach w podanej lokalizacji
-2. Stwórz wątek, który będzie co stały czas skanował folder i sprawdzał czy pojawiły się w nim pliki. Następnie przenieś pliki po rozszerzeniach np. pliki txt, doc, csv, pdf do folderu dokumenty, pliki: png, jpg, bmp do folderu image, pozostałe pliki do folderu różne.
-3. Wykorzystując dowolny rodzaj wątku wyszukaj liczby pierwsze dla zakresu 1 000 000. Do zadania wykorzystaj 4 wątki.
-4. Napisz program, który wykorzystując wielowątkowość będzie losował 1000 liczb spełniających warunek podzielności przez 3. Wszystkie liczby spełniające ten warunek dodawaj do wspólnej listy, do rozwiązania wykorzystaj dowolny rodzaj wątków.
-5. Sprawdź czy jest różnica czasowa w wykonaniu zadania 3 i 4 przy wykorzystaniu różnej liczby wątków np. 1, 4 i 6.
+Do kontrolowanego zatrzymywania okresowej pracy można użyć osobnego zdarzenia `stop_event`. Pętla `while not stop_event.wait(3):` wykonuje kolejne iteracje po trzysekundowym oczekiwaniu i kończy się po ustawieniu flagi. Pierwsza iteracja nastąpi po oczekiwaniu; jeśli potrzebny jest natychmiastowy skan, wykonaj go przed pętlą. Wątek sterujący wywołuje `stop_event.set()`, a następnie `join()`. Sygnał nie przerywa automatycznie operacji I/O już wykonywanej przez wątek.
 
-#### Literatura
+## Zadania
+
+Poniższe zadania wykonaj w Pythonie 3.10. W zadaniach 1–2 zapewnij kontrolowane zatrzymanie wątku, na przykład przez `threading.Event`, oraz oczekiwanie na jego zakończenie przez `join()`. Wątki robocze powinny mieć jasno określone zadania i sposób przekazywania wyników.
+
+1. Stwórz wątek, który co trzy sekundy skanuje wybrany folder i informuje o zmianach względem poprzedniego skanu. Uwzględnij dodanie, usunięcie i modyfikację pliku, określaną na podstawie czasu modyfikacji lub rozmiaru. Pierwszy skan ustala stan początkowy. Skanuj tylko wskazany folder, bez podfolderów. Obsłuż sytuację, w której plik zniknie podczas skanowania.
+
+2. Stwórz wątek, który w konfigurowalnym odstępie czasu skanuje wskazany folder i przenosi znalezione pliki do podfolderów według rozszerzeń: `txt`, `doc`, `csv`, `pdf` do `dokumenty`; `png`, `jpg`, `bmp` do `image`; pozostałe, w tym pliki bez rozszerzenia, do `różne`. Utwórz brakujące foldery docelowe, ignoruj wielkość liter rozszerzeń i nie skanuj podfolderów. Nie nadpisuj istniejących plików — w razie konfliktu dodaj do nazwy kolejny numer. Na potrzeby ćwiczenia używaj plików, których zapis został już zakończony. Obsłuż błędy dostępu i zniknięcie pliku przed przeniesieniem.
+
+3. Wyszukaj wszystkie liczby pierwsze w przedziale od `2` do `1_000_000` włącznie, wykorzystując cztery wątki robocze. Podziel przedział na rozłączne części, zbierz wyniki i sprawdź ich zgodność z wersją sekwencyjną. Zwróć uwagę na wpływ GIL na czas wykonania obliczeń w CPythonie 3.10.
+
+4. Napisz program wielowątkowy wykonujący **łącznie 1000 losowań**, a nie 1000 losowań na każdy wątek. Spośród wylosowanych liczb dodawaj do wspólnej listy tylko te, które są podzielne przez `3`. Zakres losowanych liczb całkowitych przyjmij jako parametr programu i podaj go przy prezentacji wyniku; dopuszczaj powtórzenia. Rozdziel wszystkie 1000 losowań między wątki, również gdy liczba losowań nie dzieli się przez liczbę wątków. Synchronizuj zapis do wspólnej listy. Liczba elementów listy wynikowej zależy od wyników losowania i nie musi wynosić 1000.
+
+5. Porównaj czasy wykonania zadań 3 i 4 dla `1`, `4` i `6` wątków roboczych oraz wersji sekwencyjnej. Zachowaj ten sam algorytm, zakres danych i łączną liczbę operacji. W zadaniu 4 zachowaj też ten sam zakres losowania. Mierz czas za pomocą `time.perf_counter()`, uwzględniając uruchomienie wątków i oczekiwanie na ich zakończenie; nie uwzględniaj wypisywania wyników. Każdy wariant uruchom co najmniej pięć razy i porównaj mediany. Podaj wersję interpretera i liczbę rdzeni procesora. Wyjaśnij wyniki, uwzględniając GIL, synchronizację i narzut tworzenia wątków. Przy zaledwie 1000 losowaniach narzut oraz wahania pomiaru mogą dominować; brak przyspieszenia jest poprawnym wynikiem eksperymentu.
+
+## Literatura
+
+Dokumentacja dla wersji Pythona używanej na kursie:
+
+{% embed url="https://docs.python.org/3.10/library/threading.html" %}
+
+{% embed url="https://docs.python.org/3.10/library/queue.html" %}
+
+Materiały uzupełniające; przykłady należy odnosić do środowiska kursowego:
 
 {% embed url="https://medium.com/@me.mdhamim/a-comprehensive-guide-to-python-threading-advanced-concepts-and-best-practices-9f3aea6f0a63" %}
-
-{% embed url="https://docs.python.org/3/library/threading.html" %}
 
 {% embed url="https://brandonrohrer.com/threading.html" %}
