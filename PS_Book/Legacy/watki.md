@@ -1,6 +1,6 @@
 # Wątki
 
-## Wprowadzenie do programowania współbieżnego
+### Wprowadzenie do programowania współbieżnego
 
 Wielowątkowość pozwala obsługiwać kilka zadań współbieżnie w ramach jednego procesu. Jest przydatna w aplikacjach sieciowych, które podczas obsługi jednego połączenia mogą oczekiwać na dane, a w tym czasie obsługiwać inne połączenia.
 
@@ -8,12 +8,12 @@ Wielowątkowość pozwala obsługiwać kilka zadań współbieżnie w ramach jed
 
 Przykłady w tym rozdziale są przeznaczone dla **Pythona 3.10**. W standardowej implementacji CPython mechanizm **GIL** ogranicza równoległe wykonywanie kodu Pythona przez wątki. Wątki sprawdzają się przede wszystkim w zadaniach wymagających oczekiwania na operacje wejścia/wyjścia (I/O), takich jak komunikacja sieciowa. Obliczenia w czystym Pythonie, na przykład wyszukiwanie liczb pierwszych, zwykle nie przyspieszają po zwiększeniu liczby wątków. Narzut ich obsługi może nawet wydłużyć czas wykonania. Niektóre biblioteki wykonujące obliczenia poza kodem Pythona zwalniają GIL; ich zachowanie może być inne.
 
-## Podstawy
+### Podstawy
 
 * **Wątek** — jednostka wykonania w ramach procesu. Wątki współdzielą przestrzeń pamięci procesu, co ułatwia wymianę danych, ale wymaga koordynowania dostępu do wspólnych zasobów.
 * **Proces** — uruchomiony program z własną przestrzenią pamięci wirtualnej. Procesy zapewniają większą izolację; komunikacja między nimi wymaga odpowiednich mechanizmów, takich jak kolejki lub pamięć współdzielona. Zwykle ich tworzenie wymaga więcej zasobów niż tworzenie wątków.
 
-## Cykl życia wątku
+### Cykl życia wątku
 
 Uproszczony opis cyklu życia wątku obejmuje:
 
@@ -25,7 +25,7 @@ Uproszczony opis cyklu życia wątku obejmuje:
 
 Zakończenie pracy wątku nie oznacza usunięcia wszystkich obiektów, z których korzystał. Obiekty współdzielone mogą być nadal używane przez pozostałe wątki. Zasoby, takie jak otwarte pliki, należy zwalniać w sposób kontrolowany, na przykład przy użyciu `with`.
 
-## Tworzenie wątku
+### Tworzenie wątku
 
 ```python
 import threading, time
@@ -73,7 +73,7 @@ Metoda `join()` wstrzymuje wątek wywołujący do zakończenia wskazanego wątku
 
 W przykładzie dodatkowy wątek jest niedemoniczny. Nawet bez `join()` interpreter czekałby na jego zakończenie przed wyjściem z programu. Jawne `join()` określa jednak, w którym miejscu program ma zaczekać. Wątki demoniczne mogą zostać przerwane podczas kończenia programu, dlatego nie należy polegać na nich przy zapisie ważnych danych.
 
-## Synchronizacja wątków
+### Synchronizacja wątków
 
 Gdy kilka wątków korzysta ze wspólnych danych, wynik może zależeć od kolejności ich operacji. Taki problem nazywamy **wyścigiem danych**. **Sekcja krytyczna** to fragment kodu, którego wykonanie wymaga kontrolowanego dostępu do współdzielonego zasobu.
 
@@ -121,11 +121,11 @@ Aby ograniczyć ryzyko zakleszczeń:
 
 Samo użycie `with` nie zapobiega zakleszczeniom wynikającym z niewłaściwej kolejności pobierania blokad.
 
-## Komunikacja między wątkami
+### Komunikacja między wątkami
 
 Wątki mogą wymieniać dane przez współdzielone obiekty, kolejki i mechanizmy sygnalizacji. Samo przekazanie obiektu do kilku wątków nie zapewnia bezpiecznego dostępu do jego danych.
 
-### Kolejka `queue.Queue`
+#### Kolejka `queue.Queue`
 
 `queue.Queue` zapewnia synchronizację operacji dodawania i pobierania elementów. Poniższy przykład przedstawia jednego producenta i jednego konsumenta:
 
@@ -165,7 +165,7 @@ Kolejka chroni swoje operacje, ale nie zapewnia automatycznej ochrony późniejs
 
 W przykładzie użyto `Thread.join()`, czyli oczekiwania na zakończenie wątku. Osobnym mechanizmem jest `Queue.join()`, które czeka na potwierdzenie przetworzenia wszystkich dodanych elementów. Przy jego użyciu po każdym `get()` należy wywołać `task_done()` po zakończeniu obsługi elementu, również znacznika końca. W powyższym przykładzie nie używamy `Queue.join()`, więc takie potwierdzenia nie są potrzebne.
 
-### Zdarzenie `threading.Event`
+#### Zdarzenie `threading.Event`
 
 `Event` jest współdzieloną flagą służącą do sygnalizacji. Może na przykład informować, że dane są gotowe albo że wątek powinien zakończyć pracę.
 
@@ -199,7 +199,7 @@ Bez ustawienia flagi `wait()` bez limitu czasu może czekać bez końca. Wariant
 
 Do kontrolowanego zatrzymywania okresowej pracy można użyć osobnego zdarzenia `stop_event`. Pętla `while not stop_event.wait(3):` wykonuje kolejne iteracje po trzysekundowym oczekiwaniu i kończy się po ustawieniu flagi. Pierwsza iteracja nastąpi po oczekiwaniu; jeśli potrzebny jest natychmiastowy skan, wykonaj go przed pętlą. Wątek sterujący wywołuje `stop_event.set()`, a następnie `join()`. Sygnał nie przerywa automatycznie operacji I/O już wykonywanej przez wątek.
 
-## Zadania
+### Zadania
 
 1.  Stwórz wątek, który co trzy sekundy skanuje wybrany folder i informuje o zmianach względem poprzedniego skanu.&#x20;
 
