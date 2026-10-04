@@ -39,7 +39,7 @@ mailbox = poplib.POP3_SSL(POP3_SERVER, SSL_PORT)
 
 #### IMAP
 
-Protokół IMAP (Internet Message Access Protocol) -  powala na zarządzanie wiadomościami, które znajdują się na serwerze pocztowym, zgodnie z początkowymi założeniami wiadomości pozostają na serwerze.
+Protokół IMAP (Internet Message Access Protocol) -  pozwala na zarządzanie wiadomościami, które znajdują się na serwerze pocztowym, zgodnie z początkowymi założeniami wiadomości pozostają na serwerze.
 
 ```python
 import imaplib
@@ -110,7 +110,12 @@ except Exception as e:
 
 #### Zadania
 
-1.
+1. Stwórz aplikację, która odczyta listę katalogów i zwróci liczbę wiadomości w danym katalogu
+2. Stwórz aplikację, która pozwoli użytkownikowi wybrać odpowiedni katalog i wyświetli po 20 wiadomości w postaci nadawca i tytuł. Zastosuje odpowiedni protokół, który pozostawi wiadomości na serwerze pocztowym.
+3. Stwórz aplikację, która będzie filtrować wiadomości:
+   1. wyświetli wiadomości nie starsze niż 15 dni
+   2. pozwoli wyszukać wiadomości, które zawierają wybraną frazę w tytule
+   3. pozwoli wyszukać wisomości od konkretnego madawcy
 
 #### Literatura
 

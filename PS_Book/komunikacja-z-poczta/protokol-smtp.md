@@ -42,7 +42,12 @@ Powyższy kod, przedstawia wykonanie połączenia z serwerem pocztowym i wysłan
 
 #### Zadania
 
-
+1. Stwórz aplikację, która wyśle maila do wybranego odbiorcy z:
+   1. treścią formatowaną w HTML-u
+   2. dowolnym plikiem jako załącznik np. txt, png, jpg., pdf
+   3. wyślij wiadomość z osadzonym plikiem graficznym w wiadomości
+   4. uwzględnieniem odbiorców jako "Do wiadomości (DW)" i "Ukryty do wiadomości (UDW)"
+2. Stwórz rozwiązanie, które pozwoli wysłać maila do wielu osób, bazując na jednym szablonie wiadomości
 
 #### Literatura
 

@@ -161,7 +161,11 @@ Powyższy przykład przedstawia mechanizm blokowania wątku lub inaczej usypiani
 
 #### Zadania
 
-
+1. Stwórz wątek który, będzie co trzy sekundy skanował wybrany folder w poszukiwaniu plików. Wątek powinien informować o zmianach w podanej lokalizacji
+2. Stwórz wątek, który będzie co stały czas skanował folder i sprawdzał czy pojawiły się w nim pliki. Następnie przenieś pliki po rozszerzeniach np. pliki txt, doc, csv, pdf do folderu dokumenty, pliki: png, jpg, bmp do folderu image, pozostałe pliki do folderu różne.
+3. Wykorzystując dowolny rodzaj wątku wyszukaj liczby pierwsze dla zakresu 1 000 000. Do zadania wykorzystaj 4 wątki.
+4. Napisz program, który wykorzystując wielowątkowość będzie losował 1000 liczb spełniających warunek podzielności przez 3. Wszystkie liczby spełniające ten warunek dodawaj do wspólnej listy, do rozwiązania wykorzystaj dowolny rodzaj wątków.
+5. Sprawdź czy jest różnica czasowa w wykonaniu zadania 3 i 4 przy wykorzystaniu różnej liczby wątków np. 1, 4 i 6.
 
 #### Literatura
 

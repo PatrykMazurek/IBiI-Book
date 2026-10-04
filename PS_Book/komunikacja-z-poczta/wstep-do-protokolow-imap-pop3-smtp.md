@@ -4,11 +4,11 @@ W przypadku projektów, które wykorzystują komunikację z pocztą elektroniczn
 
 #### Historia
 
-Protokuł POP -&#x20;
+Protokół POP -&#x20;
 
-Protokuł IMAP -&#x20;
+Protokół IMAP -&#x20;
 
-Protokuł SMTP -&#x20;
+Protokół SMTP -&#x20;
 
 #### Środowisko pracy
 
@@ -24,7 +24,7 @@ docker run -d --name greenmail \
   greenmail/standalone:latest
 ```
 
-Niezależnie od wybranej wersji polecam zapoznaćsię z ofizjalną stroną projektu w celu uzyskania szczegółów dotyczących projektu. [Oficjalna Strona GreenMail](https://greenmail-mail-test.github.io/greenmail/)
+Niezależnie od wybranej wersji polecam zapoznać się z oficjalną stroną projektu w celu uzyskania szczegółów dotyczących projektu. [Oficjalna Strona GreenMail](https://greenmail-mail-test.github.io/greenmail/)
 
 Każde z rozwiązań dostarcza pusty serwer pocztowy, na potrzeby zajęć i przewidzianych zadań można zastosować poniższy skrypt (język Python), który uzupełnia pocztę wiadomościami.
 
@@ -52,7 +52,7 @@ docker run -d --name greenmail \
   greenmail/standalone:latest
 ```
 
-Do w pełni funkcjonalego działaniaserwera i praktyczego pracy na zajęciach, należy skrzynkę uzupełnić wiadomościami. Poniżej przedstawiam plik, który uzpełni skrzynkę wiadomoścmiami, które posłużą do pracy na zajęciach.
+Do w pełni funkcjonalnego działaniaserserwera i praktyczego pracy na zajęciach, należy skrzynkę uzupełnić wiadomościami. Poniżej przedstawiam plik, który uzpełni skrzynkę wiadomoścmiami, które posłużą do pracy na zajęciach.
 
 
 
