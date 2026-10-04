@@ -28,9 +28,7 @@ Zakończenie pracy wątku nie oznacza usunięcia wszystkich obiektów, z któryc
 ## Tworzenie wątku
 
 ```python
-import threading
-import time
-
+import threading, time
 
 def print_numbers(count, delay=1):
     for i in range(count):
@@ -61,13 +59,13 @@ Do konstruktora `threading.Thread` przekazujemy obiekt funkcji: `target=print_nu
 
 Wybrane argumenty konstruktora:
 
-| Argument | Znaczenie |
-| --- | --- |
-| `target` | Funkcja lub inny obiekt wywoływalny, który ma wykonać wątek. |
-| `args` | Krotka argumentów pozycyjnych funkcji. Dla jednego argumentu: `(5,)`. |
-| `kwargs` | Słownik argumentów nazwanych funkcji, np. `{"delay": 1}`. |
-| `name` | Nazwa wątku. Bez jawnej nazwy Python 3.10 tworzy nazwę automatycznie, np. `Thread-1 (print_numbers)`. |
-| `daemon` | Określa, czy wątek jest demoniczny. Domyślnie dziedziczy tę właściwość po wątku, który go tworzy. |
+| Argument | Znaczenie                                                                                             |
+| -------- | ----------------------------------------------------------------------------------------------------- |
+| `target` | Funkcja lub inny obiekt wywoływalny, który ma wykonać wątek.                                          |
+| `args`   | Krotka argumentów pozycyjnych funkcji. Dla jednego argumentu: `(5,)`.                                 |
+| `kwargs` | Słownik argumentów nazwanych funkcji, np. `{"delay": 1}`.                                             |
+| `name`   | Nazwa wątku. Bez jawnej nazwy Python 3.10 tworzy nazwę automatycznie, np. `Thread-1 (print_numbers)`. |
+| `daemon` | Określa, czy wątek jest demoniczny. Domyślnie dziedziczy tę właściwość po wątku, który go tworzy.     |
 
 Metoda `start()` uruchamia zadanie w osobnym wątku; jeden obiekt `Thread` można uruchomić tylko raz. Bezpośrednie wywołanie `run()` nie tworzy osobnego wątku.
 
@@ -84,17 +82,14 @@ Poniższy przykład wykorzystuje `Lock` do ochrony aktualizacji wspólnego liczn
 ```python
 import threading
 
-
 shared_resource = 0
 lock = threading.Lock()
-
 
 def increment_shared_resource():
     global shared_resource
     for _ in range(100_000):
         with lock:
             shared_resource += 1
-
 
 thread1 = threading.Thread(target=increment_shared_resource)
 thread2 = threading.Thread(target=increment_shared_resource)
@@ -135,14 +130,10 @@ Wątki mogą wymieniać dane przez współdzielone obiekty, kolejki i mechanizmy
 `queue.Queue` zapewnia synchronizację operacji dodawania i pobierania elementów. Poniższy przykład przedstawia jednego producenta i jednego konsumenta:
 
 ```python
-import queue
-import threading
-import time
-
+import queue, threading, time
 
 message_queue = queue.Queue()
 STOP = object()  # Osobny znacznik, który nie koliduje z treścią wiadomości.
-
 
 def produce_messages():
     try:
@@ -152,14 +143,12 @@ def produce_messages():
     finally:
         message_queue.put(STOP)
 
-
 def consume_messages():
     while True:
         message = message_queue.get()
         if message is STOP:
             break
         print(f"Consumed: {message}")
-
 
 producer_thread = threading.Thread(target=produce_messages)
 consumer_thread = threading.Thread(target=consume_messages)
@@ -181,24 +170,19 @@ W przykładzie użyto `Thread.join()`, czyli oczekiwania na zakończenie wątku.
 `Event` jest współdzieloną flagą służącą do sygnalizacji. Może na przykład informować, że dane są gotowe albo że wątek powinien zakończyć pracę.
 
 ```python
-import threading
-import time
-
+import threading, time
 
 event = threading.Event()
-
 
 def wait_for_event():
     print("Waiting for the event...")
     event.wait()
     print("Event has been set!")
 
-
 def set_event():
     time.sleep(2)
     print("Setting the event...")
     event.set()
-
 
 thread1 = threading.Thread(target=wait_for_event)
 thread2 = threading.Thread(target=set_event)
@@ -217,17 +201,17 @@ Do kontrolowanego zatrzymywania okresowej pracy można użyć osobnego zdarzenia
 
 ## Zadania
 
-Poniższe zadania wykonaj w Pythonie 3.10. W zadaniach 1–2 zapewnij kontrolowane zatrzymanie wątku, na przykład przez `threading.Event`, oraz oczekiwanie na jego zakończenie przez `join()`. Wątki robocze powinny mieć jasno określone zadania i sposób przekazywania wyników.
+1.  Stwórz wątek, który co trzy sekundy skanuje wybrany folder i informuje o zmianach względem poprzedniego skanu.&#x20;
 
-1. Stwórz wątek, który co trzy sekundy skanuje wybrany folder i informuje o zmianach względem poprzedniego skanu. Uwzględnij dodanie, usunięcie i modyfikację pliku, określaną na podstawie czasu modyfikacji lub rozmiaru. Pierwszy skan ustala stan początkowy. Skanuj tylko wskazany folder, bez podfolderów. Obsłuż sytuację, w której plik zniknie podczas skanowania.
+    1. Wskaż różnice w liczbie plików po każdym skanowaniu.
+    2. Uwzględnij dodanie, usunięcie plików po każdym skanowaniu.
+    3. Sprawdź czy plik został zmodyfikowany na podstawie czasu modyfikacji lub rozmiaru.&#x20;
 
-2. Stwórz wątek, który w konfigurowalnym odstępie czasu skanuje wskazany folder i przenosi znalezione pliki do podfolderów według rozszerzeń: `txt`, `doc`, `csv`, `pdf` do `dokumenty`; `png`, `jpg`, `bmp` do `image`; pozostałe, w tym pliki bez rozszerzenia, do `różne`. Utwórz brakujące foldery docelowe, ignoruj wielkość liter rozszerzeń i nie skanuj podfolderów. Nie nadpisuj istniejących plików — w razie konfliktu dodaj do nazwy kolejny numer. Na potrzeby ćwiczenia używaj plików, których zapis został już zakończony. Obsłuż błędy dostępu i zniknięcie pliku przed przeniesieniem.
-
-3. Wyszukaj wszystkie liczby pierwsze w przedziale od `2` do `1_000_000` włącznie, wykorzystując cztery wątki robocze. Podziel przedział na rozłączne części, zbierz wyniki i sprawdź ich zgodność z wersją sekwencyjną. Zwróć uwagę na wpływ GIL na czas wykonania obliczeń w CPythonie 3.10.
-
+    Skanuj tylko wskazany folder, bez pod folderów. Obsłuż sytuację.
+2. Stwórz wątek, który w konfigurowalnym odstępie czasu skanuje wskazany folder i przenosi znalezione pliki do pod folderów według rozszerzeń: `txt`, `doc`, `csv`, `pdf` do `dokumenty`; `png`, `jpg`, `bmp` do `image`; pozostałe pliki do folderu `różne`. Utwórz brakujące foldery docelowe, ignoruj wielkość liter rozszerzeń i nie skanuj pod folderów. Nie nadpisuj istniejących plików, w razie konfliktu dodaj do nazwy kolejny numer. Na potrzeby ćwiczenia używaj plików, których zapis został już zakończony. Obsłuż błędy dostępu.
+3. Wyszukaj wszystkie liczby pierwsze w przedziale od `2` do `1_000_000` włącznie, wykorzystując cztery wątki robocze. Podziel przedział na rozłączne części, zbierz wyniki i sprawdź ich zgodność z wersją sekwencyjną.
 4. Napisz program wielowątkowy wykonujący **łącznie 1000 losowań**, a nie 1000 losowań na każdy wątek. Spośród wylosowanych liczb dodawaj do wspólnej listy tylko te, które są podzielne przez `3`. Zakres losowanych liczb całkowitych przyjmij jako parametr programu i podaj go przy prezentacji wyniku; dopuszczaj powtórzenia. Rozdziel wszystkie 1000 losowań między wątki, również gdy liczba losowań nie dzieli się przez liczbę wątków. Synchronizuj zapis do wspólnej listy. Liczba elementów listy wynikowej zależy od wyników losowania i nie musi wynosić 1000.
-
-5. Porównaj czasy wykonania zadań 3 i 4 dla `1`, `4` i `6` wątków roboczych oraz wersji sekwencyjnej. Zachowaj ten sam algorytm, zakres danych i łączną liczbę operacji. W zadaniu 4 zachowaj też ten sam zakres losowania. Mierz czas za pomocą `time.perf_counter()`, uwzględniając uruchomienie wątków i oczekiwanie na ich zakończenie; nie uwzględniaj wypisywania wyników. Każdy wariant uruchom co najmniej pięć razy i porównaj mediany. Podaj wersję interpretera i liczbę rdzeni procesora. Wyjaśnij wyniki, uwzględniając GIL, synchronizację i narzut tworzenia wątków. Przy zaledwie 1000 losowaniach narzut oraz wahania pomiaru mogą dominować; brak przyspieszenia jest poprawnym wynikiem eksperymentu.
+5. Porównaj czasy wykonania zadań 3 i 4 dla `1`, `4` i `6` wątków roboczych oraz wersji sekwencyjnej. Zachowaj ten sam algorytm, zakres danych i łączną liczbę operacji. W zadaniu 4 zachowaj też ten sam zakres losowania. Mierz czas za pomocą `time.perf_counter()`, uwzględniając uruchomienie wątków i oczekiwanie na ich zakończenie; nie uwzględniaj wypisywania wyników. Każdy wariant uruchom co najmniej pięć razy i porównaj mediany.&#x20;
 
 ## Literatura
 
