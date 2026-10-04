@@ -1,0 +1,41 @@
+https://agh.edu.pl;pl;2026-08-08 10:22:30.530674;Strona główna Akademii Górniczo-Hutniczej im. Stanisława Staszica w Krakowie. Zawiera najważniejsze informacje o uniwersytecie, ofertę studiów, ofertę dla biznesu oraz aktualności.
+https://skos.agh.edu.pl/;-;2026-08-08 10:22:34.036304;-
+https://www.agh.edu.pl/aktualnosci/detail/inicjatywy-z-agh-na-nowej-polskiej-mapie-infrastruktury-badawczej;pl;2026-08-08 10:22:36.469564;Ministerstwo Nauki i Szkolnictwa Wyższego opublikowało wyniki naboru wniosków dotyczących wpisania strategicznej infrastruktury badawczej na Polską Mapę Infrastruktury Badawczej. Wśród wyłonionych w naborze 104 najwyżej ocenionych inicjatyw znalazło się siedem z Akademii Górniczo-Hutniczej.
+https://www.agh.edu.pl/aktualnosci/detail/noc-za-dnia-najblizsze-zacmienie-slonca-bedzie-zjawiskiem-spektakularnym;pl;2026-08-08 10:22:41.266991;12 sierpnia 2026 r. świat stanie się na dwie minuty i 18 sekund świadkiem jednego z najbardziej spektakularnych zjawisk astronomicznych. Tego dnia cień Księżyca przemknie nad Arktyką, Grenlandią, Islandią, a następnie dotrze nad kontynent europejski. Dla mieszkańców północnej Hiszpanii dzień zamieni się w noc. W Polsce zobaczymy zaćmienie częściowe, ale i ono może dostarczyć niezapomnianych wrażeń. Co sprawia, że zaćmienia Słońca budzą emocje, inspirują naukowców i przyciągają miliony obserwatorów? Przez zawiłości tego zjawiska astronomicznego przeprowadza nas dr inż. Paweł Janowski z Wydziału Fizyki i Informatyki Stosowanej, popularyzator nauki.
+https://www.agh.edu.pl/aktualnosci/detail/agh-z-imponujacym-wynikiem-w-ewaluacji-dzialalnosci-naukowej-az-7-kategorii-a;pl;2026-08-08 10:22:46.429062;Akademia Górniczo-Hutnicza odnotowała bardzo wyraźny wzrost w najnowszej ewaluacji jakości działalności naukowej za lata 2022–2025. Ministerstwo Nauki i Szkolnictwa Wyższego przyznało AGH aż 7 kategorii A+, 8 kategorii A oraz 2 kategorie B+. To najlepszy wynik wśród polskich uczelni technicznych pod względem liczby przyznanych kategorii A+. Jednocześnie plasuje to AGH na drugim miejscu wśród wszystkich ocenianych instytucji naukowych w Polsce pod względem liczby najwyżej ocenionych dyscyplin.
+https://rekrutacja.agh.edu.pl/kierunki-studiow/;pl-PL;2026-08-08 10:22:54.044401;-
+https://www.agh.edu.pl/o-agh/multimedia/filmy;pl;2026-08-08 10:22:57.376967;Serwis AGH
+https://www.agh.edu.pl/nauka/spotkania;pl;2026-08-08 10:23:02.118180;Serwis AGH
+https://www.agh.edu.pl/nauka/bunkier-nauki;pl;2026-08-08 10:23:07.852419;Serwis AGH
+https://idub.agh.edu.pl;pl;2026-08-08 10:23:10.592310;Serwis AGH
+https://universeh.agh.edu.pl/;pl;2026-08-08 10:23:14.982124;Serwis AGH
+https://oferta-badawcza.agh.edu.pl/;pl;2026-08-08 10:23:18.473702;-
+https://www.agh.edu.pl/o-agh/spoleczna-odpowiedzialnosc;pl;2026-08-08 10:23:21.852643;Serwis AGH
+https://podyplomowe.agh.edu.pl;pl;2026-08-08 10:23:24.817911;Serwis AGH
+https://szkolenia.agh.edu.pl/;pl;2026-08-08 10:23:28.876137;Serwis AGH
+https://open.agh.edu.pl/;pl-PL;2026-08-08 10:23:34.620936;"Open AGH” to pierwsza w Polsce akademicka inicjatywa systemowego udostępniania Otwartych Zasobów Edukacyjnych. Od stycznia 2010 AGH dzieli się e-kursami, e-podręcznikami, nagraniami audio i video, podcastami, grafikami, ćwiczeniami i artykułami. Na licencjach Creative Commons, za darmo, dla wszystkich. Publiczne i otwarte udostępnianie sprawdzonych materiałów edukacyjnych jest jedną z naszych podstawowych wartości jako uczelni publicznej.
+https://badap.agh.edu.pl/;-;2026-08-08 10:23:38.956059;Baza Danych o Autorach i Publikacjach AGH. Zawiera opisy bibliograficzne publikacji, wydanych po 1999 r., autorstwa pracowników, doktorantów i studentów AGH
+https://bip.malopolska.pl/agh;pl;2026-08-08 10:23:41.288383;-
+http://www.dzp.agh.edu.pl/;pl;2026-08-08 10:23:44.397349;Serwis AGH
+https://cwp.agh.edu.pl/miedzynarodowe/finansowanie-z-budzetu-panstwa;pl;2026-08-08 10:23:48.890633;Serwis AGH
+https://ckim.agh.edu.pl/wspolpraca-z-mediami;pl;2026-08-08 10:23:54.547092;Serwis AGH
+https://ckim.agh.edu.pl/patronat-rektora-agh;pl;2026-08-08 10:24:00.454254;Serwis AGH
+https://sklep.agh.edu.pl/;pl;2026-08-08 10:24:06.463619;W sklepie internetowym AGH znajdziesz odzież, akcesoria, ceramikę, gadżety, publikacje, artykuły biurowe i inne.
+https://skos.agh.edu.pl;-;2026-08-08 10:24:08.821911;-
+https://bezpieczenstwo.agh.edu.pl/ochrona-danych-osobowych;pl;2026-08-08 10:24:14.601604;Serwis AGH
+https://bezpieczenstwo.agh.edu.pl/zglos-incydent;pl;2026-08-08 10:24:17.389539;Serwis AGH
+https://rownosc.agh.edu.pl/;pl;2026-08-08 10:24:22.127623;Serwis AGH
+https://poczta.agh.edu.pl;pl;2026-08-08 10:24:25.752078;-
+https://hrs4r.agh.edu.pl/;pl;2026-08-08 10:24:29.409422;Serwis AGH
+https://www.idub.agh.edu.pl;pl;2026-08-08 10:24:31.881318;Serwis AGH
+https://www.youtube.com/user/tvagh/;pl;2026-08-08 10:24:34.896762;-
+https://www.facebook.com/AGH.Krakow;en;2026-08-08 10:24:39.563272;-
+https://pl.linkedin.com/edu/agh-university-of-science-and-technology-15906;-;2026-08-08 10:24:42.014333;-
+https://twitter.com/AGH_Krakow/;en;2026-08-08 10:24:47.505470;Akademia Górniczo-Hutnicza w Krakowie / AGH University of Krakow
+Najlepsza uczelnia techniczna w Polsce.
+https://www.instagram.com/agh.krakow/;en;2026-08-08 10:24:51.089590;-
+https://www.tiktok.com/@agh_krakow;en;2026-08-08 10:24:56.698877;-
+https://agh.edu.pl;pl;2026-08-08 10:25:01.170054;Strona główna Akademii Górniczo-Hutniczej im. Stanisława Staszica w Krakowie. Zawiera najważniejsze informacje o uniwersytecie, ofertę studiów, ofertę dla biznesu oraz aktualności.
+https://old.skos.agh.edu.pl;pl;2026-08-08 10:25:05.454643;SkOs — System informacyjny Akademii Górniczo-Hutniczej w Krakowie Wyszukiwanie podstawowe
+https://cri.agh.edu.pl/pomoc-it;pl;2026-08-08 10:25:08.927239;Serwis AGH
+https://www.agh.edu.pl/;pl;2026-08-08 10:25:12.376010;Strona główna Akademii Górniczo-Hutniczej im. Stanisława Staszica w Krakowie. Zawiera najważniejsze informacje o uniwersytecie, ofertę studiów, ofertę dla biznesu oraz aktualności.
