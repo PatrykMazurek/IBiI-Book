@@ -368,5 +368,72 @@ wynik
 
 Poza podstawowymi operacjami typu `+`, `-`, `*`, `/` czy ufuncs (jak `np.sin()`), NumPy oferuje dedykowane narzędzia do algebry liniowej, statystyki i zaawansowanego sterowania przepływem danych za pomocą logiki.
 
+**Zaorąglenia**
 
+* `np.round(arr, decimals=2)` – zaokrągla do konkretnej liczby miejsc po przecinku.
+* `np.floor(arr)` – zawsze w dół (podłoga), np. `3.9` staje się `3.0`.
+* `np.ceil(arr)` – zawsze w górę (sufit), np. `3.1` staje się `4.0`.
 
+**Zaawansowane metody logiczne**
+
+Jeżeli chcemy sprawdzić czy dowolny element z macierzy spełnia nasz warunek, mamy do do tego metodę `any()`. funkcja zwraca `True` jeżeli choć jeden elment jest w macierzy.
+
+```python
+zbadane_temperatury = np.array([22.5, 23.1, -5.0, 21.8, 24.0])
+
+czy_byl_mroz = np.any(zbadane_temperatury < 0)
+print(czy_byl_mroz)
+```
+
+Jeżeli chcemy sprawdzić czy wszystkoe elmenty w macierzy spełniają nasz warunek, mamy do tego funkcję all(). funkcja zwraca True, jeżeli wszystkie elmenty spełniajawarunek, zwraca False jeżeli choć jeden element nie pasuje do warunku.
+
+```python
+wyniki_testow = np.array([85, 90, 78, 92, 88])
+
+czy_wszyscy_zdali = np.all(wyniki_testow >= 50)
+print(czy_wszyscy_zdali) # Zwróci: True
+```
+
+W sytacji, kiedy chcemy sprawdzić czy dowolny elment z macierzy spełnia nasz warunek, możemy zastosować funkcję `where()`. Funkcja działą jak IF-ELSE na całej macierzy.
+
+```python
+arr = np.array([10, 50, 90, 20, 85])
+
+wyniki = np.where(arr >= 50, "Zdał", "Oblał")
+print(wyniki)
+```
+
+wynik
+
+```
+['Oblał' 'Zdał' 'Zdał' 'Oblał' 'Zdał']
+```
+
+Jeżeli chcemy sprawdzić czy elementy jednej tablicy znajdują się w innej tablicy, mamy do dyspozycji finkcję isin(), funkcja zwraca zwraca nową tablicę z wartościami `True`/`False` (maska)
+
+```python
+baza_danych = np.array([101, 102, 103, 104, 105])
+poszukiwane_id = [102, 105, 999]
+
+maska = np.isin(baza_danych, poszukiwane_id)
+print(maska) # 
+```
+
+wynik
+
+```
+[False, True, False, False, True]
+```
+
+W sytuacji, kiedy chemy zweryfikować czy nasz zbór danych zawiera pust rekordy, możemy wykonać to stosując funkcję `isnan()` (Not a Number). Funkcja zwróci nową tablicę z wartoścami `True`/`False` wskazującą miejsca gdzie są puste rekordy.
+
+```python
+dane = np.array([1.5, 2.3, np.nan, 4.1])
+print(np.isnan(dane)) 
+```
+
+wynik
+
+```
+[False, False, True, False]
+```
