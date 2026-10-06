@@ -57,6 +57,10 @@ print(df_matrix)
 Wynik
 
 ```
+   Kolumna_A  Kolumna_B  Kolumna_C
+0         10         20         30
+1         40         50         60
+2         70         80         90
 ```
 
 **Tworzenie ramek z innych źróde**
@@ -106,7 +110,7 @@ Obiekty DataFrame mogą przechowywać różnego typu dane w kolumnach, atrybut `
 flights.dtypes
 ```
 
-wynik
+Wynik
 
 ```
 year             int64
@@ -121,7 +125,7 @@ W celu uzyskania nieco dokładniejszych informacji o obiekcie, typie zminnych (k
 flights.info()
 ```
 
-wynik
+Wynik
 
 ```
 <class 'pandas.DataFrame'>
@@ -138,11 +142,19 @@ memory usage: 2.9 KB
 
 **Wyświetlanie zawartości ramek danych**
 
-Podstawowa pętla for po ramce danych iteruje ni po każdym wierszu ale kolumnach wyświetlając nazwy kolumn&#x20;
+Podstawowa pętla for po ramce danych iteruje nie po każdym wierszu ale kolumnach wyświetlając nazwy kolumn&#x20;
 
 ```python
 for f in flight:
     print(f)
+```
+
+Wynik
+
+```
+year
+month
+passengers
 ```
 
 
