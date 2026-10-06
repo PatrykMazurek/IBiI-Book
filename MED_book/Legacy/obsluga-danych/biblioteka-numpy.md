@@ -30,7 +30,7 @@ Funkcje `numpy` działają szybciej niż ich odpowiedniki napisane w czystym Pyt
 
 ### Wprowadzenie i tworzenie tablic&#x20;
 
-Aby rozpocząć pracę z pakiemtem `Numpy`, należy dodać go do środowiska pracy i wykonać import pakietu przez&#x20;
+Aby rozpocząć pracę z pakietem `Numpy`, należy dodać go do środowiska pracy i wykonać import pakietu przez&#x20;
 
 ```python
 import numpy as np
@@ -38,7 +38,7 @@ import numpy as np
 
 #### Tworzenie tablic (`ndarray`)
 
-Najprostrzy sposób na tworzenie tablic obiektu ndarray (ang. _N-dimensional array_) jest wywołanie funkcji array(). Zwracany jest obiekt reprezentującą n-wymiarową tablicę. &#x20;
+Najprostszy sposób na tworzenie tablic obiektu `ndarray` (ang. _N-dimensional array_) jest wywołanie funkcji `array()`. Zwracany jest obiekt reprezentującą n-wymiarową tablicę. &#x20;
 
 * wektor (dla n = 1)
 * macierz (dla n > 1)
@@ -82,6 +82,68 @@ size	 shape	 len()
 -------------------------
 6      (6,)    6
 ```
+
+#### Typy przechowywanych elementów
+
+Tablice w pakiecie Numpy są dość wrażliwe na przechowywanie elementów, głownie przechowywują jeden typ na cały obiekt ndarray. Abys sprawdzić jakiego typu obiekty są przechowywane w tablicy możemy odwołać się do atrybutu `dtype` lub `dtype.name`.&#x20;
+
+```python
+print(f"dtype = {np.array([3,6,3,50]).dtype}")
+print(f"dtype.name = {np.array([3.0, 0.6, 0.6, 5.1, 8.4]).dtype.name}")
+print(f"dtype = {np.array(["Warszawa", "Kraków", "Katowice"]).dtype}")
+print(f"dtype.name = {np.array(["Warszawa", "Kraków", "Katowice", "Radom"]).dtype.name}")
+```
+
+Wynik
+
+```
+dtype = int64
+dtype.name = float64
+dtype = str256
+dtype.name = str256
+```
+
+Przykładowo, typy `int64` oraz `float64` **nie są klasami języka Python**, tzn. nie są równoważne typom wbudowanym `int` i `float`. Są to **typy wykorzystywane wewnętrznie przez pakiet `numpy`** do reprezentowania danych liczbowych - odwzorowywane bezpośrednio na typy języka C.
+
+Interfejs pomiędzy tymi konkretnymi reprezentacjami typu `dtype` a językiem Python zapewniają odpowiednie klasy NumPy, np. `np.int64` oraz `np.float64`.
+
+Przykładowa typy danych w pakiecie Numpy
+
+| `int8`, `uint8`   | `'i1'`, `'u1'`   | $$8$$ bitowa liczba całkowita ($$1$$ bajt) ze znakiem lub bez                                                                                                                                                                                  |
+| ----------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `int16`, `uint16` | `'i2'`, `'u2'`   | $$16$$-bitowa liczba całkowita ze znakiem lub bez                                                                                                                                                                                              |
+| `int32`, `uint32` | `'i4'`, `'u4'`   | $$32$$-bitowa liczba całkowita ze znakiem lub bez                                                                                                                                                                                              |
+| `int64`, `uint64` | `'i8'`, `'u8'`   | $$64$$-bitowa liczba całkowita ze znakiem lub bez                                                                                                                                                                                              |
+| `float16`         | `'f2'`           | liczba zmiennoprzecinkowa o połowicznej precyzji                                                                                                                                                                                               |
+| `float32`         | `'f4'` lub `'f'` | <p>standardowa liczba zmiennoprzecinkowa o pojedynczej precyzji,<br>kompatybilna ze zmienną typu <code>float</code> języka C</p>                                                                                                               |
+| `float128`        | `f16` lub `g`    | liczba zmiennoprzecinkowa o rozszerzonej precyzji                                                                                                                                                                                              |
+| `bool_`           | `'?'`            | wartości logiczne `True` lub `False`                                                                                                                                                                                                           |
+| `object_`         | `'O'`            | typ obiektu języka Python, wartość może być dowolnym obiektem języka Python                                                                                                                                                                    |
+| `string_`         | `'S'`            | <p>łańcuch znaków ASCII o określonej długości (każdy znak zajmuje <span class="math">1</span> bajt pamięci);<br>w celu utworzenia łańcucha o długości równej <span class="math">10</span> należy skorzystać z typu danych <code>s10</code></p> |
+| `unicode_`        | `'U'`            | <p>łańcuch znaków Unicode o określonej długości (liczba bajtów zależy od platformy);<br>semantyka specyfikacji jest identyczna jak w przypadku typu <code>string_</code> (np. <code>u10</code>)</p>                                            |
+
+Listę najważniejszych typów wewnętrznych `numpy` można poznać, analizując zawartość obiektu `np.sctypeDict`.&#x20;
+
+Do zmiany typu już utworzonego obiektu możemy zastosować funkcję `astype()`, podając obiekt i typ na, który chcemy zmodyfikować obiekt.
+
+```python
+print(f"typ = {n.dtype} : {n}")
+n = np.astype(n, np.float16)
+print(f"typ = {n.dtype} : {n}")
+```
+
+Wynik
+
+```
+typ = int64 : [ 0  5 10 15 20 25 30 35]
+typ = float16 : [ 0.  5. 10. 15. 20. 25. 30. 35.]
+```
+
+
+
+#### Tworzenie tablic specjalnych&#x20;
+
+
 
 
 
