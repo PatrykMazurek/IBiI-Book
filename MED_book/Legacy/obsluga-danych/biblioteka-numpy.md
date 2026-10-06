@@ -139,31 +139,234 @@ typ = int64 : [ 0  5 10 15 20 25 30 35]
 typ = float16 : [ 0.  5. 10. 15. 20. 25. 30. 35.]
 ```
 
+Pakiet Numpy jest restrykcyjny co do przechowywanych typów w tablicach. Jest możliwość aby w macierzy przechowywać różne typy danych i wymaga to konwersji do ogólnego typu jakim jest `object`, wykonać to można w następujący sposób.
 
+```python
+m1 = np.array([2,'kot', 5.6, True, [1,2]], dtype=np.object_)
+```
+
+Wynik
+
+```
+[2 'kot' 5.6 True list([1, 2])]
+```
 
 #### Tworzenie tablic specjalnych&#x20;
 
+**Ciąg arytmetyczny o:**&#x20;
 
+* **zadanych przyrostach -** Ciąg liczb zawartych w przedziale $$[a,b)$$ i różnicach równych $$k$$ utworzymy, wywołując `arange(a, b, k)` .
+* **zadanej długości -** W celu utworzenia ciągu arytmetycznego złożonego z wartości z przedziału $$[a,b]$$ i długości $$d$$ możemy posłużyć się wywołaniem `linspace(a, b, d)`, np.:
+
+**Macierze:**
+
+* **jedn9ostkowa i inne diagonalne -** Macierz jednostkową, tzn. macierz o wartościach równych $$0$$ poza główną przekątną oraz $$1$$ na głównej przekątnej otrzymujemy przy użyciu `eye()`. Jeżeli chodzi o wartości na głównej przekątnej to bardziej ogólnie będzie działać funkcja `diag()`.
+
+```python
+np.eye(6)
+np.eye(3, 3, dtype = np.bool_)
+np.diag([11,12,13])
+```
+
+Wynik
+
+```
+[[1. 0. 0. 0. 0. 0.]
+ [0. 1. 0. 0. 0. 0.]
+ [0. 0. 1. 0. 0. 0.]
+ [0. 0. 0. 1. 0. 0.]
+ [0. 0. 0. 0. 1. 0.]
+ [0. 0. 0. 0. 0. 1.]]
+---------------
+[[ True False False]
+ [False  True False]
+ [False False  True]]
+---------------
+[[11  0  0]
+ [ 0 12  0]
+ [ 0  0 13]]
+```
+
+**Tablice**
+
+* **wypełnione jednykami lub zerami -** Funkcja `zeros()` tworzy tablicę zer o podanym kształcie, a funkcja `ones()` tablice jedynek o zadanym kształcie.
+* **niezainicjalizowane -** Funkcja `empty()` utworzy tablicę w której znajdują się przypadkowe dane - elementy nie są w cale inicjowane. Dzięki tej funkcji mamy najszybszy sposób tworzenia tablicy o zadanym kształcie.
+* **wypełnione elemenetami pseudolosowymi** - Pakiet `numpy` pozwala na generowanie wartości pseudolosowych z szerokiej gamy rozkładów dostępnych w module random.&#x20;
 
 
 
 ### Indeksowanie i wycinanie (scaling)
 
+W NumPy mamy cztery główne sposoby dobierania się do danych: klasyczny slicing (jak w listach), indeksowanie wielowymiarowe, indeksowanie logiczne (maski) oraz tzw. _fancy indexing_.
 
+#### Podstawowe wycinanie
+
+Działa to dokładnie tak samo jak w standardowych listach w Pythonie, ale z jedną gigantyczną przewagą: możemy to robić dla wielu wymiarów jednocześnie.
+
+Ogłlny schemta dla tablicy 1D: **tablica\[start : stop : krok]**
+
+```python
+arr = np.arange(10) 
+
+print(arr[2:6])
+print(arr[:4])
+print(arr[1:8:2])
+print(arr[::-1])
+```
+
+wynik
+
+```
+[2 3 4 5]
+---------------
+[0 1 2 3]
+---------------
+[1 3 5 7]
+---------------
+[9 8 7 6 5 4 3 2 1 0]
+```
+
+Ogłlny schemta dla tablicy 2D: **tablica\[wiesz, kolumna]**
+
+```python
+arr2d = np.array([
+    [ 1,  2,  3,  4],
+    [ 5,  6,  7,  8],
+    [ 9, 10, 11, 12]
+])
+
+print(arr2d[0:2, 1:]) 
+print(arr2d[:, 2])
+```
+
+wynik
+
+```
+[[2 3 4]
+ [6 7 8]]
+---------------
+[ 3  7 11]
+```
+
+#### Indeksowanie logiczne
+
+To jedna z najczęściej wykorzystwanych technik w analizie danych (np. w bibliotece Pandas). Pozwala na filtrowanie tablicy na podstawie warunku. Nie korzystamy zindeksów, ale tworzymy "maskę" z wartości `True` i `False`.
+
+```python
+arr = np.array([10, 15, 20, 25, 30])
+
+print(arr[arr > 15])
+```
+
+Wynik
+
+```
+[20 25 30]
+```
+
+Jest też możłiwość łączenia warunków używając operatorów & (AND) oraz | (or), każdy warunek powinien znaleść się w nawiasach.
+
+```python
+print(arr[(arr > 15) & (arr < 30)])
+```
+
+wynik
+
+```
+[20 25]
+```
+
+#### Fancy Indexing (Indeksowanie tablicami)
+
+Czasami wymagane jest wyciągnięcie konkretnych wierszy lub elementów w określonej kolejności, które nie układają się w równy schemat (jak w slicingu). Możemy podać listę pożądanych indeksów.
+
+```python
+arr_names = np.array(['Kasia', 'Tomek', 'Ania', 'Piotr', 'Zosia'])
+
+indeksy = [0, 3, 4]
+print(arr_names[indeksy]) 
+```
+
+wynik
+
+```
+['Kasia' 'Piotr' 'Zosia']
+```
 
 ### Matematyka i wektoryzacja
 
+**Podstawowa arytmetyka**&#x20;
 
+Pakiet Numpy pozwala na łatwe stosowanie znaków matematycznych między tablicami.
 
-### Zmiana kształtu i rozmiaru
+```python
+a = np.array([1, 2, 3])
+b = np.array([10, 20, 30])
 
+print(a + b)
+print(a * b)
+print(a ** 2)
+```
 
+wynik
 
-### Zadania
+```
+[11 22 33]
+[10 40 90]
+[1 4 9]
+```
 
+Dodatkowo pakiet Numpy posada wbudowaną całą bibliotekę zaawansowaną gotową do pracy na wektorach.
 
+```python
+x = np.array([0, np.pi/2, np.pi])
 
-### Literatura
+print(np.sin(x))
+print(np.exp(x))
+print(np.sqrt(a))
+```
+
+wynik
+
+```
+[0.0000000e+00 1.0000000e+00 1.2246468e-16]
+[ 1.          4.81047738 23.14069263]
+[1.         1.41421356 1.73205081]
+```
+
+Kiedy mamy macierz, nie zawsze wymagane jest sumowanie wszystkich elmentów, tylko wystarczy że wyciągnięte zostaną wnioski dla poszczególnych kolumn lub wierszy. Do tego służy parametr `axis` (oś).
+
+* Brak `axis`: sumuje wszystko do jednej liczby.
+* `axis=0`: "Zwiń" osie pionowe (wiersze). Sumujesz w dół kolumn. Zwraca wynik dla każdej kolumny.
+* `axis=1`: "Zwiń" osie poziome (kolumny). Sumujesz w poprzek wierszy. Zwraca wynik dla każdego wiersza.
+
+```python
+oceny = np.array([
+    [4, 5, 3, 5],  # Uczeń 0
+    [2, 3, 4, 3],  # Uczeń 1
+    [5, 5, 5, 4]   # Uczeń 2
+])
+
+# 1. Jaka jest średnia z CAŁEJ klasy ze wszystkich przedmiotów?
+srednia_ogolna = np.mean(oceny) 
+
+# 2. Jakie są średnie z poszczególnych PRZEDMIOTÓW?
+
+srednia_przedmioty = np.mean(oceny, axis=0)
+
+# 3. Jakie są średnie na koniec roku poszczególnych UCZNIÓW?
+srednia_uczniowie = np.mean(oceny, axis=1)
+```
+
+wynik
+
+```
+4.0
+[3.66666667 4.33333333 4.         4.        ]
+[4.25 3.   4.75]
+```
+
+Poza podstawowymi operacjami typu `+`, `-`, `*`, `/` czy ufuncs (jak `np.sin()`), NumPy oferuje dedykowane narzędzia do algebry liniowej, statystyki i zaawansowanego sterowania przepływem danych za pomocą logiki.
 
 
 
