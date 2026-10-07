@@ -102,7 +102,7 @@ Podstawowym sposobem na sprawdzenie wymiarów ramki danych jest atrybut `shape`,
 flights.shape, flights.size, len(flights)
 ```
 
-**Informacje o danych w kolumnach**
+**Informacje o danych w kolumnach i wierszach**
 
 Obiekty DataFrame mogą przechowywać różnego typu dane w kolumnach, atrybut `dtypes` zwraca informacje o typach przechowywanych w kolumnach.
 
@@ -119,7 +119,7 @@ passengers       int64
 dtype: object
 ```
 
-W celu uzyskania nieco dokładniejszych informacji o obiekcie, typie zminnych (kolumn), liczbie elementów i zajmowanej przestrzeni w pamici&#x20;
+W celu uzyskania nieco dokładniejszych informacji o obiekcie, typie zmiennych (kolumn), liczbie elementów i zajmowanej przestrzeni w pamici&#x20;
 
 ```
 flights.info()
@@ -142,20 +142,71 @@ memory usage: 2.9 KB
 
 **Wyświetlanie zawartości ramek danych**
 
-Podstawowa pętla for po ramce danych iteruje nie po każdym wierszu ale kolumnach wyświetlając nazwy kolumn&#x20;
+Zanim zostaną wyświetlone dane jest kilka metod, które pomogą przy identyfikacji zawartości tabeli:
+
+* `df.head(n)`: Zwraca `n` pierwszych wierszy (domyślnie 5). Przydatne do oceny struktury tabeli.
+* `df.tail(n)`: Zwraca `n` ostatnich wierszy.
+* `df.sample(n)`: Zwraca `n` losowych wierszy. Idealne do sprawdzenia różnorodności danych.
+* `df.columns` / `df.index`: Zwraca odpowiednio etykiety kolumn lub indeksów (wierszy).
+
+**Wybieranie kolumn**
+
+W Pandas możemy wybierać kolumny na kilka sposób, jednym ze sposobów jest notacja słownikowa, która zwraca obiekt typu `Series`.
 
 ```python
-for f in flight:
-    print(f)
+passanger = flights["passangers"]
+```
+
+jeżeli chcemy wyciągnąć więcej niż jedną kolumnę, to podajemy nazwy komun w postaci listy
+
+```python
+data = flights[ [ "passangers", "month" ] ]
+```
+
+Innym sposobem jest notacja kropkowa, która jest szybsza w zapisie ale ma pewne obostrzenia nie można stosować w przypadkach kiedy nazwa kolumny zawiera spacje, lub jest taksama jak nazwa funkcji w pandas.
+
+```python
+yesar = flights.year
+```
+
+**Zawansowane indeksowanie**&#x20;
+
+Wyciąganie zakresów danych z ramki danych można wykonać na dwa sposoby:
+
+* `loc` - odczytywanie danych na podstawie nazw indeksów, i kolumn.
+
+```python
+print(flights.loc[0:5,"year":"month"])
 ```
 
 Wynik
 
 ```
-year
-month
-passengers
+0  1949   Jan
+1  1949   Feb
+2  1949   Mar
+3  1949   Apr
+4  1949   May
+5  1949   Jun
 ```
+
+* `iloc` - odczytywanie danych na podstawie numeracji (odczytywanie jak w listy w języku Python)
+
+```python
+print(flights.iloc[10:15, 0:2])
+```
+
+Wynik
+
+```
+10  1949   Nov
+11  1949   Dec
+12  1950   Jan
+13  1950   Feb
+14  1950   Mar
+```
+
+
 
 
 

@@ -19,8 +19,6 @@ data = {
 df = pd.DataFrame(data)
 ```
 
-***
-
 ### Filtrowanie Danych (Wybieranie wierszy)
 
 Filtrowanie pozwala na wyciągnięcie z ramki tylko tych wierszy, które spełniają określone warunki (np. tylko osoby z działu IT).
@@ -45,6 +43,14 @@ mlodzi_z_it = df[(df['Dzial'] == 'IT') & (df['Wiek'] < 30)]
 hr_lub_sprzedaz = df[(df['Dzial'] == 'HR') | (df['Dzial'] == 'Sprzedaz')]
 ```
 
+#### Metoda `.query()`
+
+Gdy warunków jest bardzo dużo, standardowa składnia staje się nieczytelna (tzw. "piekło nawiasów"). Metoda `.query()` pozwala zapisać logikę w postaci jednego tekstu:
+
+```python
+wynik = df.query('Pensja > 7000 and Dzial == "IT"')
+```
+
 #### Metoda `.isin()`
 
 Gdy chcemy sprawdzić, czy wartość w kolumnie znajduje się na stworzonej przez nas liście, użycie wielu operatorów `|` bywa uciążliwe. Z pomocą przychodzi `.isin()`:
@@ -53,18 +59,36 @@ Gdy chcemy sprawdzić, czy wartość w kolumnie znajduje się na stworzonej prze
 wybrane_dzialy = df[df['Dzial'].isin(['HR', 'Sprzedaz'])]
 ```
 
-#### Metoda `.query()`
+#### Specjalistyczne metody selekcji
 
-Gdy warunków jest bardzo dużo, standardowa składnia staje się nieczytelna (tzw. "piekło nawiasów"). Metoda `.query()` pozwala zapisać logikę w postaci jednego tekstu:
+funkcja `filter()` - zwraca podzbiór wierszy lub kolumn dopasowanych na podstawie nazwy a nie wartości. Shemat wyglądan następująco
 
-```python
-# Wykonuje to samo, co pierwszy przykład, ale czyta się to jak zwykły język angielski
-wynik = df.query('Pensja > 7000 and Dzial == "IT"')
+```
+df.filter(items=None, like=None, regex=None, axis=1)
 ```
 
-***
+Jeżeli chemy zwrócić z N największych lub najmniejszych elmentów z danje kolumny, możemy zastosować funkcje `nlargest(n, columns)` i `nsmallest(n, columns)` funkcje dziłają lepiej niż funkcja sortująca wartośc `sort_values()`&#x20;
 
-### Agregacja Danych (Podsumowania i statystyki)
+```python
+print(df.nlargest(2, "Wiek"))
+print(df.nsmallest(2, "Pensja"))
+```
+
+Wynik
+
+```
+    Imie     Dzial  Wiek  Pensja  Lata_Pracy
+3  Kasia  Sprzedaz  42.0  9000.0        12.0
+1    Jan        HR  34.0  6000.0         7.0
+---------------
+    Imie Dzial  Wiek  Pensja  Lata_Pracy
+4  Marek    HR  25.0  5500.0         1.0
+1    Jan    HR  34.0  6000.0         7.0
+```
+
+
+
+### Agregacja danych (Podsumowania i statystyki)
 
 Agregacja to proces łączenia wielu pojedynczych wartości w jedną, syntetyczną metrykę (np. wyliczanie średniej dla całej firmy).
 
@@ -97,8 +121,6 @@ statystyki = df.groupby('Dzial').agg({
     'Wiek': 'max'
 })
 ```
-
-***
 
 ### Brakujące wartości (NaN)
 
