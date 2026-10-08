@@ -6,16 +6,6 @@ Kurs składa się z wykładów (10h) i ćwiczeń laboratoryjnych (20h). Podczas 
 
 Ćwiczenia koncentrują się na praktycznym zastosowaniu poznanych technik do analizy zdarzeń bezpieczeństwa. Studenci, samodzielnie lub w małych grupach przygotowują skrypty przeznaczone m.in. do przetwarzania logów, detekcji anomalii czy klasyfikacji zagrożeń. Następnie odbywa się wspólna analiza i dyskusja nad opracowanymi rozwiązaniami oraz operacyjną przydatność wyników w działaniach typu SOC/SecOps.
 
-### **Kryteria oceniania:**
-
-Podstawą zaliczenia kursu jest uzyskanie pozytywnej oceny z zadań realizowanych w ramach kursu, projektu związanego z eksploracją danych oraz kolokwium końcowego obejmującego materiał teoretyczny i praktyczny.
-
-* Ocenę dostateczną może uzyskać student, który wykona zadania realizowane w ramach kursu.
-* Ocenę dobrą może uzyskać student, który zrealizuje projekt z zagadnień poruszanych na kursie oraz spełni wymogi na ocenę dostateczną
-* Ocenę bardzo dobrą może uzyskać student, który pozytywnie zaliczy kolokwium końcowe obejmujące materiały teoretyczne i praktyczne oraz spełni wymogi na ocenę dobrą i dostateczną.
-
-Obecność na wykładzie jest warunkiem koniecznym do zaliczenia tej części kursu.
-
 ### Literatura
 
 #### Podstawowa
