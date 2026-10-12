@@ -94,6 +94,47 @@ executor = ThreadPoolExecutor(max_workers=2)
 executor.shutdown(wait=False, cancel_futures=True)
 ```
 
+#### Biblioteka asyncio
+
+Biblioteka, której zadaniem jest wykonywanie różnych zadań w sposób asynchroniczny bazując na jednym wątku. W porównaniu do biblioteki threading nie są tworzone wątki systemowe ale bazując na jednym wątku wykonanie kilku zadań "jednocześnie" odpowiednio rozkładając obciążenie na każde z zadań.&#x20;
+
+Przykład:
+
+```python
+import asyncio, time, random
+
+async def download_data(task_is, task_time):
+    print(f"start zadania {task_is}")
+    # symulacja operacji I/O
+    result = random.randint(0,1000)
+    await asyncio.sleep(task_time)
+    return f"Zadanie {task_is}, wynik {result}"
+
+async def main():
+    start_time = time.time()
+
+    task_1 = asyncio.create_task(download_data(1, 2))
+    task_2 = asyncio.create_task(download_data(2, 3))
+    task_3 = asyncio.create_task(download_data(3, 1))
+
+    print("Wszystkie zadania zostały zlecone, program robi inne rzeczy...")
+
+    re_1 = await task_1
+    re_2 = await task_2
+    re_3 = await task_3
+
+    finish_time = time.time()
+    print(f"\nWszystkie zadania ukończone w czasie: {finish_time - start_time:.2f} sekundy")
+    print(f"Otrzymane wyniki: {re_1}, {re_2}, {re_3}")
+
+if __name__=="__main__":
+    asyncio.run(main())
+```
+
+Powyższy przykład przedstawia wykonywanie trzech zadań asynchronicznie i odbieranie wyników przez pętle główną. Na poczku jest definiowane zadanie, które wspiera asynchroniczne działanie (`async def`), funkcja ma symulować dłuższe zadanie. W funkcji zastosowano rozwiązanie `await asyncio.slle()` do chwilowego zatrzymania zadania a nie blokowania całego wątku. Wywołanie asynchronicznych zadań odbywa się przez wywołanie metody `asyncio.create_task()` Metoda jako parametr przyjmuje np. funkcje, która ma być wykonana asynchronicznie. Następnie program główny oczekuje na zakończenie zadania przez słowo kluczowe `await`. uruchomienie głównej cześći programu wykonywane jest za pomocą metody `asyncio.run()`.&#x20;
+
+
+
 #### Zadania
 
 1. Napisz program wielowątkowy, który korzystaj z `ThreadPoolExecutor` i stałej puli wątków o liczbie `n`. Wypełnij listę **łącznie 1000 elementów**. Spośród wylosowanych liczb dodawaj do wspólnej listy tylko te, które są podzielne przez `3`. Zakres losowanych liczb całkowitych przyjmij jako parametr programu i podaj go przy prezentacji wyniku; dopuszczaj powtórzenia. Synchronizuj zapis do wspólnej listy. Zakończ pracę wątków jeżeli liczba elementów w liście osiągnie 1000 elementów.
