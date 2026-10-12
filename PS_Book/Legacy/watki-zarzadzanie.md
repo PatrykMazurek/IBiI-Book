@@ -2,13 +2,13 @@
 
 ### Zarządzanie wątkami
 
-W porzedniej lekcji poznane zostały sposoby na tworzenie wątków za pomocą biblioteki `threading`. w obecnym rozdziale zostanie przedstawione jak tworzyć pulę wątków i jednocześnie zarzącać nimi.&#x20;
+W poprzedniej lekcji poznane zostały sposoby na tworzenie wątków za pomocą biblioteki `threading`. W obecnym rozdziale zostanie przedstawione, jak tworzyć pulę wątków i jednocześnie zarządzać nimi. 
 
 #### Tworzenie puli wątków
 
-Środowisko Python udostępnia udostępnia bibliotekę `concurrent.futures`, któraa pozwala w prosty sosób na zlecanie zadań asynchronicznie i zarzącać nimi.
+Środowisko Python udostępnia bibliotekę `concurrent.futures`, która pozwala w prosty sposób na asynchroniczne zlecanie zadań i zarządzanie nimi.
 
-Poniżej przedstawiony został przykład utworzenia puli wątków z daaniami&#x20;
+Poniżej przedstawiony został przykład utworzenia puli wątków z zadaniami:
 
 ```python
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -19,16 +19,16 @@ def do_something_long(id_task):
     # tu zrób coś długiego
     result = random.randint(1, 6)
     time.sleep(result)
-    print(f"Wątek: {threading.current_thread().name} zakończył prace" )
+    print(f"Wątek: {threading.current_thread().name} zakończył pracę")
     return result
 
-if __name__=="__main__":
+if __name__ == "__main__":
     with ThreadPoolExecutor(max_workers=4, thread_name_prefix="uken") as executors:
         tasks = [i for i in range(8)]
-        fufute_results = {executors.submit(do_something_long, task): task for task in tasks}
+        future_results = {executors.submit(do_something_long, task): task for task in tasks}
 
-        for future_result in as_completed(fufute_results):
-            id_task = fufute_results[future_result]
+        for future_result in as_completed(future_results):
+            id_task = future_results[future_result]
             try:
                 data = future_result.result()
                 print(f"Otrzymano wyniki: {data} z zadania {id_task}")
@@ -36,16 +36,16 @@ if __name__=="__main__":
                 print(f"Zadanie {id_task} zgłosiło wyjątek {e}")
 ```
 
-Powyższy przykład przedstawia tworzenie puli 4 wątków (`ThreadPoolExecutor(max_workers=4)`), które mają wykonać 8 zadań. Każdy z wątków dostaje zadania (`do_something_long`) w którym symulowany jest dłuższe wykonanie zadania. Meoda executors.submit() przypisuje zadanie do wykonania i zwraca obiekt Future, który reprezentuje przyszły wynik. Zadania umiszczane są w kolejce i w zależności od tego czy, któryś wątek jest dostępny przydzielane są zadania. Pętla z metodą as\_complite() oczekuje na ukończenie zadań i pozwala przetworzyć ich rezultaty w momencie, gdy są gotowe. W powyższym przykładzie został użyt blok with, który pomaga przy zarządzaniu w tym przypadku wątkami i dba o to aby po zakończeniu wszystkich zadań pula wątków zostałą prawidłowo zamknięta.
+Powyższy przykład przedstawia tworzenie puli 4 wątków (`ThreadPoolExecutor(max_workers=4)`), które mają wykonać 8 zadań. Każdy z wątków dostaje zadanie (`do_something_long`), w którym symulowane jest dłuższe wykonanie. Metoda `executors.submit()` przypisuje zadanie do wykonania i zwraca obiekt `Future`, który reprezentuje przyszły wynik. Zadania umieszczane są w kolejce i w zależności od tego, czy któryś wątek jest dostępny, przydzielane są do wykonania. Pętla z metodą `as_completed()` oczekuje na ukończenie zadań i pozwala przetworzyć ich rezultaty w momencie, gdy są gotowe. W powyższym przykładzie został użyty blok `with`, który pomaga przy zarządzaniu wątkami i dba o to, aby po zakończeniu wszystkich zadań pula wątków została prawidłowo zamknięta.
 
 #### Sprawdzanie pracy wątków
 
-W sytuacjach kiedy wykonywane są dłuższe zadania jest możliwość sprawdzenia czy wątek a bardziej zadanie nadal pracuje. Można to zweryfikować na obiekcie `Future`, który zwracany jest przez  `ThreadPoolExecutor`. Dostępne ą dwa sposoby:
+W sytuacjach, kiedy wykonywane są dłuższe zadania, istnieje możliwość sprawdzenia, czy wątek (a dokładniej zadanie) nadal pracuje. Można to zweryfikować na obiekcie `Future`, który zwracany jest przez `ThreadPoolExecutor`. Dostępne są dwa sposoby:
 
-* `future.done()` Zwraca `True`, jeżeli zadanie zostanie zakończone (sukcesem, błęde lub anulowane), zwraca `False` jeżeli zadanie nadal działa w tle.
-* `future.running()` - Zwraca `True`, jeżeli zadanie jest aktualnie wykonywane przez wątek.
+* `future.done()` – zwraca `True`, jeżeli zadanie zostanie zakończone (sukcesem, błędem lub po anulowaniu), oraz `False`, jeżeli zadanie nadal działa w tle.
+* `future.running()` – zwraca `True`, jeżeli zadanie jest aktualnie wykonywane przez wątek.
 
-Przykład
+Przykład:
 
 ```python
 from concurrent.futures import ThreadPoolExecutor
@@ -66,9 +66,9 @@ with ThreadPoolExecutor(max_workers=2) as executor:
 
 #### Zamykanie wątków
 
-Środowisko Python pozwala na wcześniejsze zakończenie pracy zadań w wątku lub anulowanie zadań, które jeszcze nie rozpoczeły pracy a czekają na wykonanie. Dostępne jest kilka sposbów jak można to wykonać.
+Środowisko Python pozwala na wcześniejsze zakończenie pracy zadań w wątku lub anulowanie zadań, które jeszcze nie rozpoczęły pracy i czekają w kolejce na wykonanie. Dostępnych jest kilka sposobów, jak można to wykonać:
 
-* Anulowanie zadania (`future.cancel()`) - metoda, która pozwala anulować zadanie, które zosały zlecona ale jeszcze nie są wykonywane. Zwraca True w sytuacji kiedy uda się anulowaćzadanie, zwraca False kiedy zadanie już trwa lub zostało zakończone
+* Anulowanie zadania (`future.cancel()`) – metoda, która pozwala anulować zadanie zlecone, ale jeszcze niewykonywane. Zwraca `True` w sytuacji, gdy uda się je anulować, oraz `False`, kiedy zadanie już trwa lub zostało zakończone.
 
 ```python
 from concurrent.futures import ThreadPoolExecutor
@@ -84,13 +84,12 @@ with ThreadPoolExecutor(max_workers=2) as executor:
     print(f"Czy anulowano zadanie? {is_cancel}")
 ```
 
-* Kontrolowanie zamykania (`shutdown`) - kiedy korzystane jest z bloku `with`, program autoamtycznie czeka aż wszystkie zadania zostaną zakończone.Można to kontrolować wywołując metodę `shotdown()` z odpowiednimi parametrami:
-  * &#x20;`wait=False` powoduje że pula wątków kończy pracę natychmiast bez czekania aż zadani się zakończą.&#x20;
-  * `cancel_futures=True` anutoomatycznie anuluje wszystkie zadania oczekujące na wykonanie w kolejce.
+* Kontrolowanie zamykania (`shutdown`) – kiedy korzystasz z bloku `with`, program automatycznie czeka, aż wszystkie zadania zostaną zakończone. Można to kontrolować, wywołując metodę `shutdown()` z odpowiednimi parametrami:
+  * `wait=False` – powoduje, że pula wątków kończy pracę natychmiast bez czekania, aż zadania się zakończą.
+  * `cancel_futures=True` – automatycznie anuluje wszystkie zadania oczekujące na wykonanie w kolejce.
 
 ```python
 executor = ThreadPoolExecutor(max_workers=2)
 # ... zlecasz dużo zadań ...
 executor.shutdown(wait=True, cancel_futures=True)
 ```
-

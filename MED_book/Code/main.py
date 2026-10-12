@@ -1,20 +1,17 @@
 import numpy as np
 import pandas as pd
+import seaborn as sns
 
+data = {
+    'Imie': ['Anna', 'Jan', 'Piotr', 'Kasia', 'Marek', 'Ewa', 'Kamil'],
+    'Dzial': ['IT', 'HR', 'IT', 'Sprzedaz', 'HR', 'IT', np.nan],
+    'Wiek': [28, 34, 29, 42, 25, 31, np.nan],
+    'Pensja': [8000, 6000, 8500, 9000, 5500, 9200, np.nan],
+    'Lata_Pracy': [3, 7, 4, 12, 1, 5, np.nan]
+}
 
-oceny = np.array([
-    [4, 5, 3, 5],  # Uczeń 0
-    [2, 3, 4, 3],  # Uczeń 1
-    [5, 5, 5, 4]   # Uczeń 2
-])
+df = pd.DataFrame(data)
 
-# 1. Jaka jest średnia z CAŁEJ klasy ze wszystkich przedmiotów?
-srednia_ogolna = np.mean(oceny)
-print(srednia_ogolna)
-# 2. Jakie są średnie z poszczególnych PRZEDMIOTÓW?
-
-srednia_przedmioty = np.mean(oceny, axis=0)
-print(srednia_przedmioty)
-# 3. Jakie są średnie na koniec roku poszczególnych UCZNIÓW?
-srednia_uczniowie = np.mean(oceny, axis=1)
-print(srednia_uczniowie)
+print(df.nlargest(2, "Wiek"))
+print(("-"*15))
+print(df.nsmallest(2, "Pensja"))
