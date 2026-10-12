@@ -2,7 +2,7 @@
 
 ### Zarządzanie wątkami
 
-W poprzedniej lekcji poznane zostały sposoby na tworzenie wątków za pomocą biblioteki `threading`. W obecnym rozdziale zostanie przedstawione, jak tworzyć pulę wątków i jednocześnie zarządzać nimi. 
+W poprzedniej lekcji poznane zostały sposoby na tworzenie wątków za pomocą biblioteki `threading`. W obecnym rozdziale zostanie przedstawione, jak tworzyć pulę wątków i jednocześnie zarządzać nimi.
 
 #### Tworzenie puli wątków
 
@@ -91,5 +91,10 @@ with ThreadPoolExecutor(max_workers=2) as executor:
 ```python
 executor = ThreadPoolExecutor(max_workers=2)
 # ... zlecasz dużo zadań ...
-executor.shutdown(wait=True, cancel_futures=True)
+executor.shutdown(wait=False, cancel_futures=True)
 ```
+
+#### Zadania
+
+1. Napisz program wielowątkowy, który korzystaj z `ThreadPoolExecutor` i stałej puli wątków o liczbie `n`. Wypełnij listę **łącznie 1000 elementów**. Spośród wylosowanych liczb dodawaj do wspólnej listy tylko te, które są podzielne przez `3`. Zakres losowanych liczb całkowitych przyjmij jako parametr programu i podaj go przy prezentacji wyniku; dopuszczaj powtórzenia. Synchronizuj zapis do wspólnej listy. Zakończ pracę wątków jeżeli liczba elementów w liście osiągnie 1000 elementów.
+2. \* Stwórz aplikację bazującą na wielowątkowości, która ma za zadanie odczytywać strony internetowe i pobierać informacje w postaci adres URL, opis strony, język strony (lang). Aplikacja ma szukać linków dostępnych na stronie i odwiedzać unikalne linki, które jeszcze nie były odwiedzane. Zadanie ma działać przynajmniej 20 minut, wyniki zapis do pliku w trzech formatach: strony odwiedzone (adres URL, opis, język strony), linki do odwiedzenia, linki błędne.
