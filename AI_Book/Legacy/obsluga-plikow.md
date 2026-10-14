@@ -1,28 +1,27 @@
 # Obsługa plików
 
-W analizie danych podstawowym miejscem gdzie można przechowywać dane są pliki, w zależności od zastosowań możemy wykorzystać kilka rozwiązań do odczytywania i zapisywana danych. Wyróżnić możemy:
+W analizie danych podstawowym miejscem, gdzie można przechowywać dane, są pliki. W zależności od zastosowań możemy wykorzystać kilka rozwiązań do odczytywania i zapisywania danych. Wyróżnić możemy:
 
 * Wbudowane mechanizmy w środowisko Python (`open()`)
-* Bibliotekę Numpy
 * Bibliotekę Pandas
 
-### Środowisko Python-a
+### Środowisko Pythona
 
-Wbudowana w środowisko metoda `open()` pozwala na odczyt i zapis danych z pliku i do pliku. Zazwyczaj wykorzystywane jest z menadżerem kontekstu (`with`), który pomaga przy zarządzaniu zamykaniem pliku. Definiowanie odczytu lub zapisu odbywa się przez ustawienie odpowiedniego parametru w metodzie, który nazywany jest typem dostępu (type mode).&#x20;
+Wbudowana w środowisko funkcja `open()` pozwala na odczyt danych z pliku i zapis do niego. Zazwyczaj wykorzystywana jest z menedżerem kontekstu (`with`), który pomaga przy zarządzaniu zamykaniem pliku. Definiowanie odczytu lub zapisu odbywa się przez ustawienie odpowiedniego parametru w metodzie, który nazywany jest trybem dostępu (ang. *mode*). 
 
-* "w" - tryb zapisu, pozwala na zapis do pliku, tworzy nowy plik lub nadpisuje istniejący
+* "w" - tryb zapisu, pozwala na zapis do pliku, tworzy nowy plik lub nadpisuje istniejący.
 * "r" - tryb odczytu (wartość domyślna), pozwala na odczyt z pliku.
-* "a" - tryb dopisywania (append), pozwala na dopisanie danych na końcu pliku w istniejącym pliku.
-* "x" - tryb tworzenia, tworzy plik tylko wtedy gdy plik nie istnieje.
+* "a" - tryb dopisywania (append), pozwala na dopisanie danych na końcu istniejącego pliku.
+* "x" - tryb tworzenia, tworzy plik tylko wtedy, gdy on nie istnieje.
 * "b" - tryb binarny, stosowany przy pracy z plikami binarnymi.
-* "t" - tryb tekstowy, zapisuje do pliku tekstowego, domyślny
+* "t" - tryb tekstowy, zapisuje do pliku tekstowego, domyślny.
 * "+" - jednoczesny zapis i odczyt z pliku.
 
-więcej sposobów na dostęp do pliku można przeczytać [tutaj](https://www.datacamp.com/tutorial/python-write-to-file?utm_cid=23340058065\&utm_aid=192632748929\&utm_campaign=230119_1-ps-dscia~dsa-tofu~python_2-b2c_3-emea_4-prc_5-na_6-na_7-le_8-pdsh-go_9-nb-e_10-na_11-na\&utm_loc=9252650-\&utm_mtd=-c\&utm_kw=\&utm_source=google\&utm_medium=paid_search\&utm_content=ps-dscia~emea-en~dsa~tofu~tutorial~python\&gad_source=1\&gad_campaignid=23340058065\&gbraid=0AAAAADQ9WsGukgp9itcNQxq0kVyl6L3EA\&gclid=CjwKCAjwvsvTBhBaEiwAmf-3nr4koQibK8brbxR3mu1ATaeKAzQPk3c6BXAYJpdxc2FS3FtJVAzyCRoClaIQAvD_BwE)
+Więcej o sposobach dostępu do pliku można przeczytać [tutaj](https://www.datacamp.com/tutorial/python-write-to-file).
 
-**Stosowanie instrukcji** `with`
+**Stosowanie instrukcji `with`**
 
-Standardową operację na pliku można wykonać w następujący sposób&#x20;
+Standardową operację na pliku można wykonać w następujący sposób:
 
 ```python
 plik = open("dane.txt", "r") 
@@ -30,38 +29,38 @@ plik = open("dane.txt", "r")
 plik.close()
 ```
 
-Powyższy przykład przedstawia sposób utworzenia dostępu do pliku, wykonania pewnych operacji na nim i zamknięcie pliku. W powyższym przypadku należy pamiętać o zamknięciu pliku po zakończonej pracy na nim.&#x20;
+Powyższy przykład przedstawia sposób utworzenia dostępu do pliku, wykonania pewnych operacji na nim i zamknięcia go. W tym przypadku należy pamiętać o ręcznym zamknięciu pliku po zakończonej pracy. 
 
-W Pythonie stosowanie istrukcji `with` jest dużo wygodniejszym rozwiązaniem, ponieważ po wyjściu z bloku `with` zamknięcie jset automatycznie wykonywane.
+W Pythonie stosowanie instrukcji `with` jest dużo wygodniejszym rozwiązaniem, ponieważ po wyjściu z bloku `with` zamknięcie pliku jest wykonywane automatycznie.
 
-```
+```python
 with open("dane.txt", "r") as plik: 
     # operacje na pliku
 ```
 
 **Kodowanie znaków**
 
-W przypadku pracy z danymi takimi jak tekst ważnym elementem jest kodowanie znaków. Metoda `open()` poza ścieżką do pliku, trybem dostępu ma też możliwość ustawienia kodowania znaków, odpowiada za to parametr `encoding`.&#x20;
+W przypadku pracy z danymi takimi jak tekst, ważnym elementem jest kodowanie znaków. Funkcja `open()`, poza ścieżką do pliku i trybem dostępu, ma też możliwość ustawienia kodowania znaków – odpowiada za to parametr `encoding`. 
 
 ```python
 with open("dane.txt", "w", encoding="utf-8") as plik: 
     plik.write("Zażółć gęślą jaźń")
 ```
 
-Za pomocą zastosowania parametru `encoding` możemy zapisać specyficzne znaki dla danego języka.
+Dzięki zastosowaniu parametru `encoding` możemy poprawnie zapisać znaki specyficzne dla danego języka (np. polskie znaki diakrytyczne).
 
-**Odczytywanie plik tekstowego** (`.txt`, `.log`)
+**Odczytywanie pliku tekstowego (`.txt`, `.log`)**
 
-Odczytywanie danych z plików możemy wykobać na różne sposoby w zależność od wymogów. Środowisko Python zawiera kilka metod, które pomagają przy wykonaiu tych operacji.
+Odczytywanie danych z plików możemy wykonać na różne sposoby w zależności od wymogów. Środowisko Python zawiera kilka metod, które pomagają przy wykonaniu tych operacji.
 
-* odczyt całego pliku
+* Odczyt całego pliku:
 
 ```python
 with open("dane.txt", "r", encoding="utf-8") as file:
     zawartosc = file.read()
 ```
 
-* odczyt linii po linii
+* Odczyt linia po linii:
 
 ```python
 with open("dane.txt", "r", encoding="utf-8") as file:
@@ -69,18 +68,18 @@ with open("dane.txt", "r", encoding="utf-8") as file:
         print(linia.strip())
 ```
 
-* odczyt wszystkich linii pliku do listy
+* Odczyt wszystkich linii pliku do listy:
 
 ```python
 with open("dane.txt", "r", encoding="utf-8") as file:
     linie = file.readlines()    
 ```
 
-**Odczyt pliku tabelarycznego** (`.csv`)
+**Odczyt pliku tabelarycznego (`.csv`)**
 
-Środowisko Pythn-a posiada wbudowaną bibliotekę `csv`, która pozwala na łatwy i szybki odczyt danych z pliku csv.
+Środowisko Pythona posiada wbudowaną bibliotekę `csv`, która pozwala na łatwy i szybki odczyt danych z pliku CSV.
 
-* Odczyt pliku jako listy wartości
+* Odczyt pliku jako lista wartości:
 
 ```python
 import csv
@@ -92,7 +91,7 @@ with open("dane.csv", "r", encoding="utf-8") as file:
         print(row)
 ```
 
-* Odczyt pliku jako słownik (klucz - wartość)
+* Odczyt pliku jako słownik (klucz-wartość):
 
 ```python
 import csv
@@ -100,14 +99,14 @@ import csv
 with open("dane.csv", "r", encoding="utf-8") as file:
     dict_reader = csv.DictReader(file)
     for row in dict_reader:
-        print(f"Imię: {row['imie']}, Wiek: {row['wiek']}")
+        print(f"Imię: {row['Imię']}, Wiek: {row['Wiek']}")
 ```
 
 **Zapis do pliku tekstowego**
 
-W zależności od tego co chcemy zapisać lub dopisać do pliku, operacje tą możemy wykonać ustawiając opdpowiedni parametr w metodzie open(). Środowiesko Python przygotował kilka sposobów na zapisywanie danych w zależności od tego jakiego rodzau mamy dane.
+W zależności od tego, co chcemy zapisać lub dopisać do pliku, operację tę możemy wykonać ustawiając odpowiedni parametr w funkcji `open()`. Środowisko Python oferuje kilka sposobów na zapisywanie danych w zależności od ich rodzaju.
 
-* zapisywanie tekstu do pliku
+* Zapisywanie tekstu do pliku:
 
 ```python
 tekst = "dowolny tekst, który ma być zapisany do pliku"
@@ -116,9 +115,9 @@ with open("plik.txt", "w", encoding="utf-8") as fw:
     fw.write(tekst)
 ```
 
-*   Zapisywanie wieli liń do pliku
+* Zapisywanie wielu linii do pliku:
 
-    W sytuacji kiedy mamy tekst np. w liście i chcemy go zapisać za jednym razem bez stosowania pętli.
+W sytuacji, kiedy mamy tekst np. w liście i chcemy go zapisać za jednym razem bez stosowania pętli:
 
 ```python
 tab = ["dowolny tekst\n", "zapisany\n", "w wielu liniach\n"]
@@ -127,13 +126,13 @@ with open("plik.txt", "w", encoding="utf-8") as fw:
     fw.writelines(tab)
 ```
 
-Powyższe przykłady były zapisywane przy użyciu bloku `with`, któy zarządza dostępem do pliku i automaycznie po wyjściu z bloku zapisuje dane i zamyka dostęp.
+Powyższe przykłady korzystają z bloku `with`, który zarządza dostępem do pliku i automatycznie po wyjściu z bloku zapisuje dane oraz zamyka dostęp.
 
-**Zapis do pliku tabelarycznego `scv`**
+**Zapis do pliku tabelarycznego `.csv`**
 
-W przypadkach kiedy dane mamy ustrukturyzowane zapisane np. do tabel czy słowników możemy skorzystać z wbudowanej w środowisko biblioteki `csv`.  Przygoytwane metody pozwalaja na zapis danych:
+W przypadkach, kiedy mamy ustrukturyzowane dane zapisane np. w tabelach czy słownikach, możemy skorzystać z wbudowanej biblioteki `csv`. Przygotowane metody pozwalają na zapis danych:
 
-* dane zapisane z tabel (lista list)
+* Dane zapisane w formie tabeli (lista list):
 
 ```python
 import csv
@@ -149,7 +148,7 @@ with open("dane.csv", mode="w", newline="", encoding="utf-8") as plik:
     writer.writerows(dane)
 ```
 
-* &#x20;dane zapisane z słowników
+* Dane zdefiniowane jako lista słowników:
 
 ```python
 import csv
@@ -166,43 +165,45 @@ with open("dane_slownik.csv", mode="w", newline="", encoding="utf-8") as plik:
     writer.writerows(dane)
 ```
 
-W każdym z podanych przykładów można ustawić odpowiedni znak odzielający poszczególne dane.&#x20;
+W każdym z podanych przykładów można ustawić odpowiedni znak oddzielający poszczególne dane (parametr `delimiter`). 
 
 ### Biblioteka Pandas
 
-W sytuacjach kiedy chcemy odczytać lub zapisać dane do formatów typu: `json`, `xml`, `excel sql` możemy wykorzystwać specjalnie do tego przygotowane biblioteki ale te same mozliwości udostępnia biblioteka `pandas`.
+W sytuacjach, kiedy chcemy odczytać lub zapisać dane do formatów takich jak: `json`, `xml`, `excel`, czy bazy `sql`, możemy wykorzystywać specjalnie do tego przygotowane biblioteki, ale te same możliwości udostępnia potężna biblioteka `pandas`.
 
-**Odczytywanie danych z pliku.**
+**Odczytywanie danych z pliku**
 
 Metody do odczytu danych z pliku są definiowane w następujący sposób:
 
 Schemat:
 
-```r
-read_xxx(scieżka_do_pliku)
+```python
+read_xxx(ścieżka_do_pliku)
 ```
 
-Przykłady
+Przykłady:
 
 | Metoda                        | Opis               |
 | ----------------------------- | ------------------ |
 | `pd.read_csv("plik.csv")`     | odczyt pliku csv   |
-| `pd.read_excel("plik.xsls").` | odczyt pliku excel |
+| `pd.read_excel("plik.xlsx")`  | odczyt pliku excel |
 | `pd.read_xml("plik.xml")`     | odczyt pliku xml   |
 | `pd.read_hdf("plik.h5")`      | odczyt pliku hdf5  |
 | `pd.read_orc("plik.orc")`     | odczyt pliku orc   |
 
-Odczytywane dane z plików automatycznie są zapisywane do obiektów DataFrame co pozwala na łatwiejsze manipulowanie nimi.&#x20;
+Odczytywane dane z plików automatycznie są ładowane do obiektów typu `DataFrame`, co pozwala na bardzo łatwe manipulowanie nimi. 
 
 ```python
+import pandas as pd
+
 df = pd.read_csv("dane.csv")
 ```
 
-Powyższy fragment odczytuje wszystkie dane z pliku `dane.csv`, jeżeli w pliku zdefiniowane będą nazwy kolumn to automatycznie zostaną uzupełnione w obiekcie DataFreme.&#x20;
+Powyższy fragment odczytuje wszystkie dane z pliku `dane.csv`. Jeżeli w pliku zdefiniowane będą nazwy kolumn, to automatycznie zostaną one uzupełnione w obiekcie `DataFrame`. 
 
-Zapisując do DataFrem można odczytać na różne sposoby:
+Ładując dane do `DataFrame`, można odczytywać je na różne sposoby, konfigurując odpowiednie parametry:
 
-* **Wybrane kolumny**
+* **Wybrane kolumny:**
 
 ```python
 df = pd.read_csv(
@@ -211,7 +212,7 @@ df = pd.read_csv(
 )
 ```
 
-* **Określenie odczytu liczby lini**
+* **Określenie odczytu liczby linii:**
 
 ```python
 df = pd.read_csv(
@@ -220,7 +221,7 @@ df = pd.read_csv(
 )
 ```
 
-* **Wskazanie typu danych**
+* **Wskazanie typu danych:**
 
 ```python
 df = pd.read_csv(
@@ -232,38 +233,34 @@ df = pd.read_csv(
 )
 ```
 
-Powyższe przykłady są tylko częścią możliwości odczytywania danych w `Pandas`. W zależności od typu pliku można ustawić odpowiednie parametry specyficzne dla każdego z formatów.
+Powyższe przykłady są tylko ułamkiem możliwości odczytywania danych w `pandas`. W zależności od typu pliku można ustawić odpowiednie parametry specyficzne dla każdego z formatów.
 
 **Zapis danych do pliku**
 
-Podobnie jak przy odczycie plików, w bibliotece `Pandas` zdefiniowano kilka metod pozwalających na zapis danych umieszczonych w DataFrame do pliku. Metody do odczytu danych z pliku są definiowane w następujący sposób:
+Podobnie jak przy odczycie plików, w bibliotece `pandas` zdefiniowano szereg metod pozwalających na zapis danych umieszczonych w `DataFrame` do pliku. 
 
 Schemat:
 
 ```python
-df.to_xxx(sciezka_do_pliku)
+df.to_xxx(ścieżka_do_pliku)
 ```
 
 Przykłady:
 
 | Metoda                     | Opis                 |
 | -------------------------- | -------------------- |
-| `df.to_csv("plik.csv")/`   | zapis do pliku csv   |
-| `df.to_excel("plik.xsls")` | zapis do pliku excel |
-| `df.to_html("plik.xml")`   | zapis do pliku html  |
+| `df.to_csv("plik.csv")`    | zapis do pliku csv   |
+| `df.to_excel("plik.xlsx")` | zapis do pliku excel |
+| `df.to_html("plik.html")`  | zapis do pliku html  |
 | `df.to_hdf("plik.h5")`     | zapis do pliku hdf5  |
-| `df.to_json("plik.orc")`   | zapis do pliku json  |
+| `df.to_json("plik.json")`  | zapis do pliku json  |
 
-Podobnie jak w przypadku metod do odczytu plików można zdefiniować odpowiednie parametry dla odpowiedniego formatu, po więcej szczegołów należy zapozać się z dokumentacją.
+Podobnie jak w przypadku metod do odczytu plików, można zdefiniować parametry specyficzne dla danego formatu. Po więcej szczegółów warto zajrzeć do oficjalnej dokumentacji.
 
 ### Literatura
 
-[datacamp.com - How to Read a File Line by Line in Python](https://www.datacamp.com/tutorial/python-read-file-line-by-line)
-
-[datacamp.com - Python Write to File: How to Work With Text, CSV, and JSON Files Safely](https://www.datacamp.com/tutorial/python-write-to-file?utm_cid=23340058065\&utm_aid=192632748929\&utm_campaign=230119_1-ps-dscia~dsa-tofu~python_2-b2c_3-emea_4-prc_5-na_6-na_7-le_8-pdsh-go_9-nb-e_10-na_11-na\&utm_loc=9252650-\&utm_mtd=-c\&utm_kw=\&utm_source=google\&utm_medium=paid_search\&utm_content=ps-dscia~emea-en~dsa~tofu~tutorial~python\&gad_source=1\&gad_campaignid=23340058065\&gbraid=0AAAAADQ9WsGukgp9itcNQxq0kVyl6L3EA\&gclid=CjwKCAjwvsvTBhBaEiwAmf-3nr4koQibK8brbxR3mu1ATaeKAzQPk3c6BXAYJpdxc2FS3FtJVAzyCRoClaIQAvD_BwE)
-
-[w3schools.com - Python file open](https://www.w3schools.com/python/python_file_handling.asp)
-
-[Coddykit - zapisywanie DataFrame do pliku](https://www.coddykit.com/pl/courses/learn_pandas/writing-dataframes-to-files-10405746)
-
-[Pandas - dokumentacja](https://pandas.pydata.org/docs/reference/io.html)
+* [DataCamp - How to Read a File Line by Line in Python](https://www.datacamp.com/tutorial/python-read-file-line-by-line)
+* [DataCamp - Python Write to File: How to Work With Text, CSV, and JSON Files Safely](https://www.datacamp.com/tutorial/python-write-to-file)
+* [W3Schools - Python file open](https://www.w3schools.com/python/python_file_handling.asp)
+* [Coddykit - Zapisywanie DataFrame do pliku](https://www.coddykit.com/pl/courses/learn_pandas/writing-dataframes-to-files-10405746)
+* [Pandas - Dokumentacja IO](https://pandas.pydata.org/docs/reference/io.html)

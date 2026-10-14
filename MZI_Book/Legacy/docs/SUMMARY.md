@@ -6,3 +6,4 @@
 * [Parsowanie i Walidacja danych](parsowanie-i-walidacja-danych.md)-->
 * [Biblioteka Pandas](biblioteka-pandas.md)
 * [Filtracja i agregacja danych](materia_y_pandas.md)
+* [Obsługa plików](obsluga-plikow.md)
