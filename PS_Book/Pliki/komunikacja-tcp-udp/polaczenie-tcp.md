@@ -1,8 +1,12 @@
 # Połączenie TCP
 
-Aplikacje działające na podstawie połączeń typu TCP (Transmission Control Protocol) zapewniają stabilną komunikacje między klientem a serwerem. Zapewnione jest to przez to że każdy przesłany pakiet przez serwer musi być potwierdzony przez klienta.
+Aplikacje wykorzystujące protokół TCP (Transmission Control Protocol) zapewniają stabilną i niezawodną komunikację między klientem a serwerem. Wynika to z faktu, że dostarczenie każdego przesłanego pakietu musi zostać potwierdzone przez stronę odbierającą.
 
-#### **Serwer  (**`tcp_server_example.py`**)**
+Podstawą działania zarówno aplikacji serwerowej, jak i klienckiej, jest gniazdo sieciowe (obiekt `socket`), które pozwala zdefiniować sposób komunikacji między aplikacjami.
+
+Poniżej przedstawiono przykładowe implementacje aplikacji serwerowej oraz klienckiej.
+
+#### **Serwer (`tcp_server_example.py`)**
 
 ```python
 import socket
@@ -13,7 +17,7 @@ def start_tcp_server():
         # 2. Przypisujemy adres IP i port do gniazda
         server_socket.bind(('localhost', 12345))
         
-        # 3. Nasłuchujemy nadchodzących połączeń (1 to rozmiar kolejki)
+        # 3. Nasłuchujemy nadchodzących połączeń (1 to rozmiar kolejki nieobsłużonych połączeń)
         server_socket.listen(1)
         print("Serwer TCP nasłuchuje na porcie 12345...")
         
@@ -22,7 +26,7 @@ def start_tcp_server():
         with conn:
             print(f"Połączono z klientem: {addr}")
             
-            # 5. Odbieramy dane (max 1024 bajty)
+            # 5. Odbieramy dane (maksymalnie 1024 bajty)
             data = conn.recv(1024)
             print(f"Otrzymano od klienta: {data.decode('utf-8')}")
             
@@ -33,25 +37,38 @@ if __name__ == "__main__":
     start_tcp_server()
 ```
 
-Zadaniem aplikacji po stronie serwera jest nasłuchiwanie na przychodzące połączenie oraz wykonywanie założonej komunikacji. cały proces aplikacji mozna przedstawić w kilku krokach:
+Głównym zadaniem aplikacji po stronie serwera jest nasłuchiwanie na nadchodzące połączenia oraz wymiana danych z klientami zgodnie z ustaloną specyfikacją. 
 
-1. Tworzenie obiektu socket (`Socket`), któy  będzie nasłuchiwał na przychodzące połączenia
-2. Przypisanie adresu i portu do obiektu socket (`bind`)
-3. Nasłuchiwanie na przychodzące połączenia (`listen`), możliwość stworzenia kolejki oczekujących połączeń.
-4. Akceptacja połączenia (`accept`) oraz pobranie informacji o połączeniu
-5. Odbieranie danych przychodzących od klienta (`recv`), należy ustawić wielkość bufora.
-6. Wysłanie odpowiedzi do klienta (`sendall`)
+Pierwszym krokiem jest utworzenie obiektu `socket`. Kolejnym – zdefiniowanie, na jakim adresie (hoście) i porcie aplikacja ma oczekiwać na dane. Służy do tego metoda `bind()`. 
+Aby gniazdo przeszło w tryb nasłuchiwania, wywołuje się metodę `listen()`. Informuje ona system operacyjny, że gniazdo jest gotowe do obsługi ruchu i pozwala ustalić wielkość kolejki dla oczekujących połączeń. 
 
-Krok 5 i 6 powtarzamy do momentu kiedy działa połączenie z klientem&#x20;
+Kluczowym momentem jest wywołanie metody `accept()`, która odpowiada za akceptację przychodzącego połączenia. Zwraca ona nowy obiekt gniazda dedykowany do komunikacji z podłączonym klientem oraz jego adres. 
 
-#### **Klient** (`tcp_client_example.py`)
+Do odebrania informacji od klienta wykorzystuje się metodę `recv()`, ustalając rozmiar bufora przeznaczonego na przychodzące dane. Wysłanie odpowiedzi do klienta realizowane jest za pomocą metody `send()` lub `sendall()`. 
 
-Poniżej przedstawiam przykład aplikacji po stronie klienta&#x20;
+Podczas komunikacji musi być z góry ustalone, która aplikacja jako pierwsza wysyła dane, a która na nie oczekuje. Powyższy przykład wykorzystuje menedżer kontekstu (blok `with`), który automatycznie zarządza połączeniem i gwarantuje jego poprawne zamknięcie po wyjściu z bloku.
+
+Domyślnie metoda `accept()` w znaczący sposób blokuje działanie aplikacji, czekając w nieskończoność na klienta. Aby temu zapobiec, można ustawić maksymalny czas oczekiwania na połączenie za pomocą metody `settimeout()`. Po jego upływie zostanie zgłoszony wyjątek, który należy obsłużyć.
+
+```python
+server_socket.settimeout(2.0)
+try:
+    conn, addr = server_socket.accept()
+    # Obsługa połączenia...
+except socket.timeout:
+    pass # Minęły dwie sekundy, brak połączenia – można sprawdzić pętlę od nowa
+except OSError:
+    pass # Inny błąd gniazda
+```
+
+#### **Klient (`tcp_client_example.py`)**
+
+Poniżej znajduje się przykład implementacji po stronie klienta:
 
 ```python
 import socket
 
-def tcp_client_example.py():
+def start_tcp_client():
     # 1. Tworzymy gniazdo (takie samo jak w serwerze)
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
         # 2. Nawiązujemy połączenie z serwerem
@@ -68,22 +85,22 @@ if __name__ == "__main__":
     start_tcp_client()
 ```
 
-Aplikacja klienta ma za zadanie nawiązać połączenie z wybranym serwerem i wykonywać założoną komunikacje. Powyższy przykład aplikacji po stronie klienta można przedstawić w kilku krokoach:
+Celem aplikacji klienckiej jest nawiązanie połączenia z serwerem i wymiana informacji. Rozpoczynamy od utworzenia obiektu typu `socket`, podając parametry zgodne z konfiguracją serwera. 
 
-1. w pierwszyk kroku tworzone i otwierane jest gniazdo do wykonania połączenia, w konstruktorze podawane są odpoweidnie parametry.
-2. następnie wykonywana jest metoda connect, w której jako parametr podawane są dane do połączenia tj. ardes i port.
-3. w zależności od założeń komunikacji wykonywanej między urządzeniami, możemy wysłać dane lub czekać na dane od serwera. W powyższym przypadku najpierw wysyłamy dane do serwera.
-4. Ostatnim krokiem jest odebranie danych od serwera i wyświetlenie ich na ekranie.
+Następnie wskazywany jest host i port docelowy w wywołaniu metody `connect()`. Po nawiązaniu połączenia można rozpocząć komunikację stosując odpowiednie metody:
+* `recv()` – do pobrania danych z serwera (z określonym buforem).
+* `send()` lub `sendall()` – do przesłania danych w kierunku serwera. 
 
-Powyższy przykład wykonyje jednokrotną komunikację z serwerem, aby powyższy przykład działał lepiej można przedstawić w pętli.
+Kolejność wywoływania metod zależy od tego, co jako pierwsze wykonywane jest po stronie serwera. Tutaj również wykorzystano blok `with`, który zarządza połączeniem – po zakończeniu pracy nie jest wymagane ręczne wywołanie metody `close()`, ponieważ system zamknie gniazdo automatycznie.
+
+Zaprezentowany wyżej przykład ilustruje jedynie jednokrotną komunikację z serwerem. W rzeczywistych aplikacjach zazwyczaj stosuje się odpowiednie pętle i instrukcje warunkowe, aby podtrzymać wymianę danych.
 
 #### Zadania
 
-1. Rozbuduj podane przykłady o możliwość przesyłania większej liczby wiadomości między serwerem a klientem.
-2. Rozbuduj aplikacje po stronie z zadania 1 o możliwość obsługi większej liczby klientów. W zadaniu wykorzystaj wątki i stwórz rozwiązanie, w którym każde połączenie będzie obsługiwane w osobnym wątku.&#x20;
-3. Do zadania 2 zaproponuj rozwiązanie za pomocą, którego będzie możliwość monitorowania ile połączeń jest aktywnych.
-4. Stwórz mechanizm do zarządzania połączeniami z zadania 3, w taki sposób aby można było sprawdzić ile jest połączonych użytkowników oraz wyświetlić informacje o połączeniu tj. nazwa hosta, adres IP, data połączenia.&#x20;
+1. Rozbuduj podane przykłady tak, aby umożliwić przesyłanie wielu wiadomości (komunikację ciągłą) między serwerem a klientem.
+2. Zmodyfikuj aplikację serwerową z zadania 1, tak aby mogła obsługiwać wielu klientów jednocześnie. Wykorzystaj wielowątkowość i stwórz rozwiązanie, w którym każde nowe połączenie jest obsługiwane przez osobny wątek.
+3. Stwórz mechanizm do zarządzania połączeniami w aplikacji z zadania 2. Mechanizm powinien pozwalać na sprawdzenie liczby aktualnie podłączonych użytkowników oraz wyświetlanie podstawowych informacji o każdym połączeniu (tj. nazwa hosta/adres IP, data i czas nawiązania połączenia).
 
-#### Literatura&#x20;
+#### Literatura
 
 {% embed url="https://realpython.com/python-sockets/" %}

@@ -1,27 +1,27 @@
 # Połączenia TCP/UDP
 
-Do wykonania połączenia między serwerem a klientem wymagane jest stworzenie gniazda (socket) po obydwu stronach. Stworzenie gniazd pozwala na to aby jedna ze stron nasłuchiwała na połączenie a druga wykonywała połączenia z wybranym hostem. Możemy wyróżnić dwa rodzaje połączeń:
+Nawiązanie połączenia między serwerem a klientem wymaga utworzenia gniazda (ang. *socket*) po obu stronach. Utworzenie gniazd pozwala jednej ze stron nasłuchiwać nadchodzących połączeń, podczas gdy druga strona inicjuje połączenie z wybranym hostem. Możemy wyróżnić dwa główne protokoły komunikacyjne:
 
-1. TCP (Transmission Control Protocol) - połączenie stabilne, w którym serwer musi zaakceptować przychodzące połączenie. Każdy wysłany pakiet przez serwer musi zostać potwierdzony przez klienta.
-2. UDP (User Datagram Protocol) - połączenie mniej stabilne, narażone na utratę pakietów wysyłanych do klienta. Wysyłane pakiety przez serwer nie wymagają potwierdzenia po stronie klienta, co powoduje że można uzyskać większą prędkość przesyłania pakietów przy większym ryzyku utraty pakietów.
+1. **TCP (Transmission Control Protocol)** – protokół połączeniowy i stabilny. W jego przypadku serwer musi zaakceptować przychodzące połączenie, a każdy wysłany pakiet wymaga potwierdzenia odbioru przez stronę przeciwną.
+2. **UDP (User Datagram Protocol)** – protokół bezpołączeniowy, niegwarantujący dostarczenia danych. Pakiety wysyłane przez serwer nie wymagają potwierdzenia odbioru po stronie klienta. Pozwala to na uzyskanie większej prędkości przesyłu, jednak wiąże się z ryzykiem utraty pakietów lub zmiany ich kolejności.
 
 #### Tworzenie gniazda
 
-Do stworzenia gniazd w języku Pythonie wykorzystujemy wbudowaną bibliotekę `socket`. Konstruktor `Socket()`, przy podaniu odpowiednich parametrów decyduje o rodzaju połączenia. Oto następujące parametry:
+Do tworzenia gniazd sieciowych w języku Python wykorzystujemy wbudowaną bibliotekę `socket`. Wywołanie konstruktora `socket.socket()` wraz z odpowiednimi parametrami decyduje o rodzaju realizowanego połączenia. Poniżej przedstawiono jego główne argumenty:
 
 ```python
 socket.socket(family=AF_INET, type=SOCK_STREAM, proto=0)
 ```
 
-* **family** (rodzaj adresacji) - określamy rodzaj adresowania po którym będziemy się komunikować w warstwie sieciowej.&#x20;
-  * **socket.AF\_INET** (domyślny) - wykorzystanie adresacji IPv4 do wykonywania komunikacji.
-  * socket.AF\_INET6 - wykorzystanie adresacji IPv6 do wykonywania komunikacji.
-  * **socket.UNIX** - wykorzystywany do komunikacji między procesami (IPC) w systemie, ale tylko w obrębie tego samego komputera. Przeznaczone dla systemów typu Unix/Linux/macOS. Zamiast adresu IP wykorzystuje ścieżkę do pliku.
-  * **socket.AF\_BLUETOOTH** - wykorzystywane do komunikacji przy użyciu bluetooth.
-* **tyoe** (typ połączenia) - określenie rodzaju komunikacji i protokołu w warstwie sieciowej
-  * **socket.SOCK\_STREAM** - tworzenie gniazda do komunikacji w której dostarczenie i kolejność pakietów jest zapewniona. Wykorzystywane z protokołem TCP.
-  * **socket.SOCK\_DGRAM** - tworzenie gniazda datagramowe. Pakiety mogą nie dotzreć lub w innej kolejności. Wykorzystywane z protokołem UDP.
-  * **socket.SOCK\_RAW** - tworzy "surowe" gniazdo, które pozwala ominąć warstwę transportową systemu operacyjnego i tworzyć własne nagłówki pakietów sieciowych.
-* **proto** (protokuł) - za pomocą tego parametru można określi konkretny typ protokołu użytego w gnieździe. Domyślnie wartość "0" co pozwala systemowi automatycznie dobrać odpowiedni protokół w zależności od rodziny i typu.
+* **family** (rodzina adresów) – określa rodzaj adresacji, w oparciu o którą będziemy się komunikować w warstwie sieciowej.
+  * **socket.AF_INET** (wartość domyślna) – wykorzystanie adresacji IPv4.
+  * **socket.AF_INET6** – wykorzystanie adresacji IPv6.
+  * **socket.AF_UNIX** (wcześniej `socket.UNIX`) – służy do komunikacji międzyprocesowej (IPC) w systemie, ale tylko w obrębie tego samego komputera. Przeznaczone dla systemów typu Unix/Linux/macOS. Zamiast adresu IP wykorzystuje ścieżkę do pliku.
+  * **socket.AF_BLUETOOTH** – wykorzystywane do komunikacji przy użyciu Bluetooth.
+* **type** (typ gniazda) – określa rodzaj komunikacji i protokołu w warstwie transportowej.
+  * **socket.SOCK_STREAM** – tworzy gniazdo strumieniowe. Zapewnia niezawodną komunikację, w której zagwarantowane jest dostarczenie i prawidłowa kolejność pakietów. Wykorzystywane głównie z protokołem TCP.
+  * **socket.SOCK_DGRAM** – tworzy gniazdo datagramowe. Pakiety mogą nie dotrzeć do celu lub pojawić się w innej kolejności. Wykorzystywane z protokołem UDP.
+  * **socket.SOCK_RAW** – tworzy „surowe” gniazdo, które pozwala pominąć warstwę transportową systemu operacyjnego i konstruować własne nagłówki pakietów sieciowych.
+* **proto** (protokół) – za pomocą tego parametru można określić konkretny typ protokołu użytego w gnieździe. Domyślnie przyjmuje wartość `0`, co pozwala systemowi automatycznie dobrać odpowiedni protokół w zależności od ustawionej rodziny i typu.
 
-W konstruktorze możemy podać 3 parametry ale w większości zadań wykorzystamy tylko dwa parametry.&#x20;
+W konstruktorze możemy podać trzy parametry, jednak w większości typowych zadań wykorzystamy tylko dwa pierwsze (rodzinę i typ).

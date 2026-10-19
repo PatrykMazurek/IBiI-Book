@@ -1,8 +1,6 @@
 import pathlib
 import threading, time, os, sys
 
-from networkx.classes import number_of_nodes
-
 
 def scan_folder():
     print("stan przed rozpoczęciem pracy")
