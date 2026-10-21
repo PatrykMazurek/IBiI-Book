@@ -1,0 +1,22 @@
+[
+  {
+    "id":0,
+    "city":"Poznan"
+  },
+  {
+    "id":1,
+    "city":"Krakow"
+  },
+  {
+    "id":2,
+    "city":"Gdansk"
+  },
+  {
+    "id":3,
+    "city":"Warszawa"
+  },
+  {
+    "id":4,
+    "city":"Radom"
+  }
+]
