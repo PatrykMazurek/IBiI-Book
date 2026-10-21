@@ -23,5 +23,16 @@ Rozwiąrz zadania:
 3. Przygotuj zestawienie liczby logów wygenerowanych przez poszczególne procesy (np. `sshd`, `ftpd`, `su`).
 4. Na bazie przygotowanego wcześniej `DataFrame`, przekonwertuj kolumnę z datą i czasem ze zwykłego tekstu na typ `datetime` (w pliku nie podano roku wstaw rok 2025).
 5. Wykorzystując dowolną bibliotekę (pygrok, parse, re) wyciągnij z kolumny `msg` informacje o adresie ip i nazwie użytkownika dla komunikatów, które zawierają "Failed password" oraz "Invalid user".
-6. Korzystając z metod filtracji i grupowania, zastosuj je do zidentyfikowania i wyświetlenia zestawienia top 5 adresów IP generujących najwięcej błędów uwierzytelniania oraz top 5 najczęściej atakowanych nazw użytkowników (np. `root`, `admin`). Wyniki wyeksportuj do pliku `JSON`.&#x20;
+6. Korzystając z metod filtracji i grupowania, zastosuj je do zidentyfikowania i wyświetlenia zestawienia top 5 adresów IP generujących najwięcej błędów uwierzytelniania oraz top 5 najczęściej atakowanych nazw użytkowników (np. `root`, `admin`). Wyniki wyeksportuj do pliku `JSON`.
+
+### Lab 3
+
+Rozwiąż następujące zadania:
+
+1. Narysuj koło o środku w punkcie (0,0) i promieniu 2. Powinno być ono wypełnione półprzezroczystą barwą zieloną, mieć wyraźnie zaznaczony brzeg i nie wyglądać jak elipsa.
+2. Korzystając z pakietu `seaborn` i danych `tips` narysuj wykresy:&#x20;
+   1. dwa wykresy (kołowy i słupkowy), które będą podsumowywać zmienną `smoker`.
+   2. Utwórz wykres skrzynkowy dla procentowego udziału napiwku w całkowitej wartości rachunku w rozbiciu na podgrupy generowane przez kombinacje `sex` i `day`.
+   3. Utwórz wykres skrzynkowy dla procentowego udziału napiwku w całkowitej wartości rachunku na podstawie ramki danych `tips`.
+3.
 
