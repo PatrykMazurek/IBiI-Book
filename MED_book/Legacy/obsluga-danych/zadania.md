@@ -27,6 +27,8 @@ Rozwiąrz zadania:
 
 ### Lab 3
 
+{% file src="../.gitbook/assets/ssl.csv" %}
+
 Rozwiąż następujące zadania:
 
 1. Narysuj koło o środku w punkcie (0,0) i promieniu 2. Powinno być ono wypełnione półprzezroczystą barwą zieloną, mieć wyraźnie zaznaczony brzeg i nie wyglądać jak elipsa.
@@ -34,5 +36,10 @@ Rozwiąż następujące zadania:
    1. dwa wykresy (kołowy i słupkowy), które będą podsumowywać zmienną `smoker`.
    2. Utwórz wykres skrzynkowy dla procentowego udziału napiwku w całkowitej wartości rachunku w rozbiciu na podgrupy generowane przez kombinacje `sex` i `day`.
    3. Utwórz wykres skrzynkowy dla procentowego udziału napiwku w całkowitej wartości rachunku na podstawie ramki danych `tips`.
-3.
+3. Korzystając z pliku `ssl.csv` wykonaj następujące zadania:
+   1. Odczytaj dane z kolumny `cipher`  i zidentyfikuj najczęściej używane algorytmy szyfrujące. Dane przedstaw na wykresie i odpowiedz czy najpopularniejszy algorytm jest bezpiecznym rozwiązaniem.&#x20;
+   2. Bazując na danych z pliku i kolumnie `source_ip` wyszukaj stacji roboczych lub serwerów generujących największy ruch SSL. Przedstaw na wykresie 6 najaktywniejszych urządzeń.
+   3. Kolumna `certificate_validation_status` zawiera dane o certyfikatach, przedstaw na wykresie kołowym informacje zawarte w tej koumnie. Sprawdz jaki rodzja certyfikatu wystęouje najczęściej. W kolumnie oże występić znak "`-`" oznacza brak danych o certyfikacie, takie infromacje też zamieść na wykresie.
+   4. Kolumna `timestamp_unix` zawiera znacznik czasowy, przekonwertuj ją na czas i policz ile połązceń występujen na każdą godzinę. Wyniki przedstaw na wykresie liniowym.&#x20;
 
+Dla każdego wyreksu opisz osie, nadaj tytuł wyreksu oraz legende.
