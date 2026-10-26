@@ -1,6 +1,6 @@
 # Połączenie UDP
 
-Aplikacje oparte na komunikacji UDP (*User Datagram Protocol*) nie gwarantują niezawodnego dostarczenia pakietów między serwerem a klientem. Oznacza to, że pakiety mogą zostać utracone, zduplikowane lub dotrzeć w niewłaściwej kolejności. Brak mechanizmów potwierdzania doręczenia (*acknowledgements*) oraz kontroli przepływu sprawia jednak, że komunikacja jest szybsza i charakteryzuje się mniejszym narzutem sieciowym.
+Aplikacje oparte na komunikacji UDP (_User Datagram Protocol_) nie gwarantują niezawodnego dostarczenia pakietów między serwerem a klientem. Oznacza to, że pakiety mogą zostać utracone, zduplikowane lub dotrzeć w niewłaściwej kolejności. Brak mechanizmów potwierdzania doręczenia (_acknowledgements_) oraz kontroli przepływu sprawia jednak, że komunikacja jest szybsza i charakteryzuje się mniejszym narzutem sieciowym.
 
 #### **Serwer (**`udp_serwer_example.py`**)**
 
@@ -56,32 +56,31 @@ Wywołanie metody `sendto()` pozwala na natychmiastowe przesłanie danych do ser
 
 W obu przykładach nie występują żadne pakiety kontrolne ani procesy handshake (znane z TCP). Protokół UDP umożliwia wysłanie wiadomości niezależnie od tego, czy druga strona jest w danym momencie uruchomiona i gotowa do odbioru.
 
----
+***
 
 #### Zadania do wykonania
 
-1. **Echo z odwracaniem wyrazów:**  
+1. **Echo z odwracaniem wyrazów:**\
    Napisz dwie aplikacje (klient i serwer UDP), które umożliwią przesyłanie wiadomości tekstowych. Aplikacja serwera powinna nasłuchiwać na porcie `5000` i odsyłać do klienta każdą otrzymaną wiadomość, zamieniając kolejność wyrazów na przeciwną, o ile wiadomość zawiera więcej niż jeden wyraz. Serwer powinien wyświetlać w konsoli adres IP oraz port nadawcy. Aplikacja kliencka powinna umożliwić użytkownikowi wprowadzanie tekstu z klawiatury – po wpisaniu słowa `"exit"` program kończy pracę. W kliencie należy na bieżąco wyświetlać komunikaty powrotne z serwera.
-
-2. **Kalkulator sieciowy JSON:**  
+2. **Kalkulator sieciowy JSON:**\
    Zaimplementuj prosty kalkulator działający w architekturze klient-serwer oparty na UDP. Klient przesyła do serwera obiekt w formacie `JSON` zawierający dwa argumenty liczbowe oraz nazwę operacji matematycznej. Serwer wykonuje obliczenia i odsyła wynik również w formacie `JSON`. Komunikacja powinna odbywać się na porcie `5001`. Obsługiwane operacje to: dodawanie, odejmowanie, mnożenie oraz dzielenie. Serwer powinien poprawnie obsługiwać błędne dane wejściowe oraz próbę dzielenia przez zero.
-
-3. **Przesyłanie dużego pliku:**  
-   Stwórz aplikację serwerową, której zadaniem jest przesłanie do klienta zawartości dużego pliku tekstowego. Ponieważ pakiety UDP mają ograniczenia rozmiaru (oraz ryzyko zgubienia), serwer powinien podzielić plik na mniejsze fragmenty (np. paczki po 1024 bajty) i przesyłać je sekwencyjnie. Klient odbiera poszczególne fragmenty i zapisuje je finalnie do nowego pliku tekstowego. Na zakończenie napisz skrypt sprawdzający (np. poprzez porównanie sum kontrolnych MD5 lub bezpośrednie otwarcie), czy dane są kompletne i identyczne z oryginałem.
-
-4. **Czat grupowy:**  
+3. **Przesyłanie dużego pliku:**\
+   Stwórz aplikację serwerową, której zadaniem jest przesłanie do klienta zawartości dużego pliku tekstowego. Ponieważ pakiety UDP mają ograniczenia rozmiaru (oraz ryzyko zgubienia), serwer powinien podzielić plik na mniejsze fragmenty (np. paczki po 1024 bajty) i przesyłać je sekwencyjnie. Klient odbiera poszczególne fragmenty i zapisuje je finalnie do nowego pliku tekstowego. Na zakończenie napisz skrypt sprawdzający, czy dane są kompletne i identyczne z oryginałem. Do rozwiązania zadania można skorzystać z pliku zamieszczonego poniżej.
+4. **Czat grupowy:**\
    Napisz prosty czat grupowy oparty na protokole UDP. Użytkownicy powinni mieć możliwość dołączenia do serwera, podania swojego pseudonimu oraz wymieniania wiadomości z pozostałymi uczestnikami. Serwer pełni funkcję centralnego pośrednika: odbiera pakiety od jednego klienta i przekazuje je do wszystkich pozostałych zarejestrowanych uczestników. Przygotuj następujące komendy sterujące protokołem komunikacyjnym:
    * `REGISTER <nick>` – dodaje klienta do aktywnej listy użytkowników,
    * `UNREGISTER` – usuwa klienta z listy,
    * `LIST` – zwraca użytkownikowi listę aktualnie podłączonych osób,
    * `SEND <nick> <wiadomosc>` – wysyła prywatną wiadomość do wskazanego użytkownika,
    * `BROADCAST <wiadomosc>` – rozsyła wiadomość publiczną do wszystkich klientów.
+5. **Mechanizm utrzymania połączenia (Heartbeat / Keep-Alive):**\
+   Rozbuduj aplikację serwerową z zadania 4 tak, aby okresowo (np. co 120 sekund) weryfikowała, czy klienci nadal istnieją i nasłuchują. Do tego celu zastosuj mechanizm `PING` – `PONG`. Serwer wysyła pakiet `PING` do klienta i czeka 5 sekund na odpowiedź. Procedurę można powtórzyć maksymalnie 3 razy – w przypadku braku odpowiedzi klient jest automatycznie usuwany z listy aktywnych uczestników. Klient po odebraniu komunikatu `PING` natychmiast odsyła pakiet `PONG`. _Wskazówka:_ Ponieważ aplikacje testujesz lokalnie na `localhost`, pamiętaj o dodaniu unikalnego identyfikatora klienta, aby poprawnie przetestować działanie mechanizmu dla wielu instancji uruchomionych na tej samej maszynie.
 
-5. **Mechanizm utrzymania połączenia (Heartbeat / Keep-Alive):**  
-   Rozbuduj aplikację serwerową z zadania 4 tak, aby okresowo (np. co 120 sekund) weryfikowała, czy klienci nadal istnieją i nasłuchują. Do tego celu zastosuj mechanizm `PING` – `PONG`. Serwer wysyła pakiet `PING` do klienta i czeka 5 sekund na odpowiedź. Procedurę można powtórzyć maksymalnie 3 razy – w przypadku braku odpowiedzi klient jest automatycznie usuwany z listy aktywnych uczestników. Klient po odebraniu komunikatu `PING` natychmiast odsyła pakiet `PONG`. *Wskazówka:* Ponieważ aplikacje testujesz lokalnie na `localhost`, pamiętaj o dodaniu unikalnego identyfikatora klienta, aby poprawnie przetestować działanie mechanizmu dla wielu instancji uruchomionych na tej samej maszynie.
+{% file src="../.gitbook/assets/subtitles.zip" %}
 
----
+***
 
 #### Literatura
-* Doozer, J. *High-Performance Networking with Python sockets.*
-* Kurose, J. F., Ross, K. W. *Computer Networking: A Top-Down Approach.*
+
+
+
