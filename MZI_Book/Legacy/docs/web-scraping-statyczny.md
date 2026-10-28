@@ -4,13 +4,6 @@
 
 Web Scraping to technika automatycznego pobierania treści ze stron internetowych i przygotowywania ich do dalszej analizy. Głównym schematem działania web scrapingu jest:
 
-[info grafika o web scraping] 
-
-Web Scraping możemy podzielić na dwa typy:
-
-* **Statyczny**, w którym analizowany jest bezpośrednio surowy kod HTML i na jego bazie pobierane są informacje ze stron internetowych.
-* **Dynamiczny**, w którym dane na stronie ładowane są za pomocą np. JavaScript i analiza wymaga użycia narzędzi do symulacji przeglądarki (np. Selenium lub Playwright).
-
 ## Środowisko pracy 
 
 W języku Python możemy zastosować biblioteki, które pozwolą wykonać zapytanie do serwera i zinterpretować zawartość strony. W przypadku statycznego web scrapingu standardem jest zestaw `requests` oraz `beautifulsoup4`. Dodanie bibliotek do środowiska wykonujemy poleceniem:
