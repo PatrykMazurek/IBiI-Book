@@ -5,4 +5,5 @@
 * [Biblioteka Pandas](biblioteka-pandas.md)
 * [Filtracja i agregacja danych](materia_y_pandas.md)
 * [Obsługa plików](obsluga-plikow.md)
+* [Web Scraping - statyczny](web-scraping-statyczny.md)
 * [Zadania](zadania.md)

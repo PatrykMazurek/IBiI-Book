@@ -25,3 +25,10 @@
    5. Wskaż, ile placówek publicznych i niepublicznych (kolumna `Publiczność`) znajduje się w poszczególnych województwach. Przedstaw dane dla obu roczników.
    6. Dla każdego województwa oblicz medianę oraz maksymalną liczbę uczniów będących na nauczaniu domowym. Wykorzystaj do tego zadania metodę `agg()`. Przedstaw dane dla obu roczników.
    7. Sprawdź, ile placówek nie posiada adresu e-mail we własnej domenie, lecz korzysta z poczty w domenie ogólnej (np. gmail, wp itp.). Przedstaw dane dla obu roczników.
+
+### Lab 3 
+
+1. **Wyszukiwarka autorska:** Napisz skrypt w Pythonie, który pobierze od użytkownika imię i nazwisko autora. Następnie przeszukaj stronę z cytatami (uwzględniając paginację), wyciągnij wyłącznie cytaty tego autora i wypisz je na ekranie. Jeśli autor nie występuje w bazie, wyświetl komunikat: *"Brak cytatów tego autora"*.
+2. **Kategorie książek:** Korzystając ze strony [https://books.toscrape.com/](https://books.toscrape.com/), pobierz listę wszystkich dostępnych kategorii książek. Dla każdej kategorii sprawdź liczbę znajdujących się w niej pozycji, a wyniki zapisz w postaci tabelarycznej przy użyciu biblioteki `pandas` (`DataFrame`).
+3. **Analiza cenowa:** Bazując na poprzednim zadaniu, wybierz 5 dowolnych kategorii, a następnie z każdej z nich pobierz 5 najdroższych książek. Dla każdej książki zwróć: tytuł, cenę, szczegółowy opis, kod UPC oraz liczbę dostępnych sztuk w magazynie.
+4. **Logowanie do systemu testowego:** Serwis Web Scraper Test Sites udostępnia sekcję logowania pod adresem [https://webscraper.io/test-sites/website-state-setup-login](https://webscraper.io/test-sites/website-state-setup-login). Twoim zadaniem jest napisanie skryptu, który automatycznie przejdzie proces logowania (używając sesji i odpowiednich danych formularza), a następnie odczyta dane dostępne wyłącznie po zalogowaniu i zapisze je do pliku lokalnego.
