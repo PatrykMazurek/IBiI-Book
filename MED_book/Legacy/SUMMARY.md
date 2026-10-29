@@ -10,3 +10,4 @@
 * [Obsługa plików](obsluga-danych/obsluga-plikow.md)
 * [Zadania](obsluga-danych/zadania.md)
 * [Matplotlib](matplotlib/pakiet-matplotlib.md)
+* [ead](ead/ead.md)
