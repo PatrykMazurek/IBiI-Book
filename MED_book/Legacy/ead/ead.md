@@ -1,6 +1,6 @@
-# Eksploracyjna analiza danych
+# Eksploracyjna Analiza Danych
 
-### Miary tendencji centralnej 
+### Miary tendencji centralnej
 
 Miary tendencji centralnej pozwalają określić środek ciężkości rozkładu danych. Ich głównym celem jest wskazanie typowej wartości, wokół której skupiają się zebrane obserwacje (np. za pomocą średniej arytmetycznej, mediany czy dominanty).
 
@@ -16,7 +16,7 @@ import numpy as np
 
 ### Mediana
 
-Mediana wyznacza punkt środkowy w grupie uporządkowanych (posortowanych) obserwacji. Jeśli liczba obserwacji ($N$) jest nieparzysta, mediana to wartość znajdująca się dokładnie w środku ciągu. Jeśli liczba obserwacji jest parzysta, mediana jest średnią arytmetyczną dwóch środkowych wartości. W przeciwieństwie do średniej arytmetycznej, mediana jest odporna na wartości odstające.
+Mediana wyznacza punkt środkowy w grupie uporządkowanych (posortowanych) obserwacji. Jeśli liczba obserwacji (_N_) jest nieparzysta, mediana to wartość znajdująca się dokładnie w środku ciągu. Jeśli liczba obserwacji jest parzysta, mediana jest średnią arytmetyczną dwóch środkowych wartości. W przeciwieństwie do średniej arytmetycznej, mediana jest odporna na wartości odstające.
 
 ```python
 salaries = pd.Series([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 150])
@@ -39,21 +39,23 @@ print(f"Dominanta (najczęstsza wartość): {bugs_per_commit.mode()[0]}")
 
 ### Wariancja
 
-Wariancja mierzy rozproszenie (odchylenie) danych wokół średniej. Stanowi ona wartość przeciętną kwadratów różnic pomiędzy obserwowanymi wartościami a średnią. Głównym problemem w interpretacji wariancji jest jej jednostka – ze względu na podnoszenie różnic do kwadratu, jednostka wariancji to kwadrat jednostki oryginalnych danych (np. metry kwadratowe zamiast metrów). 
+Wariancja mierzy rozproszenie (odchylenie) danych wokół średniej. Stanowi ona wartość przeciętną kwadratów różnic pomiędzy obserwowanymi wartościami a średnią. Głównym problemem w interpretacji wariancji jest jej jednostka – ze względu na podnoszenie różnic do kwadratu, jednostka wariancji to kwadrat jednostki oryginalnych danych (np. metry kwadratowe zamiast metrów).
 
-Załóżmy, że $x_1, x_2, \dots, x_N$ stanowią $N$ obserwacji, a $\overline{x}$ to ich średnia. Wzór na wariancję (populacyjną) wygląda następująco:
+Załóżmy, że x<sup>1</sup> x<sup>2</sup>, ..., x<sup>n</sup> stanowią _N_ obserwacji, a  to ich średnia. Wzór na wariancję (populacyjną) wygląda następująco:
+
 $$
 \sigma^2 = \frac{1}{N}\sum_{i=1}^{N}(x_i - \overline{x})^2
 $$
 
 ### Odchylenie standardowe
 
-Odchylenie standardowe to po prostu pierwiastek kwadratowy z wariancji. Dzięki tej operacji jednostka odchylenia standardowego jest taka sama jak jednostka pierwotnych obserwacji. Ułatwia to analitykowi ocenę, jak bardzo dane różnią się od wartości średniej. 
+Odchylenie standardowe to po prostu pierwiastek kwadratowy z wariancji. Dzięki tej operacji jednostka odchylenia standardowego jest taka sama jak jednostka pierwotnych obserwacji. Ułatwia to analitykowi ocenę, jak bardzo dane różnią się od wartości średniej.
 
-* Mniejsza wartość odchylenia standardowego oznacza, że obserwacje są skupione blisko średniej (rozproszone w mniejszym zakresie). 
+* Mniejsza wartość odchylenia standardowego oznacza, że obserwacje są skupione blisko średniej (rozproszone w mniejszym zakresie).
 * Większa wartość odchylenia standardowego wskazuje na to, że dane są silnie rozproszone.
 
 Wzór na odchylenie standardowe prezentuje się następująco:
+
 $$
 \sigma = \sqrt{\frac{1}{N}\sum_{i=1}^{N}(x_i - \overline{x})^2}
 $$
@@ -71,7 +73,7 @@ print(f"Serwer 2 (niestabilny) - Odchylenie: {server_2.std():.2f} ms")
 
 **Skośność** mierzy asymetrię rozkładu. Określa stopień, w jakim rozkład odchyla się od idealnie symetrycznego rozkładu normalnego. Skośność może przyjmować wartości dodatnie, ujemne lub równe zero:
 
-* Wartość równa $0$ oznacza idealnie symetryczny kształt rozkładu (często typowy dla rozkładu normalnego).
+* Wartość równa 0 oznacza idealnie symetryczny kształt rozkładu (często typowy dla rozkładu normalnego).
 * **Skośność dodatnia** (prawostronna) jest widoczna na wykresie jako ogon wydłużony w prawo. Oznacza to, że wartości odstające znajdują się po prawej stronie, a większość typowych danych skupia się po lewej. Występuje najczęściej, gdy średnia jest większa od mediany i dominanty.
 * **Skośność ujemna** (lewostronna) charakteryzuje się ogonem wydłużonym w lewo. Elementy odstające znajdują się po lewej stronie, a większość danych koncentruje się z prawej strony. Występuje, gdy średnia jest mniejsza od mediany i dominanty.
 
@@ -110,17 +112,14 @@ Kowariancja mierzy kierunek związku pomiędzy parą zmiennych. Ukazuje, w jakim
 
 ### Współczynnik korelacji Pearsona
 
-Korelacja dostarcza nam więcej informacji o sile relacji pomiędzy zmiennymi. Współczynnik korelacji liniowej Pearsona to znormalizowana wersja kowariancji. Jego wartość zawsze mieści się w przedziale $[-1, 1]$.
+Korelacja dostarcza nam więcej informacji o sile relacji pomiędzy zmiennymi. Współczynnik korelacji liniowej Pearsona to znormalizowana wersja kowariancji. Jego wartość zawsze mieści się w przedziale \[-1, 1].
 
 * **Wartość ujemna** reprezentuje korelację odwrotną – wzrost wartości jednej zmiennej wiąże się ze spadkiem wartości drugiej zmiennej.
 * **Wartość dodatnia** reprezentuje korelację wprost proporcjonalną – wzrost wartości jednej zmiennej wiąże się ze wzrostem wartości drugiej.
-* **Wartość $0$** wskazuje na brak korelacji liniowej między zmiennymi (choć mogą być ze sobą powiązane w sposób nieliniowy).
+* **Wartość 0** wskazuje na brak korelacji liniowej między zmiennymi (choć mogą być ze sobą powiązane w sposób nieliniowy).
 
 ### Współczynnik korelacji rang Spearmana
 
 Współczynnik korelacji rang Spearmana to nieparametryczny odpowiednik współczynnika Pearsona, który bada relację monotoniczną. Zamiast pracować na bezpośrednich wartościach liczbowych, ocenia siłę relacji dla ich rang (pozycji w posortowanym zbiorze). Najpierw rangujemy obserwacje obu zmiennych, a następnie obliczamy klasyczną korelację na tak przygotowanych rangach. Mechanizm ten można stosować zarówno do ciągłych, jak i dyskretnych zmiennych porządkowych.
 
 Korzystamy z korelacji rang Spearmana (zamiast korelacji Pearsona) w przypadku skośnych rozkładów danych, zależności nieliniowych (ale monotonicznych) oraz przy występowaniu licznych elementów odstających, ponieważ miara ta jest na nie znacznie bardziej odporna.
-
-## Zadania
-

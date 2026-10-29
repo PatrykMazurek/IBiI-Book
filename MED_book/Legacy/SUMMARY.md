@@ -10,10 +10,13 @@
 * [Obsługa plików](obsluga-danych/obsluga-plikow.md)
 
 ## Wykresy i prezentacja danych
+
 * [Matplotlib](matplotlib/pakiet-matplotlib.md)
 
 ## Eksploracyjna analiza danych
-* [ead](ead/ead.md)
+
+* [Eksploracyjna Analiza Danych](ead/ead.md)
 
 ## Zadania
+
 * [Zadania](obsluga-danych/zadania.md)
