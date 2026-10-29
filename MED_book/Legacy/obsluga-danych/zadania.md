@@ -43,3 +43,54 @@ Rozwiąż następujące zadania:
    4. Kolumna `timestamp_unix` zawiera znacznik czasowy. Przekonwertuj ją na czas i policz, ile połączeń występuje w każdej godzinie. Wyniki przedstaw na wykresie liniowym.
 
 Dla każdego wykresu opisz osie, nadaj tytuł wykresu oraz legendę.
+
+### Lab 4
+
+1. Wczytaj dane z pliku `ds_salaries.csv`, a następnie oblicz średnią arytmetyczną i medianę dla kolumny `salary_in_usd`. Zidentyfikuj wartości odstające na podstawie odchylenia standardowego i odfiltruj rekordy, których wartość przekracza 3-krotność odchylenia standardowego od średniej. Na wykresie pudełkowym narysuj rozkład dla kolumny `salary_in_usd` przed i po filtracji.
+2. Wczytaj dane z pliku `googleplaystore.csv`, który zawiera informacje o aplikacjach w sklepie Google Play. Na początku sprawdź, czy w kolumnie `Rating` występują puste rekordy (braki danych) – jeżeli tak, to je usuń. Następnie na podstawie kolumny `Rating` oblicz dominantę i narysuj histogram ocen. 
+3. Wczytaj dane z pliku `KAG_energydata_complete.csv`. Sprawdź, czy nie występują braki danych w kolumnach od `T1` do `T9` – jeżeli wystąpią, usuń wybrakowane rekordy. Następnie przeanalizuj temperatury i oblicz wariancję oraz odchylenie standardowe dla każdego pomieszczenia, wskazując, które z nich charakteryzuje się najbardziej stabilną temperaturą. Korzystając z histogramów, przedstaw rozkład temperatur na wykresie.
+4. Korzystając ze zbioru NYC Taxis (`taxis`) wbudowanego w bibliotekę `seaborn`, załaduj dane do ramki danych. Sprawdź, czy w kolumnie `distance` występują braki danych oraz wartości nietypowe (kursy o ujemnej lub zerowej długości). Jeśli takie występują, usuń te rekordy. Oblicz wartości kurtozy i skośności dla kolumny `distance`. Następnie dodaj nową kolumnę o nazwie `distance_log`, którą uzupełnisz zlogarytmowaną wartością dystansu w tym celu zastosuj funkcję `np.log1p(df["distance"])`. Przygotuj wykresy gęstości dla kolumn `distance` oraz `distance_log`. Aby to zrobić, zapoznaj się z wykresem KDE (Kernel Density Estimation) dostępnym w bibliotece `seaborn`.
+
+Pliki do zadań 1-3 można pobrać za pomocą następujących skryptów:
+
+**Zadania 1**
+
+```python
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
+
+file_path = "ds_salaries.csv"
+
+df = kagglehub.load_dataset(
+  KaggleDatasetAdapter.PANDAS,
+  "ruchi798/data-science-job-salaries",
+  file_path,
+)
+```
+
+**Zadanie 2**
+
+```python
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
+
+file_path = "googleplaystore.csv"
+
+df = kagglehub.load_dataset(
+  KaggleDatasetAdapter.PANDAS,
+  "lava18/google-play-store-apps",
+  file_path,
+)
+```
+**Zadanie 3**
+```python
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
+
+file_path = "KAG_energydata_complete.csv"
+
+df = kagglehub.load_dataset(
+  KaggleDatasetAdapter.PANDAS,
+  "loveall/appliances-energy-prediction",
+  file_path,)
+```
