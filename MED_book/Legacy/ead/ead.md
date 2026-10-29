@@ -108,7 +108,7 @@ Zrozumienie relacji występujących między zmiennymi jest kluczowe w analizie d
 
 ### Kowariancja
 
-Kowariancja mierzy kierunek związku pomiędzy parą zmiennych. Ukazuje, w jakim stopniu i kierunku zmiana jednej zmiennej wpływa na zmianę drugiej. Jej wartość mieści się w nieograniczonym zakresie od $-\infty$ do $+\infty$. Głównym problemem w pracy z kowariancją jest fakt, że uzyskane wyniki są trudne w interpretacji co do siły związku, ponieważ miara ta nie jest znormalizowana i zależy od jednostek badanych cech.
+Kowariancja mierzy kierunek związku pomiędzy parą zmiennych. Ukazuje, w jakim stopniu i kierunku zmiana jednej zmiennej wpływa na zmianę drugiej. Jej wartość mieści się w nieograniczonym zakresie od $$-\infty$$ do  $$+\infty$$ Głównym problemem w pracy z kowariancją jest fakt, że uzyskane wyniki są trudne w interpretacji co do siły związku, ponieważ miara ta nie jest znormalizowana i zależy od jednostek badanych cech.
 
 ### Współczynnik korelacji Pearsona
 
