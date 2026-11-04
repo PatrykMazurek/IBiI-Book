@@ -5,4 +5,5 @@
 * [Filtracja i agregacja danych](materia_y_pandas.md)
 * [Obsługa plików](obsluga-plikow.md)
 * [Web Scraping - statyczny](web-scraping-statyczny.md)
+* [Web Scraping - dynamiczny](web-scraping-dynamiczny.md)
 * [Zadania](zadania.md)
