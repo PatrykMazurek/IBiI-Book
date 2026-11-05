@@ -109,6 +109,16 @@ driver.quit()
 Powyższy skrypt przeszukuje stronę i zwraca element w zależności od wskazanego atrybutu i jego zawartości. Klasa `By` pozwala na zdefiniowanie po jakich elementach ma być wyszukiwana zawartość np `By.CLASS_NAME`, `By.ID`, `By.TAG_NAME`, itp.
 Przedstawiony przykłąd stosuje sposób `By.XPATH`, daje to duże możliwości w sytuacjach kiedy zawartość może się zmieniać. [Przykłąd zastosowania XPath](https://serpapi.com/blog/xpath-selector-cheat-sheet-practical-examples-included/).
 
+## Paginacja
+
+Poniższy przykład przedstawia sposób przejście do kolejnych podstron:
+```python
+
+```
+
+Powyższy skrypt przedstawia jak można wykonać przejście pomiędzy podstronami. 
+
+
 ## Integracja z interfejsem i formularzami 
 
 Poniższy skrypt przedstawia przykłąd zastosowania modułu `Keys` do uzupełnienia formularza i zatwierdzenia go.
@@ -172,3 +182,66 @@ driver.quit()
 Powyższy skrypt odpytuje stronę i za pomocą modułu `WebDriverWait()` wykonuje wstrzymanie na maksymalnie 10 sekund lub do momentu załadowania elementu `iframe`. W przypadku kiedy na stronie znajduje się element `iframe` musimy przełączyć się do tego elementu stosując `switch_to.frame()` a do powrotu do głównego elementu `switch_to.default_content()`.
 Obsługa linków z atrybutem `target="_blank"`. WebDriver wymaga iteracji po zadeklarowanych w systemie uchwytach okien (`window_handles`) i manualnego przesterowania wskaźnika (`switch_to.window()`) na nową zakładkę przed próbą parsowania jej zawartości.
 
+## Obsługa wyjątków
+
+Najpopularniejsze wyjątki jakie można obsługiwać w bibliotece `selenium`
+
+1. **NoSuchElementException** - Występuje w sytuacji kiedy nie ma elementu na stronie lub strona zostałą zmodyfikowana.
+```python
+from selenium.common.exceptions import NoSuchElementException
+
+try:
+    cena = driver.find_element(By.CLASS_NAME, "product-price")
+    print(cena.text)
+except NoSuchElementException:
+    print("Nie znaleziono ceny – produkt wyprzedany lub ukryty.")
+```
+2. **TimeoutException** - Występuje w sytuacji kiedy przekroczony zostanie czas oczekiwania na element.
+```python
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+try:
+    przycisk = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable((By.ID, "load-more-comments"))
+    )
+    przycisk.click()
+except TimeoutException:
+    print("Komentarze nie załadowały się w ciągu 5 sekund. Pomijam sekcję.")
+```
+3. **StaleElementReferenceException** - Występuje w sytuacjach kiedy referencja do elementu zostaje zmodyfikowana przez framework i staje się nie aktualna.
+```python
+from selenium.common.exceptions import StaleElementReferenceException
+
+try:
+    przycisk = driver.find_element(By.ID, "refresh-data")
+    przycisk.click()
+except StaleElementReferenceException:
+    print("DOM się odświeżył! Szukam elementu ponownie, aby w niego kliknąć.")
+    przycisk = driver.find_element(By.ID, "refresh-data")
+    przycisk.click()
+```
+4. **ElementClickInterceptedException** - Występuje w sytuacjach kiedy inny element zasłania możliwość kliknięcia w przycisk np. informacja o ciasteczkach lub inny baner.
+```python
+from selenium.common.exceptions import ElementClickInterceptedException
+
+try:
+    przycisk_kup = driver.find_element(By.ID, "buy-now")
+    przycisk_kup.click()
+except ElementClickInterceptedException:
+    print("Coś zasłania przycisk! Wymuszam kliknięcie przez wstrzyknięcie JavaScriptu.")
+    # JavaScript ignoruje warstwy wizualne (z-index) i uderza prosto w element w drzewie DOM
+    driver.execute_script("arguments[0].click();", przycisk_kup)
+```
+5. **WebDriverException** - błąd komunikacji z przedlądarką. Występuje w sytuacjach kiedy wersja ChromeDrive jest inna niż wersja przeglądarki lub brakuje pamięci.
+```python
+from selenium.common.exceptions import WebDriverException
+
+try:
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://quotes.toscrape.com")
+except WebDriverException as e:
+    print("Krytyczny błąd środowiska: Nie udało się uruchomić przeglądarki.")
+    print(f"Log błędu do analizy: {e}")
+```
