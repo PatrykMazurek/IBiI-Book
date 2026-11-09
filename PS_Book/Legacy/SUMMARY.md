@@ -4,8 +4,9 @@
 * [Wątki](watki.md)
 * [Wątki - zarządzanie](watki-zarzadzanie.md)
 
-## Połączenie klien - serwer
+## Połączenie klient - serwer
 
 * [Wprowadzenie TCP/UDP](komunikacja-tcp-udp/polaczenia-tcp-udp.md)
 * [Połączenie TCP](komunikacja-tcp-udp/polaczenie-tcp.md)
 * [Połączenie UDP](komunikacja-tcp-udp/polaczenie-udp.md)
+* [Szyfrowanie połączenia](komunikacja-tcp-udp/zabezpieczenie_tls_ssl.md)

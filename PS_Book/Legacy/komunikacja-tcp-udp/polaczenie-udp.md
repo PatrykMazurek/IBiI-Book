@@ -80,6 +80,10 @@ W obu przykładach nie występują żadne pakiety kontrolne ani procesy handshak
 
 ***
 
+### Zadania dodatkowe
+
+1. 
+
 #### Literatura
 
 
