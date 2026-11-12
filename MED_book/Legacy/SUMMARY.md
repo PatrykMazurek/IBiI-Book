@@ -17,6 +17,10 @@
 
 * [Eksploracyjna Analiza Danych](ead/ead.md)
 
+## Klasyfikatory
+
+* [Klasyfikatory](klasyfikatory/klasyfikatory.md)
+
 ## Zadania
 
 * [Zadania](obsluga-danych/zadania.md)

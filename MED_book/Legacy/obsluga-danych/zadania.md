@@ -159,3 +159,24 @@ df = kagglehub.load_dataset(  KaggleDatasetAdapter.PANDAS,  "mrwellsdavid/unsw-n
 
 print("First 5 records:", df.head())
 ```
+
+### Lab 6
+
+1. Odczytaj plik `login.csv` i podziel dane na dwa zbiory: uczący i testowy (80/20). Przy podziale nie zapomnij zastosować `stratify`. Wytrenuj klasyfikator drzew decyzyjnych i sprawdź jego działanie, obliczając wskaźniki: `Confusion matrix`, `Accuracy`, `Precision`, `Recall`. Możesz do tego zastosować funkcję `classification_report`. 
+    Zapoznaj się z metodą `plot_tree` lub `export_text` z pakietu `sklearn.tree` i przedstaw reguły wyuczone przez klasyfikator. Przy generowaniu tekstu lub wykresu nie zapomnij zastosować parametru `feature_names` z listą kolumn. Zidentyfikuj najdłuższą ścieżkę do liścia z decyzją "zablokowany". Wytrenuj ponownie model, zmieniając parametr `max_depth` na 2 i sprawdź, jak wpłynie to na czułość (`recall`) klasyfikatora.
+2. Odczytaj dane z pliku `transakcje.csv` i przygotuj dane do trenowania lasów losowych. Po wytrenowaniu modelu przeanalizuj macierz pomyłek. Wyciągnij z wytrenowanego modelu wektor `feature_importances_` i stwórz wykres słupkowy pokazujący 3 najważniejsze cechy, którymi kierują się lasy losowe przy wykrywaniu oszustw.
+3. Odczytaj dane ze zbioru `SMS Spam Collection Dataset`, sprawdź, czy występują braki w kolumnach `class` lub `sms` (pozostałe kolumny pomiń). Podziel dane na dwa zbiory: uczący i testowy (80/20). Przy podziale nie zapomnij zastosować `stratify`. Wytrenuj naiwny klasyfikator Bayesa, a następnie sprawdź jego skuteczność, wyświetlając macierz pomyłek. Spróbuj stworzyć swoje własne wiadomości, aby przetestować działanie klasyfikatora na realnych danych.
+
+Skrypt do pobrania plików do zadania 3:
+```python
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
+
+# Set the path to the file you'd like to load
+file_path = "spam.csv"
+
+# Load the latest version
+df = kagglehub.load_dataset( KaggleDatasetAdapter.PANDAS, "uciml/sms-spam-collection-dataset", file_path,)
+
+print("First 5 records:", df.head())
+```
