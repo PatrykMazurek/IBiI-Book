@@ -15,6 +15,8 @@ Powyższe polecenie wygeneruje dwa pliki: publiczny certyfikat (`server.crt`) or
 
 W środowisku testowym musimy przekazać klientowi wygenerowany certyfikat, tak aby aplikacja mogła swobodnie działać. W realnych przypadkach korzystać będziemy z certyfikatów i kluczy wygenerowanych przez certyfikowane organizacje zewnętrzne. Korzystanie z zewnętrznych organizacji pozwala na ułatwienie komunikacji, a systemy operacyjne posiadają wbudowaną bazę zaufanych certyfikatów.
 
+### Szyfrowanie TCP
+
 #### Dołożenie warstwy szyfrującej
 
 Podstawowym rozwiązaniem na szyfrowane połączenie jest zastosowanie biblioteki `ssl`, za pomocą której możemy do połączenia TCP dołożyć warstwę szyfrującą.
@@ -152,6 +154,12 @@ if ca_certs:
     # Zwrócony certyfikat zawiera m.in. klucz 'subject' (kogo dotyczy) i 'issuer' (kto wydał)
     pprint.pprint(ca_certs[0]['subject'])
 ```
+
+### Szyfrowanie UDP 
+
+#### Szyfrowanie UDP/DTLS
+
+Dodanie warstwy szyfrującej dla protokołu UDP 
 
 #### Zadania
 
