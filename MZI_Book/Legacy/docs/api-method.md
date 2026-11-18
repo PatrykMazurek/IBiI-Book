@@ -6,7 +6,7 @@ Z kolei API (ang. Application Programming Interface) to interfejs, który pozwal
 
 W praktyce REST API opiera się na protokole HTTP. Oznacza to, że wszystkie operacje wykonujesz za pomocą standardowych żądań HTTP, które już znasz z codziennego przeglądania internetu.
 
-## Metody i cody HTTP
+## Metody i kody HTTP
 
 Najczęstsze metody HTTP
 
@@ -33,7 +33,7 @@ Najczęstsze kody HTTP
 | `500` Internal Server Error	 | Wewnętrzny błąd serwera          |
 
 Więcej informacji na temat: 
-[HTTP Request Methods](Brak poprawnego uwierzytelnienia) i 
+[HTTP Request Methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods?utm_source=chatgpt.com) i 
 [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status?utm_source=chatgpt.com)
 
 ## Środowisko pracy 
