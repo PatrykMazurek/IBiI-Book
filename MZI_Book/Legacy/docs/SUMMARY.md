@@ -6,4 +6,5 @@
 * [Obsługa plików](obsluga-plikow.md)
 * [Web Scraping - statyczny](web-scraping-statyczny.md)
 * [Web Scraping - dynamiczny](web-scraping-dynamiczny.md)
+* [REST API](api-method.md) 
 * [Zadania](zadania.md)
