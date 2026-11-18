@@ -10,7 +10,6 @@ def get_local_info():
         local_ip = '127.0.0.1'
     finally:
         s.close()
-
     return hostname, local_ip
 
 def udp_discovery_server(host='0.0.0.0', port=5006):

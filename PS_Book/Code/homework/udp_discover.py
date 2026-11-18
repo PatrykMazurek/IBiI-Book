@@ -3,7 +3,7 @@ import socket, os
 
 
 def discover_broadcast():
-    network = ipaddress.IPv4Network("192.168.1.0/24", strict=False)
+    network = ipaddress.IPv4Network("172.26.9.0/24", strict=False)
     print(f"Adres adres rozgłoszeniowy: {network.broadcast_address}")
     return network
 

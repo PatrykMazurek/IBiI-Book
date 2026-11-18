@@ -2,7 +2,7 @@ import ssl, socket
 
 HOST = "pi-server.home"
 SERVER_NAME = "pi-server"
-PORT =  8443
+PORT =  5057
 
 CA_CERT = "cert/server.crt"
 

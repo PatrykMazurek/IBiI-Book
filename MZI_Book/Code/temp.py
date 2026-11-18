@@ -2,15 +2,23 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import os
+import requests
 
-def read_file(file_path):
 
-    data = pd.read_csv(file_path)
-    print(data.info())
-    # data.to_csv(os.path.join("file", "Games_2.csv"), decimal=";", index=False)
-    print(data["year"])
-    
+# url = "https://api.nbp.pl/api/exchangerates/tables/A/"
+url = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&timezone=Europe%2FLondon&forecast_days=3"
+# Parametry doklejane do adresu URL
+# query_params = {
+#     "apikey": "d8ad4e9f",
+#     "t" : "Game of Thrones"
+# }
 
-if __name__=="__main__":
-    path_to_file = os.path.join("file","Games_2.csv")
-    read_file(path_to_file)
+# Nagłówki zawierające m.in. klucz API
+# headers = {
+#     "Accept": "application/json"
+# }
+
+response = requests.get(url)
+if response.status_code ==200:
+    print("Zapytanie ok")
+    print(response.text)
