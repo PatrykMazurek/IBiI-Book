@@ -21,7 +21,7 @@
 
 * [uczenie nadzorowane](klasyfikatory/nauczenie-nadzorowane.md)
 * [uczenie nienadzorowane](klasyfikatory/uczenie-nienadzorowane.md)
-* [ocena klasyfikatorów](klasyfikatory/ocena-klasyfikator%C3%B3w.md)
+* [ocena klasyfikatorów](klasyfikatory/ocena-klasyfikatorów.md)
 
 ## Zadania
 
