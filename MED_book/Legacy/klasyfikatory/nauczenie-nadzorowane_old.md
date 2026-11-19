@@ -364,4 +364,82 @@ decyzja = knn_clf.predict(nowy_pakiet_scaled)
 print(f"\nWerdykt dla nowego pakietu: {'ATAK DDOS 🔴' if decyzja[0] == 1 else 'RUCH NORMALNY 🟢'}")
 ```
 
+#### Maszyna Wektorów Nośnych (SVM)
 
+Support Vector Machine (SVM) to algorytm uczenia maszynowego, którego głównym zadaniem jest znajdowanie granicy oddzielającej od siebie różne klasy danych.
+
+Jest to algorytm uczenia nadzorowaneo czyli bazuje na danych historycznych, któe są opisane (etykietowane). SVM ma za zadanie wyszukać granice decyzyjności w zależności od zastosowania może to być określenie ruchu sieciowego.
+
+Algorytm posiada kilka ważnych pijęć:
+
+* **Hiperpłaszczyzna** - Granica decyzyjna rozdzielająca dane na klasy. Jej wymiar zależy od liczby cech w zbiorze danych.
+* **Wektory nośne** - Punkty danych najbliższe hiperpłaszczyźnie, które definiują jej orientację i maksymalizują margines.
+* **Margines** -  Największa odległość pomiędzy punktami danych dwóch klas a hiperpłaszczyzną. Szerszy margines oznacza bardziej stabilny model.
+
+#### Typy jąder (Kernel)
+
+Wybór odpowiedniego jądra jest kluczowy dla skuteczności algorytmu i zależy od natury danych oraz zadania.
+
+**Typy:**
+1. Liniowe jądro
+  * Opis: Stosowane, gdy dane są liniowo separowalne.
+  * Zalety: Szybkie obliczeniowo i proste w interpretacji.
+  * Przykład zastosowania: Analiza tekstu, klasyfikacja obrazów w niskowymiarowych przestrzeniach.
+
+2. RBF (Gaussian) jądro
+- Opis: Umożliwia modelowanie złożonych, nieliniowych zależności.
+- Zalety: Wszechstronne i skuteczne dla większości nieliniowych problemów.
+- Przykład zastosowania:** Rozpoznawanie obrazów, analiza bioinformatyczna.
+
+3. Jądro wielomianowe (Polynomial)
+- Opis: Stosowane, gdy zależności między cechami mają charakter wielomianowy.
+- Zalety: Pozwala na modelowanie bardziej złożonych nieliniowych zależności.
+
+4. Jądro sigmoidalne (Sigmoid)
+- Opis: Często używane w zadaniach inspirowanych sieciami neuronowymi.
+- Zalety: Przydatne w zadaniach klasyfikacyjnych z bardziej specyficznymi zależnościami.
+
+Wybór jądra to kluczowy etap budowy modelu SVM. Eksperymenty z różnymi typami jąder i dostrajanie ich parametrów pozwalają na osiągnięcie najlepszego dopasowania do danych i maksymalizacji skuteczności algorytmu.
+
+#### Przykładowy algorytm
+
+```python
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report, confusion_matrix
+
+# 1. PRZYGOTOWANIE DANYCH (Profilowanie ruchu sieciowego)
+data = {
+    'req_per_min': [15, 20, 18, 500, 480, 22, 12, 510, 19, 530],
+    'avg_size_kb': [5.2, 4.8, 5.0, 1.2, 1.5, 6.1, 4.5, 1.1, 5.5, 1.0],
+    'zagrozenie':  [0, 0, 0, 1, 1, 0, 0, 1, 0, 1]
+}
+df = pd.DataFrame(data)
+
+X = df[['req_per_min', 'avg_size_kb']]
+y = df['zagrozenie']
+
+# 2. PODZIAŁ DANYCH
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+# 3. SKALOWANIE CECH
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# 4. TRENOWANIE MODELU SVM
+svm_clf = SVC(C=1.0, kernel='rbf', random_state=42)
+svm_clf.fit(X_train_scaled, y_train)
+
+# 5. EWALUACJA (Tekstowa)
+y_pred = svm_clf.predict(X_test_scaled)
+print("=== RAPORT KLASYFIKACJI (SVM) ===")
+print(classification_report(y_test, y_pred))
+print(f"Liczba wektorów nośnych: {sum(svm_clf.n_support_)}")
+
+```

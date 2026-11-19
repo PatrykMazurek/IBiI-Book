@@ -2,72 +2,74 @@
 
 ## Przykładowe algorytmy
 
-Algorytmy, które należą do uczenia nienadzorowanego
-* k- średnich (k-means)
+Algorytmy, które należą do uczenia nienadzorowanego:
+* k-średnich (k-means)
 
 ### K-średnich (k-means)
 
-Algorytm należący do grupy algorytmów uczenia nienadzorowanego (Unsupervised Learning). K-means nie jest algorytmeme klasyfikacji a jest algorytmem klasteryzacji. Oznacza, to że algorytm ten w ogłle nie wie czym jest "Zagrożenie", a czym "Ruch normalny".  
+K-średnich to algorytm należący do grupy algorytmów uczenia nienadzorowanego (ang. *Unsupervised Learning*). K-means nie jest algorytmem klasyfikacji, lecz klasteryzacji. Oznacza to, że algorytm ten w ogóle nie wie, czym jest „Zagrożenie”, a czym „Ruch normalny”.
 
 #### Trenowanie modelu
 
-W odróżnieniu od klasycznych klasyfikatorów, do algorytmu K-mean dostarczamy tylko dane bez etykiet informujących czy dany rekord jest poprawny czy nie. Określamy na jakich cechach (kolumnach) chcemy klasteryzować dane, normaizujemy lub skalujemy dane tak aby można bło jee w łatwy sposób porówać. Następnie określana jest liczba klastórw, do których będą przypisane dane. Do każdego klastra określony jest środek (centroid), jest to śednia oległosć między kolejnymi elementami. Najczęściej stsowane metody do wyznaczania centroidów:
-* Metoda losowa - wybieramy K punktów ze zbioru
-* Metoda k-means++ - pierwszy punkt wybierany jest losow a kolejne jako najdalsze punkty od obecnych centroidów. 
+W odróżnieniu od klasycznych klasyfikatorów do algorytmu k-means dostarczamy wyłącznie dane bez etykiet informujących, czy dany rekord jest poprawny, czy nie. Najpierw określamy, na jakich cechach (kolumnach) chcemy klasteryzować dane, a następnie normalizujemy je lub skalujemy tak, aby można było je w łatwy sposób porównywać. W kolejnym kroku określamy liczbę klastrów, do których zostaną przypisane dane. 
 
-Po tym etapie możemy dostarczyć nową próbkę i sprawdzić do którego klastra zostanie przypisana.
+Dla każdego klastra wyznaczany jest środek (centroid) – jest to średnia pozycja (środek ciężkości) wszystkich punktów należących do danego klastra. Najczęściej stosowane metody wyznaczania początkowych centroidów to:
+* **Metoda losowa** – wybieramy losowo $K$ punktów ze zbioru.
+* **Metoda k-means++** – pierwszy punkt wybierany jest losowo, a kolejne z prawdopodobieństwem proporcjonalnym do kwadratu odległości od istniejących centroidów (preferowane są więc punkty bardziej oddalone).
 
-Parametr K możemy dobrać na podstawie dwóch metod:
+Po tym etapie możemy dostarczyć nową próbkę i sprawdzić, do którego klastra zostanie przypisana.
 
-**Metoda łokcia (Elbow Method)** 
+Parametr $K$ możemy dobrać na podstawie trzech metod:
 
-Metoda analizuje zależność pomiędzy liczbą klastrów a sumą kwadratów odległości punktów od centroidów, określaną jako WCSS (Within-Cluster Sum of Squares).
+**Metoda łokcia (Elbow Method)**
+
+Metoda analizuje zależność pomiędzy liczbą klastrów a sumą kwadratów odległości punktów od centroidów, określaną jako WCSS (*Within-Cluster Sum of Squares*).
 
 Wzór:
 $$
-WCSS=\sum_{j=1}^{K}\sum_{x_i\in C_j}\|x_i-\mu_j\|^2
+WCSS = \sum_{j=1}^{K}\sum_{x_i \in C_j}\|x_i - \mu_j\|^2
 $$
 
-Gdzie:
-- $(K)$ – liczba klastrów.
-- $(C_j)$ – zbiór punktów należących do klastra \(j\).
-- $(x_i)$ – wektor cech analizowanego punktu.
-- $(\mu_j)$ – centroid klastra \(j\).
+gdzie:
+- $K$ – liczba klastrów,
+- $C_j$ – zbiór punktów należących do klastra $j$,
+- $x_i$ – wektor cech analizowanego punktu,
+- $\mu_j$ – centroid klastra $j$.
 
-**Metoda sylwetki (Silhouette Score)** 
+**Metoda sylwetki (Silhouette Score)**
 
-Metoda ocenia, jak dobrze poszczególne punkty pasują do własnych klastrów w porównaniu z sąsiednimi klastrami.
-W przeciwieństwie do metody łokcia uwzględnia zarówno zwartość klastrów, jak i ich rozdzielenie.
+Metoda ocenia, jak dobrze poszczególne punkty pasują do własnych klastrów w porównaniu z sąsiednimi klastrami. W przeciwieństwie do metody łokcia uwzględnia zarówno zwartość klastrów, jak i ich rozdzielenie.
 
-Wzór
+Wzór:
 $$
-s(i)=\frac{b(i)-a(i)}{\max(a(i),b(i))}
+s(i) = \frac{b(i) - a(i)}{\max(a(i), b(i))}
 $$
 
-Gdzie:
-- $(a(i))$ – średnia odległość punktu \(i\) od pozostałych punktów w jego klastrze.
-- $(b(i))$ – najmniejsza średnia odległość punktu \(i\) od punktów innego klastra.4
+gdzie:
+- $a(i)$ – średnia odległość punktu $i$ od pozostałych punktów w jego klastrze,
+- $b(i)$ – najmniejsza średnia odległość punktu $i$ od punktów innego klastra.
 
 **Indeks Daviesa-Bouldina (Davies-Bouldin Index)**
 
-metoda bada, czy klastry są jednocześnie:
-- zwarte, czyli punkty znajdują się blisko własnych centroidów;
+Metoda bada, czy klastry są jednocześnie:
+- zwarte, czyli punkty znajdują się blisko własnych centroidów,
 - dobrze rozdzielone, czyli odległości między klastrami są odpowiednio duże.
 
 Metoda jest szczególnie przydatna jako dodatkowe kryterium, ponieważ ocenia zarówno rozproszenie punktów, jak i separację klastrów.
 
 Wzór:
 $$
-DB=\frac{1}{K}\sum_{i=1}^{K}\max_{j\ne i}
-\left(\frac{S_i+S_j}{M_{ij}}\right)
+DB = \frac{1}{K}\sum_{i=1}^{K}\max_{j \ne i}
+\left(\frac{S_i + S_j}{M_{ij}}\right)
 $$
 
-Gd4zie:
-- $(S_i,S_j)$ – miary rozproszenia punktów w klastrach.
-- $(M_{ij})$ – odległość między centroidami klastrów.
-- $(K)$ – liczba klastrów.
+gdzie:
+- $S_i, S_j$ – miary rozproszenia punktów w klastrach $i$ oraz $j$,
+- $M_{ij}$ – odległość między centroidami klastrów $i$ oraz $j$,
+- $K$ – liczba klastrów.
 
-#### Przykładowy algorytm
+#### Przykładowa implementacja (Python)
+
 ```python
 import pandas as pd
 import numpy as np
@@ -92,7 +94,7 @@ X_scaled = scaler.fit_transform(X)
 # 3. TRENOWANIE K-MEANS
 # Zakładamy biznesowo, że ruch dzieli się na 2 normalne profile (np. www i poczta)
 kmeans = KMeans(n_clusters=2, random_state=42, n_init=10)
-kmeans.fit(X_scaled) # Przekazujemy TYLKO X!
+kmeans.fit(X_scaled)  # Przekazujemy TYLKO X!
 
 # Przypisujemy każdemu pakietowi numer klastra, do którego trafił
 df['klaster'] = kmeans.labels_
@@ -112,6 +114,3 @@ df['alarm_zero_day'] = df['odleglosc_od_centrum'].apply(lambda x: "TAK 🔴" if 
 print("=== WYNIKI KLASTERYZACJI I DETEKCJI ANOMALII ===")
 print(df)
 ```
-
-
-

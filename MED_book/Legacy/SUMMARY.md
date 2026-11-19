@@ -19,9 +19,9 @@
 
 ## Klasyfikatory
 
-* [uczenie nadzorowane](klasyfikatory/nauczenie-nadzorowane.md)
+* [uczenie-nadzorowane](klasyfikatory/uczenie-nadzorowane.md)
 * [uczenie nienadzorowane](klasyfikatory/uczenie-nienadzorowane.md)
-* [ocena klasyfikatorów](klasyfikatory/ocena-klasyfikatorów.md)
+* [ocena-klasyfikatorow](klasyfikatory/ocena-klasyfikatorow.md)
 
 ## Zadania
 
