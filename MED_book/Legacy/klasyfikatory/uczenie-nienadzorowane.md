@@ -1,72 +1,81 @@
-# Uczenie nienadzorowane
+# uczenie nienadzorowane
 
 ## Przykładowe algorytmy
 
 Algorytmy, które należą do uczenia nienadzorowanego:
+
 * k-średnich (k-means)
 
 ### K-średnich (k-means)
 
-K-średnich to algorytm należący do grupy algorytmów uczenia nienadzorowanego (ang. *Unsupervised Learning*). K-means nie jest algorytmem klasyfikacji, lecz klasteryzacji. Oznacza to, że algorytm ten w ogóle nie wie, czym jest „Zagrożenie”, a czym „Ruch normalny”.
+K-średnich to algorytm należący do grupy algorytmów uczenia nienadzorowanego (ang. _Unsupervised Learning_). K-means nie jest algorytmem klasyfikacji, lecz klasteryzacji. Oznacza to, że algorytm ten w ogóle nie wie, czym jest „Zagrożenie”, a czym „Ruch normalny”.
 
 #### Trenowanie modelu
 
-W odróżnieniu od klasycznych klasyfikatorów do algorytmu k-means dostarczamy wyłącznie dane bez etykiet informujących, czy dany rekord jest poprawny, czy nie. Najpierw określamy, na jakich cechach (kolumnach) chcemy klasteryzować dane, a następnie normalizujemy je lub skalujemy tak, aby można było je w łatwy sposób porównywać. W kolejnym kroku określamy liczbę klastrów, do których zostaną przypisane dane. 
+W odróżnieniu od klasycznych klasyfikatorów do algorytmu k-means dostarczamy wyłącznie dane bez etykiet informujących, czy dany rekord jest poprawny, czy nie. Najpierw określamy, na jakich cechach (kolumnach) chcemy klasteryzować dane, a następnie normalizujemy je lub skalujemy tak, aby można było je w łatwy sposób porównywać. W kolejnym kroku określamy liczbę klastrów, do których zostaną przypisane dane.
 
 Dla każdego klastra wyznaczany jest środek (centroid) – jest to średnia pozycja (środek ciężkości) wszystkich punktów należących do danego klastra. Najczęściej stosowane metody wyznaczania początkowych centroidów to:
-* **Metoda losowa** – wybieramy losowo $K$ punktów ze zbioru.
+
+* **Metoda losowa** – wybieramy losowo `K` punktów ze zbioru.
 * **Metoda k-means++** – pierwszy punkt wybierany jest losowo, a kolejne z prawdopodobieństwem proporcjonalnym do kwadratu odległości od istniejących centroidów (preferowane są więc punkty bardziej oddalone).
 
 Po tym etapie możemy dostarczyć nową próbkę i sprawdzić, do którego klastra zostanie przypisana.
 
-Parametr $K$ możemy dobrać na podstawie trzech metod:
+Parametr `K` możemy dobrać na podstawie trzech metod:
 
 **Metoda łokcia (Elbow Method)**
 
-Metoda analizuje zależność pomiędzy liczbą klastrów a sumą kwadratów odległości punktów od centroidów, określaną jako WCSS (*Within-Cluster Sum of Squares*).
+Metoda analizuje zależność pomiędzy liczbą klastrów a sumą kwadratów odległości punktów od centroidów, określaną jako WCSS (_Within-Cluster Sum of Squares_).
 
 Wzór:
+
 $$
 WCSS = \sum_{j=1}^{K}\sum_{x_i \in C_j}\|x_i - \mu_j\|^2
 $$
 
 gdzie:
-- $K$ – liczba klastrów,
-- $C_j$ – zbiór punktów należących do klastra $j$,
-- $x_i$ – wektor cech analizowanego punktu,
-- $\mu_j$ – centroid klastra $j$.
+
+* `K` – liczba klastrów,
+* C<sub>j</sub> – zbiór punktów należących do klastra `j`,
+* x<sub>i</sub> – wektor cech analizowanego punktu,
+* u<sub>j</sub> – centroid klastra `j`.
 
 **Metoda sylwetki (Silhouette Score)**
 
 Metoda ocenia, jak dobrze poszczególne punkty pasują do własnych klastrów w porównaniu z sąsiednimi klastrami. W przeciwieństwie do metody łokcia uwzględnia zarówno zwartość klastrów, jak i ich rozdzielenie.
 
 Wzór:
+
 $$
 s(i) = \frac{b(i) - a(i)}{\max(a(i), b(i))}
 $$
 
 gdzie:
-- $a(i)$ – średnia odległość punktu $i$ od pozostałych punktów w jego klastrze,
-- $b(i)$ – najmniejsza średnia odległość punktu $i$ od punktów innego klastra.
+
+* `a(i)` – średnia odległość punktu `i` od pozostałych punktów w jego klastrze,
+* `b(i)` – najmniejsza średnia odległość punktu `i` od punktów innego klastra.
 
 **Indeks Daviesa-Bouldina (Davies-Bouldin Index)**
 
 Metoda bada, czy klastry są jednocześnie:
-- zwarte, czyli punkty znajdują się blisko własnych centroidów,
-- dobrze rozdzielone, czyli odległości między klastrami są odpowiednio duże.
+
+* zwarte, czyli punkty znajdują się blisko własnych centroidów,
+* dobrze rozdzielone, czyli odległości między klastrami są odpowiednio duże.
 
 Metoda jest szczególnie przydatna jako dodatkowe kryterium, ponieważ ocenia zarówno rozproszenie punktów, jak i separację klastrów.
 
 Wzór:
+
 $$
 DB = \frac{1}{K}\sum_{i=1}^{K}\max_{j \ne i}
 \left(\frac{S_i + S_j}{M_{ij}}\right)
 $$
 
 gdzie:
-- $S_i, S_j$ – miary rozproszenia punktów w klastrach $i$ oraz $j$,
-- $M_{ij}$ – odległość między centroidami klastrów $i$ oraz $j$,
-- $K$ – liczba klastrów.
+
+* S<sub>i</sub>, S<sub>j</sub> – miary rozproszenia punktów w klastrach `i` oraz `j`,
+* M\_{ij} – odległość między centroidami klastrów `i` oraz `j`,
+* `K` – liczba klastrów.
 
 #### Przykładowa implementacja (Python)
 
