@@ -12,10 +12,10 @@ Najczęstsze metody HTTP
 
 | Metoda   | Zastosowanie          |
 |----------|-----------------------|
-| `Get`    | Pobieranie danych     |
+| `GET`    | Pobieranie danych     |
 | `POST`   | Przesłanie danych     |
 | `PUT`    | Zastąpienie zasobu    |
-| `Patch`  | Częściowa modyfikacja |
+| `PATCH`  | Częściowa modyfikacja |
 | `DELETE` | Usunięcie zasobu      |
 
 Najczęstsze kody HTTP
@@ -85,6 +85,61 @@ headers = {
 
 response = requests.get(url, params=query_params, headers=headers)
 ```
+
+### Zapytania POST
+
+Przekazywanie treści wysyłając je w strumieniu
+
+### Aktualizacja i podmiana danych metody PUT i PATCH
+
+Aktualizacje wybranych rekordów możemy wykonać za pomocą metoda PUT. Metoda podmienia całe rekordy dlatego w przypadku pominięcia jakiegoś rekordu, dany rekord może zostać pominięty.
+
+```python
+import requests
+
+# Odwołujemy się do konkretnego zasobu (w URL znajduje się ID posta: 1)
+url = "https://jsonplaceholder.typicode.com/posts/1"
+payload_put = {
+    "id": 1,
+    "title": "Zaktualizowany tytuł",
+    "body": "Całkowicie nowa treść posta",
+    "userId": 1
+}
+
+response = requests.put(url, json=payload_put)
+print(f"Status: {response.status_code}") # Zazwyczaj 200 OK
+```
+
+Jeżeli wymagamy aktualizować tylko fragment danych można zastosować metodę PATCH, metoda działą podobnie jak metoda PUT tylko z bezpiecznym podejściem, że aktualizuje tylko fragment wskazany, a nie podmienia całego rekordu.
+
+```python
+import requests
+
+url = "https://jsonplaceholder.typicode.com/posts/1"
+
+# Wysyłamy tylko to pole, które uległo zmianie. Reszta zostaje nienaruszona.
+payload_patch = { "title": "Poprawiona literówka w tytule" }
+
+response = requests.patch(url, json=payload_patch)
+print(f"Status: {response.status_code}") # Zazwyczaj 200 OK
+print("Zaktualizowany zasób:", response.json())
+```
+
+### Usuwanie zasobów metoda DELETE
+
+Usuwanie zasobów z przez REST API można wykonać w poniższy sposób
+
+```python
+import requests
+
+# Wskazujemy post o ID 1 do usunięcia
+url = "https://jsonplaceholder.typicode.com/posts/1"
+
+response = requests.delete(url)
+print(f"Status: {response.status_code}")
+```
+
+### Pomocnicze informacje
 
 Aby uniknąć zablokowania aplikacji w sytuacji, kiedy serwer nie odpowie, można zabezpieczyć się metodą `timeout`.
 

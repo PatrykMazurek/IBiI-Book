@@ -184,3 +184,36 @@ df = kagglehub.load_dataset( KaggleDatasetAdapter.PANDAS, "uciml/sms-spam-collec
 
 print("First 5 records:", df.head())
 ```
+
+### Lab 7 
+
+
+
+1. Korzystając ze zbioru danych `UNSW-NB15_1.csv`, przygotuj dane do trenowania modelu `k-means`. W tym celu podziel zbiór na dwie części: treningową i testową. Ze zbioru treningowego wyfiltruj wyłącznie normalny ruch (`Label = 0`), a następnie usuń kolumny `Label`, `attack_cat` oraz pozostałe kolumny kategoryczne. Przeprowadź standaryzację cech (`StandardScaler`), dopasowując skaler na zbiorze treningowym.
+
+    Wyznacz optymalną liczbę klastrów za pomocą metody łokcia (Elbow Method – wykres inercji) i zaprezentuj wyniki na wykresie. Następnie wytrenuj model `k-means` dla wybranej liczby klastrów. Po wytrenowaniu modelu wyznacz próg alarmowy jako 95. procent odległości punktów ze zbioru treningowego od ich najbliższych centroidów.
+2. 
+    Przygotuj zbiór testowy w analogiczny sposób (usuń kolumny kategoryczne, odetnij `Label` i `attack_cat` na czas predykcji oraz zastosuj wcześniej dopasowany `StandardScaler`). Przeprowadź predykcję na zbiorze testowym i oceń wyniki, porównując je z rzeczywistymi etykietami. Przedstaw macierz pomyłek i metryki Precision, Recall, F1-score. 
+
+2. Wczytaj dane treningowe i testowe z pliku xyz.zip, zawierającego informacje o incydentach IDS. Porównaj działanie klasyfikatorów k-NN, Random Forest oraz Naive Bayes. Zestaw ze sobą czas uczenia, czas predykcji oraz metryki klasyfikacji: Accuracy, F1-score i Recall. Na podstawie uzyskanych wyników oraz czasu działania wskaż najlepszy algorytm. Przedstaw na wykresach macierz pomyłek dla każdego modelu oraz porównanie czasów uczenia i predykcji. 
+
+#### Skrypt do zadania 1
+```python
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
+
+file_path = "UNSW-NB15_1.csv"
+file_path_head = "NUSW-NB15_features.csv"
+
+df = kagglehub.load_dataset(
+  KaggleDatasetAdapter.PANDAS, "harshwardhanbhangale/unsw-complete-dataset", file_path,)
+
+print("First 5 records:", df.head())
+
+df_head = kagglehub.load_dataset(
+  KaggleDatasetAdapter.PANDAS, "harshwardhanbhangale/unsw-complete-dataset",
+    file_path_head,
+   pandas_kwargs={"encoding": "cp1252"})
+
+df.columns = df_head['Name'].tolist()
+```

@@ -8,6 +8,7 @@ Algorytmy, które należą do nauczania nadzorowanego:
 * Lasy losowe
 * Naiwny klasyfikator Bayesa
 * K-NN
+* Maszyna wektorów nośnych (SVN)
 
 ### Drzewa decyzyjne
 
@@ -362,4 +363,5 @@ decyzja = knn_clf.predict(nowy_pakiet_scaled)
 
 print(f"\nWerdykt dla nowego pakietu: {'ATAK DDOS 🔴' if decyzja[0] == 1 else 'RUCH NORMALNY 🟢'}")
 ```
+
 

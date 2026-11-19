@@ -4,7 +4,6 @@
 
 Algorytmy, które należą do uczenia nienadzorowanego
 * k- średnich (k-means)
-* Maszyna wektorów nośnych (SVN)
 
 ### K-średnich (k-means)
 
@@ -113,8 +112,6 @@ df['alarm_zero_day'] = df['odleglosc_od_centrum'].apply(lambda x: "TAK 🔴" if 
 print("=== WYNIKI KLASTERYZACJI I DETEKCJI ANOMALII ===")
 print(df)
 ```
-
-### Maszyna wektorów nośnych
 
 
 
