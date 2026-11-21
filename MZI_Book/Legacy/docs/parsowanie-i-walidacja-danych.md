@@ -1,2 +1,0 @@
-# Parsowanie i Walidacja danych
-
