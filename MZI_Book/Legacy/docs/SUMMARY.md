@@ -8,6 +8,7 @@
 * [Biblioteka Pandas](pandas/biblioteka-pandas.md)
 * [Filtracja i agregacja danych](pandas/materia_y_pandas.md)
 * [Obsługa plików](obsluga-plikow/obsluga-plikow.md)
+* [Zadania Numpy](numpy/zadania.md)
 
 ## Web scraping
 
