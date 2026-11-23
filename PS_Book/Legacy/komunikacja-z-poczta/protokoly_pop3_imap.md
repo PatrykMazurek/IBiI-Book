@@ -1,4 +1,4 @@
-# Protokoły POP3 i IMAP
+# Protokoły POP3/IMAP
 
 W tej części laboratorium przedstawione i omówione zostaną protokoły POP3 i IMAP w wersji nieszyfrowanej oraz z szyfrowaniem połączenia.
 
@@ -14,8 +14,8 @@ from email import parser
 
 POP3_SERVER = "localhost" # dowolny inny adres serwera pocztowego
 PORT = 3110     # port do komunikacji z serwerem, zależny od dostawcy
-USER_NAME = "student"
-PASS = 'haslo123'
+USER_NAME = "s<indeks>"
+PASS = 'h<indeks>'
 
 def read_mail_with_pop3():
     try:
@@ -60,10 +60,10 @@ Protokół IMAP (Internet Message Access Protocol) pozwala na zarządzanie wiado
 import imaplib, email
 from email.header import decode_header
 
-IMAP4_SERVER = "pi-server.home"
+IMAP4_SERVER = "localhost" # dowolny inny adres serwera pocztowego
 PORT = 3143
-USER_NAME = "student"
-PASS = 'haslo123'
+USER_NAME = "s<indeks>"
+PASS = 'h<indeks>'
 
 def get_body(msg):
     """Wyciąga czystą treść tekstową z wiadomości."""

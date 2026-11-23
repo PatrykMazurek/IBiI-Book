@@ -1,4 +1,4 @@
-# Protokół SMTP
+# Protokuł SMTP
 
 W tej części laboratorium przedstawione zostaną przykłady wysyłania wiadomości e-mail z wykorzystaniem protokołu SMTP.
 
@@ -11,10 +11,10 @@ import smtplib
 from email.message import EmailMessage
 
 # 1. Konfiguracja konta i serwera (zmień na swoje dane)
-SMTP_SERVER = "smtp.twoja-poczta.pl"
+SMTP_SERVER = "localhost" # inny dowolny adres serwera pocztowego
 SMTP_PORT = 3025  # Przykładowy port serwera testowego (standardowe porty SMTP to 25, 465 lub 587)
-EMAIL = "twoj_email@domena.pl"
-PASSWORD = "twoje_super_tajne_haslo"
+EMAIL = "s<indeks>"
+PASSWORD = "h<indeks>"
 
 def write_mail_with_smtp():
     # 2. Tworzenie wiadomości
