@@ -1,4 +1,4 @@
-# Wstęp do protokołów IMAP, POP3, SMTP
+# Wprowadzenie do komunikacji
 
 W projektach wykorzystujących pocztę elektroniczną programiści mają do dyspozycji rozwiązania pozwalające na pełne zarządzanie wymianą wiadomości. W tym celu stosuje się protokoły: **IMAP** lub **POP3** do pobierania i obsługi wiadomości w skrzynce pocztowej oraz **SMTP** do ich wysyłania. Większość serwerów pocztowych wykorzystuje ponadto szyfrowanie oraz protokół OAuth, aby bezpiecznie potwierdzić tożsamość użytkownika.
 
@@ -26,15 +26,18 @@ W 1995 roku wprowadzono rozszerzoną wersję ESMTP (później zaktualizowaną w 
 
 ## Środowisko pracy
 
+## Uwaga
+
+Praca na własnej skrzynce pocztowej jest **niezalecana i odbywa się wyłącznie na własną odpowiedzialność.**
+
 W ramach zajęć skorzystamy z narzędzia **GreenMail Standalone** do łatwiejszego i bezpieczniejszego zarządzania pocztą. Dostęp do aplikacji można uzyskać na dwa sposoby:
 
 * **Budując projekt z kodu**
   * [Strona projektu](https://greenmail-mail-test.github.io/greenmail/)
   * [Repozytorium GitHub](https://github.com/greenmail-mail-test/greenmail)
+*   **Korzystając z obrazu Docker**
 
-* **Korzystając z obrazu Docker**
-
-  Poniższe polecenie pozwala na uruchomienie serwera GreenMail Standalone, który nie posiada żadnych wiadomości:
+    Poniższe polecenie pozwala na uruchomienie serwera GreenMail Standalone, który nie posiada żadnych wiadomości:
 
 ```bash
 docker run -d --name greenmail \
@@ -43,12 +46,38 @@ docker run -d --name greenmail \
   greenmail/standalone:latest
 ```
 
+```yml
+  GNU nano 7.2                                       docker-compose.yml
+services:
+  greenmail:
+    image: greenmail/standalone:latest
+    container_name: greenmail
+    restart: unless-stopped
+    environment:
+      # Usunięto -Dgreenmail.auth.disabled -> serwer wymaga teraz autoryzacji
+      # Format konta: login:haslo@domena -> tworzy admin@ps-uken.pl z loginem "admin" i hasłem "amin"
+      - GREENMAIL_OPTS=-Dgreenmail.setup.test.all -Dgreenmail.hostname=0.0.0.0 -Dgreenmail.users=admin:admin@ps-uken.pl>
+    ports:
+      - "0.0.0.0:3025:3025" # SMTP
+      - "0.0.0.0:3465:3465" # SMTPS (SSL/TLS)
+      - "0.0.0.0:3110:3110" # POP3
+      - "0.0.0.0:3995:3995" # POP3S (SSL/TLS)
+      - "0.0.0.0:3143:3143" # IMAP
+      - "0.0.0.0:3993:3993" # IMAPS (SSL/TLS)
+      - "0.0.0.0:8080:8080" # GreenMail REST API
+
+  roundcube:
+    image: roundcube/roundcubemail:latest
+    container_name: roundcube
+    restart: unless-stopped
+    depends_on:
+      - greenmail
+    ports:
+      - "0.0.0.0:8081:80" # Interfejs WWW Roundcube
+```
+
 Niezależnie od wybranej metody polecam zapoznać się z [oficjalną stroną GreenMail](https://greenmail-mail-test.github.io/greenmail/), aby uzyskać bardziej szczegółowe informacje.
 
 Do w pełni funkcjonalnego działania serwera i praktycznej pracy na zajęciach należy uzupełnić skrzynkę wiadomościami. Poniżej znajdziesz plik z przykładowymi wiadomościami do zaimportowania:
 
-*[Miejsce na link do pliku lub skryptu uzupełniającego skrzynkę]*
-
-## Uwaga
-
-Praca na własnej skrzynce pocztowej jest **niezalecana i odbywa się wyłącznie na własną odpowiedzialność.**
+_\[Miejsce na link do pliku lub skryptu uzupełniającego skrzynkę]_
