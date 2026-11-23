@@ -1,18 +1,18 @@
 import smtplib
 from email.message import EmailMessage
 
-SMTP_SERVER = "pi-server.home"
+SMTP_SERVER = "pi-server.local"
 PORT = 3025
 SSL_PORT = 3990
-USER_NAME = "tester"
-PASS = 'pass123'
+USER_NAME = "admin"
+PASS = 'admin'
 
 def send_mail_with_smtp(msg:str, address_to:str):
     # 1. Przygotowanie treści i metadanych wiadomości
     msg = EmailMessage()
     msg["Subject"] = "Raport wdrożeniowy – Sierpień 2026"
-    msg["From"] = "system@lab.pl"
-    msg["To"] = "dev@lab.pl"
+    msg["From"] = "servis@lab.pl"
+    msg["To"] = "admin@ps-uken.pl"
     msg.set_content(
         """Cześć,
         Wdrożenie nowej wersji przebiegło pomyślnie.

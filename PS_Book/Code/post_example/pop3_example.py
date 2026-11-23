@@ -1,19 +1,18 @@
 import poplib
 from email import parser
 
-POP3_SERVER = "imap.pi-server.home"
+POP3_SERVER = "pi-server.local"
 PORT = 3110
 PORT_SSL = 3990
-USER_NAME = "tester"
-PASS = 'pass123'
+USER_NAME = "admin"
+PASS = 'admin'
 
 def read_mail_with_pop3():
-    mailbox = poplib.POP3_SSL(POP3_SERVER, PORT_SSL)
+    mailbox = poplib.POP3(POP3_SERVER, PORT)
     mailbox.user(USER_NAME)
     mailbox.pass_(PASS)
     count, size = mailbox.stat()
     print(f"{count} messages, {size} bytes")
-
     mailbox.quit()
 
 def read_real_mail_with_pop3():

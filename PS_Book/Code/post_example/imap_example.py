@@ -1,27 +1,69 @@
 import imaplib, email
 from email.header import decode_header
 
-IMAP4_SERVER = "pi-server.home"
-PORT = 143
+from scipy.constants import proton_mass
+
+IMAP4_SERVER = "pi-server.local"
+PORT = 3143
 PORT_SSL = 3990
-USER_NAME = "dex"
-PASS = 'secret'
+USER_NAME = "admin"
+PASS = 'admin'
+
+def get_body(msg):
+    """Wyciąga czystą treść tekstową z wiadomości."""
+    if msg.is_multipart():
+        for part in msg.walk():
+            content_type = part.get_content_type()
+            content_disposition = str(part.get("Content-Disposition"))
+            if content_type == "text/plain" and "attachment" not in content_disposition:
+                charset = part.get_content_charset() or "utf-8"
+                return part.get_payload(decode=True).decode(charset, errors="replace")
+    else:
+        charset = msg.get_content_charset() or "utf-8"
+        return msg.get_payload(decode=True).decode(charset, errors="replace")
+    return ""
 
 def read_eamil_with_imap():
-    mailbox = imaplib.IMAP4(IMAP4_SERVER, PORT)
-    mailbox.login(USER_NAME, PASS)
-    print("Zalogowano pomyślnie!\n")
-    mailbox.select("inbox")
-    result, data = mailbox.search(None, "ALL")
-    print(f"{result} {data}")
-    # print(mailbox)
-    mailbox.logout()
+    with imaplib.IMAP4(IMAP4_SERVER, PORT) as mailbox:
+        mailbox.login(USER_NAME, PASS)
+        print("Zalogowano pomyślnie!\n")
+        mailbox.select("inbox", readonly=True)
+        status, message = mailbox.search(None, "ALL")
+
+        for num in message[0].split():
+            status, msg_data = mailbox.fetch(num,"(RFC822)")
+            msg = email.message_from_bytes(msg_data[0][1])
+            part, encoding = decode_header(msg['Subject'])[0]
+            print(part.decode(encoding or "utf-8", errors="replace"))
+            print(msg['From'])
+            print(get_body(msg))
+
+        # mail_ids = message[0].split()
+        # print(mail_ids)
+        # for mailid in mail_ids:
+        #     status, msg_data = mailbox.fetch(mailid,"(RFC822)")
+        #     for response_part in msg_data:
+        #         if isinstance(response_part, tuple):
+        #             print(response_part[1])
+        #             msg = email.message_from_bytes(response_part[1])
+        #
+        #             print(msg['Subject'])
+        #             print(msg['From'])
+        # print(message)
+        # print(mail_ids[0])
+    # num_messages = len(mailbox.list()[1])
+    # print(f"Masz {num_messages} wiadomości na serwerze.")
+    #
+    # result, data = mailbox.search(None, "ALL")
+    # print(f"{result} {data}")
+    # # print(mailbox)
+    # mailbox.logout()
 
 
 def read_real_eamil_imap():
 
     # 1. Konfiguracja konta
-    IMAP_SERVER = "pi-server.home"  # np. imap.wp.pl, imap.gmail.com
+    IMAP_SERVER = "pi-server.local"  # np. imap.wp.pl, imap.gmail.com
     PORT = 3142
     EMAIL = "student"
     PASSWORD = "haslo123"

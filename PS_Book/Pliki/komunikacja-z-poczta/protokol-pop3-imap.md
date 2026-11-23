@@ -2,7 +2,7 @@
 
 W tej części laboratorium przedstawione i omówione zostaną protokoły IMAP i POP3 w wersji bez szyfrowania i z szyfrowaniem połączenia.
 
-#### POP3
+### POP3
 
 Protokół POP3 (Post Office Protocol version 3) zgodnie z dokumentacją RFC 1939 pozwala na nawiązanie połączenia z serwerem, uwierzytelnieni się za pomocą loginu i hasła oraz pobranie lub usunięcie wiadomości z serwera pocztowego.
 
@@ -10,59 +10,95 @@ Przykład skryptu w języku Python
 
 ```python
 import poplib
+from email import parser
 
-POP3_SERVER = "pi-server.home"
-PORT = 3110
+POP3_SERVER = "localhost" # dwolny inny adres serwera pocztowego
+PORT = 3110     # port do komunikacji z serwerem, zależny od dostawcy
 USER_NAME = "student"
 PASS = 'haslo123'
 
 def read_mail_with_pop3():
-    mailbox = poplib.POP3(POP3_SERVER, PORT)
-    mailbox.user(USER_NAME)
-    mailbox.pass_(PASS)
-    count, size = mailbox.stat()
-    print(f"{count} messages, {size} bytes")
+    try:
+        server = poplib.POP3_SSL(POP3_SERVER, POP3_PORT)
+        server.user(USER_NAME)
+        server.pass_(PASS)
 
-    mailbox.quit()
+        num_messages = len(server.list()[1])
+        print(f"Masz {num_messages} wiadomości na serwerze.")
+
+        if num_messages > 0:
+            response, lines, octets = server.retr(num_messages)
+            msg_content = b'\r\n'.join(lines).decode('utf-8', errors='ignore')
+            msg = parser.Parser().parsestr(msg_content)
+            
+            print("\n--- Najnowsza wiadomość ---")
+            print(f"Temat: {msg.get('Subject', 'Brak tematu')}")
+            print(f"Od: {msg.get('From', 'Nieznany nadawca')}")
+            
+        server.quit()
+
+    except Exception as e:
+        print(f"Wystąpił błąd podczas odbierania: {e}")
 
 if __name__ == "__main__":
     read_mail_with_pop3()
 ```
 
-Powyższy fragment kodu przedstawia prosty sposób na połączenie się z serwerem pocztowym i sprawdzenie łączną liczbę maili oraz ich wielkość. Dodatkowe treści opisujące działanie pozostałych metod dostępnych w bibliotece `poplib`.
+Powyższy przykład przedstawia jak można odczytać liczbę wiadomości w głównym katalogu i pobrać z niego wiadomości. W powyższym przykładzie wykorzystane zostały biblioteki `poplib` oraz `email` i metodę `parser`, któy pomaga przy odpowiedniej konwersji maila, które mogą zawierać tabele, kod HTML czy załączniki.
 
-Przedstawiony fragment kodu wykonuje połączenie nieszyfrowane, jeżeli serwer obsługuje szyfrowanie wystarczy zastosować następującą metodę aby aby uzyskac szfrowane połączenie.
+Przykład korzysta z połączenia w wersji nie szyfrowanej, jeżeli, jeżeli serwer obsługuje szyfrowanie wystarczy zastosować następującą metodę aby aby uzyskac szfrowane połączenie.
 
 ```python
 mailbox = poplib.POP3_SSL(POP3_SERVER, SSL_PORT)
 ```
 
-#### IMAP
+### IMAP
 
 Protokół IMAP (Internet Message Access Protocol) -  pozwala na zarządzanie wiadomościami, które znajdują się na serwerze pocztowym, zgodnie z początkowymi założeniami wiadomości pozostają na serwerze.
 
 ```python
-import imaplib
+import imaplib, email
+from email.header import decode_header
 
 IMAP4_SERVER = "pi-server.home"
 PORT = 3143
 USER_NAME = "student"
 PASS = 'haslo123'
 
-def read_eamil_with_imap():
-    mailbox = imaplib.IMAP4(IMAP4_SERVER, PORT)
-    mailbox.login(USER_NAME, PASS)
-    print("Zalogowano pomyślnie!\n")
-    mailbox.select("inbox")
-    result, data = mailbox.search(None, "ALL")
-    print(f"{result} {data}")
-    mailbox.logout()
+def get_body(msg):
+    """Wyciąga czystą treść tekstową z wiadomości."""
+    if msg.is_multipart():
+        for part in msg.walk():
+            content_type = part.get_content_type()
+            content_disposition = str(part.get("Content-Disposition"))
+            if content_type == "text/plain" and "attachment" not in content_disposition:
+                charset = part.get_content_charset() or "utf-8"
+                return part.get_payload(decode=True).decode(charset, errors="replace")
+    else:
+        charset = msg.get_content_charset() or "utf-8"
+        return msg.get_payload(decode=True).decode(charset, errors="replace")
+    return ""
+
+def read_email_with_imap():
+    with imaplib.IMAP4(IMAP4_SERVER, PORT) as mailbox:
+        mailbox.login(USER_NAME, PASS)
+        print("Zalogowano pomyślnie!\n")
+        mailbox.select("inbox", readonly=True)
+        status, message = mailbox.search(None, "ALL")
+
+        for num in message[0].split():
+            status, msg_data = mailbox.fetch(num,"(RFC822)")
+            msg = email.message_from_bytes(msg_data[0][1])
+            part, encoding = decode_header(msg['Subject'])[0]
+            print(part.decode(encoding or "utf-8", errors="replace"))
+            print(msg['From'])
+            print(get_body(msg))
     
 if __name__ == "__main__":
-    read_eamil_with_imap()
+    read_email_with_imap()
 ```
 
-Powyższy fragment kodu przedstawia prosty sposób na połączenie z serwerem pocztowym i wyszukanie maili z głównego folderu oraz zwrócenie ich w postaci listy tytułów.
+Powyższy fragment kodu przedstawia sposób synchronizacji wiadomości z serwerem pocztowym. W przykłądzie skorzystano z bibliotek `imaplib` oraz `email` i skorzystano z metody `decode_header`. W przykładzie zdefinoiowano metodę `get_body()` zadaniem, której jest dekodowanie wiadomości z wersji binarnej do stringa z wykorzystaniem znaków UNICODE. Konwersja wiadomości pobranych z serwera do obiektu `email` pomaga przy odczytaniu nagłówków wiadomości oraz ewentualnemu dekodowaniu do odpowiednich znaków. 
 
 Powyższy fragment przedstawiał połączenie przez protokół IMAP bez szyfrowania. Jeżeli serwer obsługuje szyfrowanie, wystarczy zastosować poniższą metodę aby wykonać połączenie szyfrowane.
 
@@ -70,45 +106,7 @@ Powyższy fragment przedstawiał połączenie przez protokół IMAP bez szyfrowa
 mailbox = imaplib.IMAP4_SSL(IMAP4_SERVER, SSL_PORT)
 ```
 
-#### Realne rozwiązania
-
-W przypadku realnych rozwiązań wykorzystanie samych protokołów POP3 czy IMAP nie wystarczą do pracy z wiadomościami email. W środowisku Python udostępniono bibliotekę `email`, która pomaga w prasowaniu różnych wiadomości, które mogą zawierać tabele, kod HTML czy załączniki.
-
-Poniżej przedstawiony jest fragment kodu, który odczytuje najnowszą wiadomości z serwera pocztowego i wyświetla informacje o temacie i nadawcę wiadomości.
-
-```python
-import poplib
-from email import parser
-
-POP3_SERVER = "pop3.twoja-poczta.pl"
-POP3_PORT = 995 # Standardowy port dla POP3 z SSL
-EMAIL = "twoj_email@domena.pl"
-PASSWORD = "twoje_super_tajne_haslo"
-
-try:
-    server = poplib.POP3_SSL(POP3_SERVER, POP3_PORT)
-    server.user(EMAIL)
-    server.pass_(PASSWORD)
-
-    num_messages = len(server.list()[1])
-    print(f"Masz {num_messages} wiadomości na serwerze.")
-
-    if num_messages > 0:
-        response, lines, octets = server.retr(num_messages)
-        msg_content = b'\r\n'.join(lines).decode('utf-8', errors='ignore')
-        msg = parser.Parser().parsestr(msg_content)
-        
-        print("\n--- Najnowsza wiadomość ---")
-        print(f"Temat: {msg.get('Subject', 'Brak tematu')}")
-        print(f"Od: {msg.get('From', 'Nieznany nadawca')}")
-        
-    server.quit()
-
-except Exception as e:
-    print(f"Wystąpił błąd podczas odbierania: {e}")
-```
-
-#### Zadania
+### Zadania
 
 1. Stwórz aplikację, która odczyta listę katalogów i zwróci liczbę wiadomości w danym katalogu
 2. Stwórz aplikację, która pozwoli użytkownikowi wybrać odpowiedni katalog i wyświetli po 20 wiadomości w postaci nadawca i tytuł. Zastosuje odpowiedni protokół, który pozostawi wiadomości na serwerze pocztowym.
@@ -117,7 +115,7 @@ except Exception as e:
    2. pozwoli wyszukać wiadomości, które zawierają wybraną frazę w tytule
    3. pozwoli wyszukać wisomości od konkretnego madawcy
 
-#### Literatura
+### Literatura
 
 {% embed url="https://docs.python.org/3/library/poplib.html" %}
 

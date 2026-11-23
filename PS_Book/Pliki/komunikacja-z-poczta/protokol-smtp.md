@@ -12,7 +12,7 @@ from email.message import EmailMessage
 
 # 1. Konfiguracja konta i serwera (zmień na swoje dane)
 SMTP_SERVER = "smtp.twoja-poczta.pl"
-SMTP_PORT = 465 # Standardowy port dla SMTP z SSL
+SMTP_PORT = 3025 # Standardowy port dla SMTP 
 EMAIL = "twoj_email@domena.pl"
 PASSWORD = "twoje_super_tajne_haslo"
 
@@ -28,7 +28,7 @@ msg['To'] = "odbiorca@domena.pl"
 # 3. Wysyłanie
 try:
     # Używamy SMTP_SSL dla bezpieczeństwa
-    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as server:
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
         server.login(EMAIL, PASSWORD)
         server.send_message(msg)
     print("Poszło! Wiadomość wysłana pomyślnie.")
@@ -36,9 +36,13 @@ except Exception as e:
     print(f"Wystąpił błąd podczas wysyłania: {e}")
 ```
 
-Powyższy kod, przedstawia wykonanie połączenia z serwerem pocztowym i wysłanie zadania,
+Powyższy kod, przedstawia zastosowanie biblioteki `smtp` i `email` do przygotowani wiadomości i przesłania ją na serwer pocztowy i wysłania do innego serwera pocztowego lub innego użytkownika w ramach tej samej poczty.
 
-#### Autoryzacja OAuth2
+W przedstawionym przykłądzie zastosowano połączenie bez warstwy szyfrującej. Jeżeli serwer obsługuje szyfrowanie, wystarczy zastosować następującą metodę, aby uzyskać szyfrowane połączenie:
+
+```python
+mailbox = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
+```
 
 #### Zadania
 
