@@ -46,6 +46,8 @@ docker run -d --name greenmail \
   greenmail/standalone:latest
 ```
 
+Poniżej skrypt tworzący kontener w dokerze.
+
 ```yml
   GNU nano 7.2                                       docker-compose.yml
 services:
@@ -80,4 +82,6 @@ Niezależnie od wybranej metody polecam zapoznać się z [oficjalną stroną Gre
 
 Do w pełni funkcjonalnego działania serwera i praktycznej pracy na zajęciach należy uzupełnić skrzynkę wiadomościami. Poniżej znajdziesz plik z przykładowymi wiadomościami do zaimportowania:
 
-_\[Miejsce na link do pliku lub skryptu uzupełniającego skrzynkę]_
+_Poniżej plik, który uzupełnia pocztę testowymi mailami_
+
+{% file src="../.gitbook/assets/add_email_to_inbox.py" %}
