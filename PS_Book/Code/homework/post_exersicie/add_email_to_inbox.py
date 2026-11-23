@@ -8,8 +8,8 @@ from MZI_Book.Code.temp import response
 # --- KONFIGURACJA GREENMAIL ---
 IMAP_HOST = "pi-server.local"
 IMAP_PORT = 3143          # Domyślny port IMAP w GreenMail (standalone/Docker)
-USER_EMAIL = "admin"
-USER_PASS = "admin"
+USER_EMAIL = "test"
+USER_PASS = "test"
 
 # Katalogi do utworzenia (bez polskich znaków, żeby uniknąć problemów z kodowaniem UTF-7 w IMAP)
 FOLDERS = ["INBOX", "Praca", "Faktury", "Prywatne", "Spam", "PustyKatalog"]
@@ -101,26 +101,18 @@ def add_email_to_user(user, password):
     print(f"Gotowe! Wgrano {len(EMAILS)} wiadomości do {len(FOLDERS)} katalogów.")
 
 def create_account():
-    student = [175361,175304,175311,175386,177771,175349,175318,175324,175329,175373,175346,175267,175301,175268,175269,175284,
-               175315,175369,175325,175379,175364,175382,175345,175363,175347,175377,175337,177833,175381,175277,175352,
-               175351,175282,175359,175275,175358,175283,167657,177772,175365,175299,175292,175295,177821,175334,175302,175374]
 
     url = "http://pi-server.local:8080/api/user"
+    email = f"{USER_EMAIL}@ps-uken.pl"
+    new_user = { "email": email, "login": USER_EMAIL, "password": USER_PASS }
 
-    for idx in student:
-        email = f"s{idx}@ps-uken.pl"
-        user = f"s{idx}"
-        password = f"h{idx}"
-
-        new_user = { "email": email, "login": user, "password": password }
-
-        response = requests.post(url, json=new_user )
-        if response.status_code == 200:
-            print(f"Dodano nowego użytkownika {user}")
-            print("uzupełnienie skrzynki wiadomościami")
-            add_email_to_user(user, password)
-        else:
-            print(f"Błąd {response.status_code}: {response.text}")
+    response = requests.post(url, json=new_user )
+    if response.status_code == 200:
+        print(f"Dodano nowego użytkownika {email}")
+        print("uzupełnienie skrzynki wiadomościami")
+        add_email_to_user(USER_EMAIL, USER_PASS)
+    else:
+        print(f"Błąd {response.status_code}: {response.text}")
 
 
 def add_email(imap, folder, sender, subject, body, days_ago):

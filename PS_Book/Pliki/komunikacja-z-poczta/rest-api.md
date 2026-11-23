@@ -39,7 +39,7 @@ Do udostępniania własnego API można zastosować bibliotekę FastAPI. Przed ro
 pip install fastapi
 ```
 
-Pracę zaczynamy od importu najważniejszych bibliotek oraz utworzenia niezbędnych obiektów
+Poniższy skrypt prezentuje sposób na utworzenie aplikacji wystawiającej REST API.
 
 ```python
 from fastapi import FastAPI, HTTPException
@@ -66,9 +66,11 @@ books = {
 }
 ```
 
-Aby wykonać punkty dostępowe (endpoints) do danych należy zastosować odpowiednie adnotacje przed definicją metody zwracającej lub pobierającej dane.:
+Powyższy skrypt tworzy podstawę do pracy z REST API, tworzy klasę `Book`, która w dalszej części będzie stosowana do przechowania lub udostępniania informacji.
 
-* Dla pobierania danych, metoda GET
+* udostępnianie danych, metoda GET
+
+
 
 ```python
 ## pobieranie głównego komunikatu
@@ -169,7 +171,10 @@ def delete_book(book_id: int):
 
 #### Pobieranie zewnętrznego API
 
-Do korzystania z zewnętrznych API można zastosować bibliotekę requests. Bibliotek pozwala na wykonywanie zapytań HTTP&#x20;
+Do korzystania z zewnętrznych API można zastosować bibliotekę `requests`. Biblioteka pozwala na wykonywanie zapytań HTTP i pobranie odpowiednich treści z serwera.
+
+Pobieranie danych z ednpoint-ów można wykonać na podstawie poniższych metod. 
+
 
 
 
