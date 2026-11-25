@@ -16,3 +16,5 @@
 * [Wprowadzenie do komunikacji](komunikacja-z-poczta/wstemp_do_poczty_elektronicznej.md)
 * [Protokoły POP3/IMAP](komunikacja-z-poczta/protokoly_pop3_imap.md)
 * [Protokuł SMTP](komunikacja-z-poczta/protokul_smtp.md)
+
+## REST API

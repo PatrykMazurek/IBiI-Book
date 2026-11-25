@@ -11,25 +11,35 @@ W tym laboratorium omawiane będą zagadnienia dotyczące tworzenia i korzystani
 
 **Podstawowe metody HTTP**
 
-* GET - pobieranie danych
-* POST - utworzenie nowego zasobu
-* PUT - pełna aktualizacja zasobów
-* PUSH - częściowa aktualizacja zasobów
-* DELETE - usunięcie zasobów
+Najczęstsze metody HTTP
+
+| Metoda   | Zastosowanie          |
+|----------|-----------------------|
+| `GET`    | Pobieranie danych     |
+| `POST`   | Przesłanie danych     |
+| `PUT`    | Zastąpienie zasobu    |
+| `PATCH`  | Częściowa modyfikacja |
+| `DELETE` | Usunięcie zasobu      |
 
 **Kody odpowiedzi HTTP**
 
 Przy każdym zapytaniu możemy otrzymać odpowiedni kod, który informuje czy aplikacja zakończyła działanie sukcesem. Najczęstsze kody odpowiedzi.
 
-| Kod                       | Znaczenie                      |
-| ------------------------- | ------------------------------ |
-| 200 OK                    | Zapytanie zakończone sukcesem  |
-| 201 Created               | Zasób został utworzony         |
-| 400 Bad Request           | Błędne dane wejściowe          |
-| 401 Unauthorized          | Brak autoryzacji               |
-| 403 Forbidden             | Brak uprawnień                 |
-| 404 Not Found             | Nie znaleziono zasobu          |
-| 500 Internal Server Error | Błąd po stronie serwera        |
+| Kod                      | Znaczenie                     |
+|--------------------------| ----------------------------- |
+| 200 OK                   | Zapytanie zakończone sukcesem |
+| 201 Created              | Zasób został utworzony        |
+| 400 Bad Request          | Błędne dane wejściowe         |
+| 401 Unauthorized         | Brak autoryzacji              |
+| 403 Forbidden            | Brak uprawnień                |
+| 404 Not Found            | Nie znaleziono zasobu         |
+| 429 Too Many Requests    | Przekroczono limit żądań       |
+| 500 Internal Server Error | Błąd po stronie serwera       |
+
+Więcej informacji na temat: 
+[HTTP Request Methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods?utm_source=chatgpt.com) i 
+[HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status?utm_source=chatgpt.com)
+
 
 #### Tworzenie własnego REST API
 
@@ -68,9 +78,9 @@ books = {
 
 Powyższy skrypt tworzy podstawę do pracy z REST API, tworzy klasę `Book`, która w dalszej części będzie stosowana do przechowania lub udostępniania informacji.
 
-* udostępnianie danych, metoda GET
+* Endpoint GET
 
-
+Punkt zwracający dane na żądanie klienta.
 
 ```python
 ## pobieranie głównego komunikatu
@@ -89,7 +99,9 @@ def get_book(book_id: int):
     return books[book_id]
 ```
 
-* Dla dodania nowych obiektów metoda POST
+* Endpoint POST
+
+Punkt wykonujący żądanie dodania nowego rekordu do danych.
 
 ```python
 @app.post("/books", status_code=201)
@@ -107,7 +119,9 @@ def create_book(book: Book):
     }
 ```
 
-* Dla aktualizacji danych danych metody PUT i PATCH
+* Endpoint PUT i PATCH
+
+wystawienie punktów za pomocą, których można wykonać żądanie aktualizacji danych w wybrany sposób: 
 
 **Metoda PUT**
 
@@ -153,7 +167,9 @@ def partially_update_book(book_id: int, book_update: BookUpdate):
     }
 ```
 
-* Dla usuwania danych
+* endpoint delete
+
+Punkt, do którego można przesłać żądanie o usunięcie wybranego rekordu
 
 ```python
 @app.delete("/books/{book_id}")
@@ -175,8 +191,10 @@ Do korzystania z zewnętrznych API można zastosować bibliotekę `requests`. Bi
 
 Pobieranie danych z ednpoint-ów można wykonać na podstawie poniższych metod. 
 
+### Obsługa błędów
 
-
+System, aby mógł pracować właściwie musi być przygotowany na nieoczekiwane dane, które może użytkownik wywołać. 
+Dlatego warto stosować bloki `try` i `except`, przykładowe błędy, które należy obsługiwać:
 
 #### Zadania
 

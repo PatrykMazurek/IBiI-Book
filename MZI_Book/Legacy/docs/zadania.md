@@ -45,3 +45,20 @@
 2. Korzystając z adresu `https://api.nbp.pl/`, stwórz aplikację, która pobierze nazwy walut i ich kody z tabeli `B` i poprosi użytkownika o dwie informacje, którą walutę wyświetlić i ile ostatnich notowań. Następnie zapytaj odpowiedni endpoint, który zwróci notowania konkretnej waluty.
 3. Korzystając z adresu `https://www.omdbapi.com/`, stwórz aplikację, która zwróci informacje w czytelny sposób. stwórz odpowiednie zapytania, aby wyszukiwać filmy po tytule lub po typie lub roku wydania filmu. W celu wykonania zadania można skorzystać z tego klucza api `d8ad4e9f`. 
 4. Korzystając z adresu `https://open-meteo.com/`, stwórz aplikację, która odczyta prognozę pogody na 3 dni. W informacji zwróć temperaturę i prędkość wiatru. Przygotuj 5 dowolnych lokalizacji i pozwól uzytkownikowi zdecydować, dla której lokalizacji ma pobrać pogodę. Nie kopiuj całych linków, tylko stwórz parametry i dodaj je w metodzie `request.GET()`. Wyniki przedstaw w czytelny sposób. 
+
+### Lab 6
+
+1. Stwórz aplikację, która będzie agregować informacje z trzech różnych kanałów RSS. W celu realizacji zadania zapoznaj się z biblioteką `feedparser`. Tematyka zbieranych informacji jest dowolna.
+Dla każdej wiadomości pobierz następujące informacje: tytuł artykułu, datę publikacji, link do artykułu, treść artykułu (opcjonalnie).
+Pobrane dane zapisz do pliku w formacie JSON. Aplikacja powinna automatycznie sprawdzać kanały RSS co 5 minut i zapisywać wyłącznie nowe wiadomości, unikając duplikowania wcześniej zapisanych danych.
+2. Korzystając z kanałów RSS serwisu arXiv (`https://rss.arxiv.org/rss/`), stwórz aplikację, która będzie odczytywał informacje o publikacjach naukowych z wybranej kategorii tematycznej.
+Aby zapoznać się z dostępnymi kategoriami, skorzystaj ze strony [arXiv Category Taxonomy](https://arxiv.org/category_taxonomy).
+Dla każdej publikacji pobierz następujące informacje: tytuł artykułu, listę autorów, link do artykułu, identyfikator DOI (jeżeli jest dostępny).
+W celu pozyskania informacji o autorach oraz identyfikatorze DOI przejdź na stronę danej publikacji i wykorzystaj technikę web scrapingu.
+Pobrane informacje wyświetl użytkownikowi w czytelnej formie.
+3. Stwórz aplikację wspomagającą wyszukiwanie informacji, która może znaleźć zastosowanie np. w analizie otwartych źródeł informacji (OSINT).
+Wykorzystaj mechanizm wyszukiwania wiadomości za pośrednictwem kanałów RSS serwisu Google News.
+Przykładowy adres URL:
+`https://news.google.com/rss/search?q=sztuczna%20inteligencja%20when%3A1d&hl=pl&gl=PL&ceid=PL:pl`
+Przeanalizuj strukturę podanego adresu URL, a następnie zaimplementuj mechanizm jego dynamicznego generowania na podstawie parametrów wyszukiwania wprowadzonych przez użytkownika.
+Dla każdego wyniku wyszukiwania pobierz i wyświetl następujące informacje: tytuł artykułu, opis artykułu, link do artykułu, datę publikacji.
