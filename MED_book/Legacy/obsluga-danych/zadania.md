@@ -180,7 +180,10 @@ from kagglehub import KaggleDatasetAdapter
 file_path = "spam.csv"
 
 # Load the latest version
-df = kagglehub.load_dataset( KaggleDatasetAdapter.PANDAS, "uciml/sms-spam-collection-dataset", file_path,)
+df = kagglehub.load_dataset( KaggleDatasetAdapter.PANDAS, 
+                             "uciml/sms-spam-collection-dataset", 
+                             file_path,
+                             pandas_kwargs={"encoding": "cp1252"})
 
 print("First 5 records:", df.head())
 ```
