@@ -215,3 +215,29 @@ df_head = kagglehub.load_dataset(
 
 df.columns = df_head['Name'].tolist()
 ```
+
+### Lab 8
+
+1. Załaduj dane z pliku `wine.csv`, któe zawierają dane dotyczące klas win. Utwórz na jego podstawie ramkę danych i wyświetl podstawowe infromacje. Wykonaj standaryzacje danych za pomocą `StandardScalar` a następnie redukcję wymiarowości `PCA`. Podziel uzyskane dane na skupienia za pomocą dwóch algorytmów: `k_means` oraz `DBSCAN`. Oceń jakość klasyfikacji za pomocą wskaźników:
+* Wewnętrznych wskaźników jakości:
+  * Współczynnik profilu (Silhouette).
+  * Indeks Daviesa-Bouldina (DBI).
+* Zewnętrznych wskaźników jakości:
+  * Skorygowany Współczynnik Randa (ARI).
+  * Indeks Jaccarda.
+  
+  Porównaj wyniki uzyskane z dwóch algorytmów
+2. Korzystając ze zbioru UNSW-NB15, wczytaj 6000 rekordów z zachowaniem proporcji klas, oddziel kolumnę label oraz pozostaw wyłącznie dane numeryczne. Zastosuj standaryzację (StandardScaler), a następnie uruchom algorytm DBSCAN na wszystkich cechach. Przetestuj parametr eps dla wartości [0.5, 1.0, 1.5, 2.0, 2.5, 3.0] przy min_samples=15 i oblicz, jaki procent danych zostaje zaklasyfikowany jako szum (-1). Następnie wykonaj redukcję wymiarowości metodą PCA do 5 wymiarów oraz osobno selekcję 5 najważniejszych cech. Uruchom ponownie DBSCAN na tak zredukowanych zbiorach i porównaj wyniki (liczbę klastrów, odsetek szumu oraz udział prawdziwych ataków w szumie -1).
+
+Materiały do zadania 2
+
+```python
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
+
+file_path = "UNSW_NB15_training-set.csv"
+
+df = kagglehub.load_dataset(  KaggleDatasetAdapter.PANDAS,  "mrwellsdavid/unsw-nb15",  file_path,)
+
+print("First 5 records:", df.head())
+```

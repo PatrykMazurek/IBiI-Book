@@ -5,6 +5,7 @@
 Algorytmy, które należą do uczenia nienadzorowanego:
 
 * k-średnich (k-means)
+* DBSCAN
 
 ### K-średnich (k-means)
 
@@ -123,3 +124,95 @@ df['alarm_zero_day'] = df['odleglosc_od_centrum'].apply(lambda x: "TAK 🔴" if 
 print("=== WYNIKI KLASTERYZACJI I DETEKCJI ANOMALII ===")
 print(df)
 ```
+
+### Algorytm DBSCAN
+
+*Techniki gęstościowe analizy skupień*, takie jak DBSCAN, przypominają intuicyjny sposób grupowania elementów przez człowieka. Algorytm ten wyróżnia się tym, że pozwala na identyfikację skupień o dowolnych kształtach i automatycznie rozpoznaje liczbę skupień w danych.
+
+W prawdziwym Threat Huntingu **nie mamy kolumny `Label`** – nie wiemy z góry, które zdarzenia to ataki. Tu wchodzi uczenie nienadzorowane i algorytm **DBSCAN** (*Density-Based Spatial Clustering of Applications with Noise*).
+
+#### Jak działa DBSCAN? (Wyjaśnienie krok po kroku)
+
+W przeciwieństwie do K-Means, DBSCAN **nie każe nam zgadywać liczby klastrów**. Zamiast tego szuka gęstych skupisk punktów w przestrzeni, opierając się na zaledwie **dwóch parametrach**:
+1. **`eps` ($\varepsilon$)** – promień sąsiedztwa wokół każdego punktu (jak daleko „sięga wzrok” algorytmu).
+2. **`min_samples`** – minimalna liczba punktów, które muszą się znaleźć w promieniu `eps`, aby uznać dany obszar za gęsty klaster.
+
+Na tej podstawie DBSCAN dzieli wszystkie zdarzenia (logi) na **3 kategorie**:
+* **Punkt rdzeniowy (*Core Point*):** ma co najmniej `min_samples` sąsiadów w promieniu `eps` – to środek gęstego skupiska (np. typowy, codzienny ruch biurowy albo powtarzalny beaconing botnetu).
+* **Punkt brzegowy (*Border Point*):** sam ma mniej niż `min_samples` sąsiadów, ale leży w zasięgu punktu rdzeniowego – należy do obrzeży klastra.
+* **Szum / Anomalia (*Noise*, etykieta `-1`):** nie jest ani punktem rdzeniowym, ani brzegowym – to samotny punkt na uboczu. **W SOC etykieta `-1` to gotowy kandydat na alert (anomalię)!**
+
+#### Dlaczego redukcja wymiarowości jest kluczowa przed DBSCAN?
+
+DBSCAN liczy odległości między punktami. W przestrzeni 50 wymiarów (klątwa wymiarowości) wszystkie punkty stają się od siebie podobnie oddalone – algorytm „ślepnie” i oznacza niemal cały ruch jako szum `-1`. Dopiero po redukcji (np. Selekcja cech + t-SNE / UMAP) DBSCAN potrafi czysto rozdzielić:
+* gęste klastry normalnego ruchu,
+* osobne, ciasne klastry powtarzalnych ataków (np. skanowanie / C2),
+* pojedyncze anomalie (`-1`).
+
+Sprawdźmy to na żywo w poniższej komórce!
+
+##### Przykładowa implementacja
+
+```python
+# EKSPERYMENT A: DBSCAN na surowych 50 wymiarach (klątwa wymiarowości w akcji!)
+db_raw_50d = DBSCAN(eps=3.0, min_samples=15).fit(X_vis_50d)
+unique_50d, counts_50d = np.unique(db_raw_50d.labels_, return_counts=True)
+print("=== DBSCAN na surowych 50 cechach ===")
+print("Wykryte klastry (etykieta: liczba zdarzeń):", dict(zip(unique_50d, counts_50d)))
+print("-> Wniosek: w 50 wymiarach odległości się rozmywają, algorytm oznacza wszystko jako szum (-1)!\n")
+
+# EKSPERYMENT B: DBSCAN na zredukowanych danych 2D po t-SNE (bez użycia etykiet y_vis!)
+tsne_scaled = StandardScaler().fit_transform(tsne_2d)
+db_2d = DBSCAN(eps=0.18, min_samples=15).fit(tsne_scaled)
+db_labels = db_2d.labels_
+
+# Analiza wykrytych klastrów (dopiero teraz podglądamy prawdziwe etykiety y_vis, żeby ocenić wynik)
+print("=== DBSCAN na danych zredukowanych (Top 10 -> t-SNE 2D) ===")
+cluster_summary = []
+for cl in sorted(set(db_labels)):
+    mask = (db_labels == cl)
+    n_pts = mask.sum()
+    n_att = y_vis[mask].sum()
+    pct_att = (n_att / n_pts) * 100
+    name = "Szum / Anomalie (-1)" if cl == -1 else f"Klaster {cl}"
+    cluster_summary.append({
+        "Grupa DBSCAN": name,
+        "Liczba zdarzeń": n_pts,
+        "Prawdziwe ataki": n_att,
+        "Udział ataków [%]": round(pct_att, 1)
+    })
+
+summary_db_df = pd.DataFrame(cluster_summary)
+print(summary_db_df.to_string(index=False))
+
+# Wizualizacja: Co widzi analityk z DBSCAN (bez etykiet) vs Prawda (Ground Truth)
+fig, axes = plt.subplots(1, 2, figsize=(15, 5.5))
+
+# Lewy wykres: Wynik DBSCAN (uczenie nienadzorowane)
+palette_db = {cl: ('#000000' if cl == -1 else sns.color_palette("tab10")[cl % 10]) for cl in sorted(set(db_labels))}
+sns.scatterplot(
+    x=tsne_scaled[:, 0], y=tsne_scaled[:, 1], hue=db_labels,
+    palette=palette_db, alpha=0.8, s=30, ax=axes[0]
+)
+axes[0].set_title("Wynik DBSCAN (czarne kropki = szum / anomalie -1)", fontsize=12)
+axes[0].set_xlabel("t-SNE Wymiar 1 (skalowany)")
+axes[0].set_ylabel("t-SNE Wymiar 2 (skalowany)")
+axes[0].legend(title="Klaster DBSCAN", loc="best")
+
+# Prawy wykres: Prawdziwe etykiety (Ground Truth)
+sns.scatterplot(
+    x=tsne_scaled[:, 0], y=tsne_scaled[:, 1], hue=y_vis,
+    palette={0: '#a6bddb', 1: '#e31a1c'}, alpha=0.8, s=30, ax=axes[1]
+)
+axes[1].set_title("Prawdziwe etykiety (Ground Truth – do weryfikacji)", fontsize=12)
+axes[1].set_xlabel("t-SNE Wymiar 1 (skalowany)")
+axes[1].set_ylabel("t-SNE Wymiar 2 (skalowany)")
+handles, _ = axes[1].get_legend_handles_labels()
+axes[1].legend(handles, ['Benign (0)', 'Attack (1)'], title="Prawdziwy ruch")
+
+plt.tight_layout()
+plt.show()
+```
+
+DBSCAN to skuteczna metoda wykrywania skupień o dowolnych kształtach, szczególnie w obecności szumu. Nie wymaga definiowania liczby skupień, co odróżnia go od metod takich jak KMeans Algorytm działa dobrze na danych rzeczywistych, gdzie kształty skupień mogą być nieregularne.ień.
+
