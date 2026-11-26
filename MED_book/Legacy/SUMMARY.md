@@ -27,6 +27,10 @@
 * [uczenie nienadzorowane](klasyfikatory/uczenie-nienadzorowane.md)
 * [ocena klasyfikatorow](klasyfikatory/ocena-klasyfikatorow.md)
 
+## Redukcja wymiarowości
+
+* [Redukcja wymiarowości](redukcja_wymiarow/redukcja_wymiarow.md)
+
 ## Zadania
 
 * [Zadania](obsluga-danych/zadania.md)
